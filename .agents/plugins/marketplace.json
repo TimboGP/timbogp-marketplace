@@ -1,0 +1,20 @@
+{
+  "name": "timbogp",
+  "interface": {
+    "displayName": "TimboGP"
+  },
+  "plugins": [
+    {
+      "name": "agentic-study-environment",
+      "source": {
+        "source": "local",
+        "path": "./plugin/agentic-study-environment"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education"
+    }
+  ]
+}

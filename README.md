@@ -1,8 +1,8 @@
 # agentic-study-environment
 
-**A [Claude Code](https://claude.com/claude-code) learning harness — structured tutor sessions over your own source materials, in any domain.**
+**A coding-agent learning harness — structured tutor sessions over your own source materials, in any domain.**
 
-You bring a topic and the source material (a paper, a book, a syllabus, a clinical case load, anything). The harness turns Claude Code into a tutor that brackets the work into focused **sessions**, keeps a per-project **curriculum** and **progress log**, and adapts its teaching shape per the domain you're studying via swappable **overlays**.
+You bring a topic and the source material (a paper, a book, a syllabus, a clinical case load, anything). The harness turns a code-capable agent into a tutor that brackets the work into focused **sessions**, keeps a per-project **curriculum** and **progress log**, and adapts its teaching shape per the domain you're studying via swappable **overlays**.
 
 It's a harness, not a course. There's no curated content here — you provide the materials, and the agent works them with you.
 
@@ -15,7 +15,7 @@ Two short transcripts. The fluff is trimmed; everything bracketed `[…]` is par
 ```
 > let's work on tasep
 
-[reads PROGRESS.md, tasep/CLAUDE.md, tasep/ai-agent-materials/curriculum.md,
+[reads PROGRESS.md, tasep/AGENTS.md, tasep/ai-agent-materials/curriculum.md,
  loads domains/coding.md (Domain: coding)]
 
 Last session you exercised T0 (env + smoke tests) and got T1 (TASEP model)
@@ -49,7 +49,7 @@ Ping when you have a first pass.
 ```
 > start session on aphasia-cases
 
-[reads PROGRESS.md, aphasia-cases/CLAUDE.md (Domain: speech-therapy),
+[reads PROGRESS.md, aphasia-cases/AGENTS.md (Domain: speech-therapy),
  source-materials/patients/maria-58.md, loads domains/speech-therapy.md]
 
 Three profiles available: maria-58 (Broca's aphasia, post-stroke,
@@ -86,17 +86,17 @@ The session ends with `stop session`; the agent steps out of character (for simu
 
 ## How it works
 
-The harness ships as a Claude Code plugin at [`plugin/agentic-study-environment/`](plugin/agentic-study-environment/). The plugin exposes four lifecycle skills:
+The harness ships as a plugin at [`plugin/agentic-study-environment/`](plugin/agentic-study-environment/). The same skill bodies are packaged for Claude Code and Codex. The plugin exposes five lifecycle skills:
 
 | Skill | Trigger | What it does |
 | --- | --- | --- |
-| `agentic-study-environment:bootstrap` | "bootstrap a project for X" | Mint a new sub-project (`<name>/CLAUDE.md`, `<name>/PROGRESS.md`, `<name>/source-materials/`); register in root `PROGRESS.md` |
+| `agentic-study-environment:bootstrap` | "bootstrap a project for X" | Mint a new sub-project (`<name>/AGENTS.md`, `<name>/CLAUDE.md`, `<name>/PROGRESS.md`, `<name>/source-materials/`); register in root `PROGRESS.md` |
 | `agentic-study-environment:set-curriculum` | "set curriculum for X" | Build or update `<name>/ai-agent-materials/curriculum.md` from source materials |
 | `agentic-study-environment:start-session` | "start session", "let's work on X" | Begin a bracketed learning session (theory / practice / domain-specific types); load the active domain overlay |
 | `agentic-study-environment:stop-session` | "stop session", "wrap up" | Update sub-project + root `PROGRESS.md`, summarize what was covered |
 | `agentic-study-environment:adjust-level` | "simplify the curriculum", "make it harder", "build up to this paper" | Rewrite the curriculum at a different level — simpler or harder — pulling in external material with strict labels |
 
-Each sub-project lives in its own `<name>/` directory and declares `Domain:` (and optionally `Language:`) in its own `CLAUDE.md`. The matching overlay at [`plugin/agentic-study-environment/domains/<domain>.md`](plugin/agentic-study-environment/domains/) specifies the practice/review shape, scaffolding form, and `/work/` layout for that domain. Two overlays ship in the box:
+Each sub-project lives in its own `<name>/` directory and declares `Domain:` (and optionally `Language:`) in its own `AGENTS.md`. `CLAUDE.md` is kept as a compatibility pointer. The matching overlay at [`plugin/agentic-study-environment/domains/<domain>.md`](plugin/agentic-study-environment/domains/) specifies the practice/review shape, scaffolding form, and `/work/` layout for that domain. Two overlays ship in the box:
 
 - [`coding.md`](plugin/agentic-study-environment/domains/coding.md) — stub-file scaffolding, idiomacy review, language-appropriate `/work/` layouts.
 - [`speech-therapy.md`](plugin/agentic-study-environment/domains/speech-therapy.md) — therapist–patient simulation sessions on top of theory and practice.
@@ -105,7 +105,7 @@ Sub-projects without a declared `Domain:` fall back to a neutral default (theory
 
 ## Install
 
-### From the marketplace (recommended)
+### Claude Code marketplace
 
 Inside Claude Code, run:
 
@@ -114,11 +114,27 @@ Inside Claude Code, run:
 /plugin install agentic-study-environment@timbogp
 ```
 
-The marketplace name is `timbogp`; the plugin is `agentic-study-environment`. Once installed, the four lifecycle skills and `adjust-level` are reachable from any conversation in the project where you ran the install.
+The marketplace name is `timbogp`; the plugin is `agentic-study-environment`. Once installed, the lifecycle skills are reachable from any conversation in the project where you ran the install.
+
+### Codex marketplace
+
+Codex uses a separate marketplace catalog format. For this repo, the Codex catalog lives at [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json) and points at the same plugin source tree:
+
+```
+codex plugin marketplace add ./agentic-study-environment
+```
+
+If you are already inside this repo, add the current directory instead:
+
+```
+codex plugin marketplace add .
+```
+
+Then open the Codex plugin directory with `/plugins`, choose the `TimboGP` marketplace, and install `agentic-study-environment`.
 
 ### From a local clone (development / fork)
 
-If you've cloned the repo and want to install from the working copy:
+If you've cloned the repo and want to use the Claude plugin from the working copy:
 
 ```
 claude --plugin-dir /path/to/this/repo/plugin/agentic-study-environment/
@@ -130,7 +146,7 @@ Independent of how you install, the plugin behaves identically whether you point
 
 ### Drop-in mode
 
-Install the plugin into a project that already has its own purpose (a codebase, a notes folder, an empty directory). Bootstrap creates a `PROGRESS.md` at the project root on first use; the project's existing `CLAUDE.md` (if any) is left alone. Best for when you want **one or a few learning sub-projects alongside an existing project with its own purpose**.
+Install the plugin into a project that already has its own purpose (a codebase, a notes folder, an empty directory). Bootstrap creates a `PROGRESS.md` at the project root on first use; the project's existing `AGENTS.md` or `CLAUDE.md` (if any) is left alone. Best for when you want **one or a few learning sub-projects alongside an existing project with its own purpose**.
 
 ### Umbrella mode
 
@@ -141,7 +157,7 @@ git clone https://github.com/TimboGP/agentic-study-environment.git
 cd agentic-study-environment
 ```
 
-Sub-projects accumulate as siblings of `plugin/`, `CLAUDE.md`, `PROGRESS.md`. The root `PROGRESS.md` becomes a substantive cross-project tracker; the root `CLAUDE.md` is a natural place to set a global `Language:` or other conventions inherited by every sub-project. Best for when you want **a dedicated learning workspace** that grows over time.
+Sub-projects accumulate as siblings of `plugin/`, `AGENTS.md`, `CLAUDE.md`, and `PROGRESS.md`. The root `PROGRESS.md` becomes a substantive cross-project tracker; the root `AGENTS.md` is a natural place to set a global `Language:` or other conventions inherited by every sub-project. Best for when you want **a dedicated learning workspace** that grows over time.
 
 ## Getting started
 
@@ -160,7 +176,9 @@ Progress lives in two places: each sub-project's `PROGRESS.md` and the host proj
 ```
 /
   .claude-plugin/marketplace.json  ← marketplace catalog (this repo is its own marketplace, "timbogp")
-  CLAUDE.md                        ← thin pointer to the plugin
+  .agents/plugins/marketplace.json ← Codex marketplace catalog
+  AGENTS.md                        ← canonical repo-level agent instructions
+  CLAUDE.md                        ← compatibility pointer to AGENTS.md
   PROGRESS.md                      ← cross-project status + journal
   README.md                        ← this file
   CONTRIBUTING.md                  ← how to contribute (new overlays, framework refinements)
@@ -168,12 +186,14 @@ Progress lives in two places: each sub-project's `PROGRESS.md` and the host proj
   LICENSE                          ← MIT
   plugin/agentic-study-environment/     ← the plugin
     .claude-plugin/plugin.json
+    .codex-plugin/plugin.json
     README.md
     skills/                        ← bootstrap, set-curriculum, start-session, stop-session, adjust-level
     domains/                       ← coding.md, speech-therapy.md (+ ADDING_AN_OVERLAY.md walkthrough)
-    templates/                     ← per-sub-project CLAUDE.md and PROGRESS.md templates
+    templates/                     ← per-sub-project AGENTS.md, CLAUDE.md, and PROGRESS.md templates
     reference/conventions.md       ← status legends, layout, language rules, curriculum format
   <sub-project>/                   ← created by `bootstrap`
+    AGENTS.md
     CLAUDE.md
     PROGRESS.md
     source-materials/
@@ -198,7 +218,7 @@ The harness adds three things on top of a free-form chat: (a) **bracketed sessio
 No. The plugin is pure markdown and skill definitions. If Claude Code works, the harness works. No external services, no model API beyond what Claude Code itself uses.
 
 **Can I share my sub-projects with others?**
-Yes. A sub-project is just a directory of markdown and files (`<name>/CLAUDE.md`, `<name>/PROGRESS.md`, `<name>/source-materials/`, `<name>/ai-agent-materials/`, `<name>/work/`). Commit it to a private repo, send it as a zip, or sync it with whatever you'd sync a project folder with. Source materials are user-provided and stay local unless you choose to share them.
+Yes. A sub-project is just a directory of markdown and files (`<name>/AGENTS.md`, `<name>/CLAUDE.md`, `<name>/PROGRESS.md`, `<name>/source-materials/`, `<name>/ai-agent-materials/`, `<name>/work/`). Commit it to a private repo, send it as a zip, or sync it with whatever you'd sync a project folder with. Source materials are user-provided and stay local unless you choose to share them.
 
 **Which domains has it actually been used for?**
 The two overlays in the box (`coding`, `speech-therapy`) are the ones with real-world use behind them. The generic neutral default works for any domain without a custom overlay — you trade some scaffolding polish for portability. New overlays are explicitly welcomed; see [`plugin/agentic-study-environment/domains/ADDING_AN_OVERLAY.md`](plugin/agentic-study-environment/domains/ADDING_AN_OVERLAY.md).

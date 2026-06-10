@@ -1,6 +1,6 @@
 # Agentic-study-environment conventions
 
-Shared reference for the agentic-study-environment plugin's four lifecycle skills (`bootstrap`, `set-curriculum`, `start-session`, `stop-session`). Skills load this file when they need a legend, layout, or format that's reused across the plugin.
+Shared reference for the agentic-study-environment plugin's lifecycle skills (`bootstrap`, `set-curriculum`, `start-session`, `stop-session`, `adjust-level`). Skills load this file when they need a legend, layout, or format that's reused across the plugin.
 
 ## Status legends
 
@@ -37,24 +37,25 @@ Mirror the per-sub-project Status into the root `PROGRESS.md` Projects table on 
                            shape depends on the sub-project's domain — see the active overlay
                            (e.g. ../domains/coding.md for code-shaped layouts). With no overlay,
                            the default is a flat folder of exercise/notes markdown files.
-  CLAUDE.md              ← sub-project-specific agent instructions; declares Domain, Language,
-                           learning goals, and Tools & Materials
+  AGENTS.md              ← canonical sub-project-specific agent instructions; declares Domain,
+                           Language, learning goals, and Tools & Materials
+  CLAUDE.md              ← compatibility pointer to AGENTS.md
   PROGRESS.md            ← sub-project Status, Topics, and Journal
 ```
 
-`bootstrap` creates `<sub-project>/`, `<sub-project>/source-materials/`, `<sub-project>/CLAUDE.md`, and `<sub-project>/PROGRESS.md`. It does **not** create `ai-agent-materials/` or `work/` — those appear when their work begins (`set-curriculum` populates `ai-agent-materials/`; sessions populate `work/`).
+`bootstrap` creates `<sub-project>/`, `<sub-project>/source-materials/`, `<sub-project>/AGENTS.md`, `<sub-project>/CLAUDE.md`, and `<sub-project>/PROGRESS.md`. It does **not** create `ai-agent-materials/` or `work/` — those appear when their work begins (`set-curriculum` populates `ai-agent-materials/`; sessions populate `work/`).
 
-Templates for the per-sub-project `CLAUDE.md` and `PROGRESS.md` live at [`../templates/sub-project-claude.md`](../templates/sub-project-claude.md) and [`../templates/sub-project-progress.md`](../templates/sub-project-progress.md).
+Templates for the per-sub-project `AGENTS.md`, `CLAUDE.md`, and `PROGRESS.md` live at [`../templates/sub-project-agents.md`](../templates/sub-project-agents.md), [`../templates/sub-project-claude.md`](../templates/sub-project-claude.md), and [`../templates/sub-project-progress.md`](../templates/sub-project-progress.md).
 
 ## Host-project modes
 
-A host project that uses the agentic-study-environment plugin runs in one of two modes. **The same skills work in both** — they read what exists, create what's needed, and never modify a root `CLAUDE.md` they didn't create. The mode is a property of how the user is using the plugin, not of the plugin's behavior. Skills should not gate behavior on detecting a mode; they handle missing/present root files uniformly.
+A host project that uses the agentic-study-environment plugin runs in one of two modes. **The same skills work in both** — they read what exists, create what's needed, and never modify a root `AGENTS.md` or `CLAUDE.md` they didn't create. The mode is a property of how the user is using the plugin, not of the plugin's behavior. Skills should not gate behavior on detecting a mode; they handle missing/present root files uniformly.
 
 ### Drop-in mode
 
 The plugin is installed in a host project that already has its own purpose — a codebase, a notes folder, a personal workspace. One or a few learning sub-projects live alongside the existing files.
 
-- The host's existing root `CLAUDE.md` (if any) is **not modified** by the plugin and may contain instructions unrelated to learning (e.g. coding conventions, repo-specific agent guidance).
+- The host's existing root `AGENTS.md` or `CLAUDE.md` (if any) is **not modified** by the plugin and may contain instructions unrelated to learning (e.g. coding conventions, repo-specific agent guidance).
 - A root `PROGRESS.md` is created by `bootstrap` on first use; it stays a lightweight index of whatever sub-projects this host happens to accumulate.
 - The user's mental model: "I'm working in my main project, and I also have a learning sub-project for X over there."
 
@@ -62,14 +63,14 @@ The plugin is installed in a host project that already has its own purpose — a
 
 The host project is purpose-built to accumulate multiple learning sub-projects — someone clones the agentic-study-environment repo as a template, or sets up a dedicated `~/learning/` directory, or carves out a learning-only repo.
 
-- The root `CLAUDE.md` typically declares a global `Language:` and any cross-project conventions (e.g. preferred notation, default rigor level). Sub-projects inherit these unless they override.
+- The root `AGENTS.md` typically declares a global `Language:` and any cross-project conventions (e.g. preferred notation, default rigor level). `CLAUDE.md` may point to it for Claude Code compatibility. Sub-projects inherit these unless they override.
 - The root `PROGRESS.md` is the substantive cross-project tracker — many Projects rows over time, a real Journal of bootstraps and session-end summaries.
 - The user's mental model: "This is my learning workspace, and it contains all my sub-projects."
 
 ### What this means for the skills
 
 - `bootstrap` resolves the cross-project tracker by **file shape, not host mode**: if no root `PROGRESS.md` exists it creates one; if a harness-shaped one exists it appends rows; if a `PROGRESS.md` exists but is foreign (a drop-in host's own changelog/roadmap under that name), it does **not** modify it — it reports the collision and prompts the user (separate `LEARNING-PROGRESS.md` tracker, augment-in-place, or relocate). See the `bootstrap` skill, Case C.
-- `start-session` reads the root `CLAUDE.md` for global `Language:` and context **if present**, and skips it cleanly otherwise.
+- `start-session` reads the root `AGENTS.md` for global `Language:` and context **if present**, falls back to root `CLAUDE.md` for older hosts, and skips it cleanly otherwise.
 - `stop-session` mirrors per-sub-project status into the cross-project tracker, resolved by shape: a harness-shaped `PROGRESS.md`, else `LEARNING-PROGRESS.md`.
 - `set-curriculum` is mode-agnostic — it works purely within a single sub-project.
 
@@ -77,7 +78,8 @@ The host project is purpose-built to accumulate multiple learning sub-projects �
 
 What sits at the root of a host project in either mode:
 
-- `CLAUDE.md` — **optional**. May declare a global `Language:` default and any other host-project conventions. The plugin's skills read it for context if present but do **not** require, modify, or create it.
+- `AGENTS.md` — **optional**. May declare a global `Language:` default and any other host-project conventions. The plugin's skills read it for context if present but do **not** require, modify, or create it.
+- `CLAUDE.md` — **optional**. Compatibility file for Claude Code. In new umbrella hosts it should point to `AGENTS.md`; older hosts may still keep the actual declarations here, and skills fall back to it.
 - `PROGRESS.md` — the cross-project tracker, created by `bootstrap` on first use if not already present; `stop-session` mirrors per-sub-project status updates here. If a `PROGRESS.md` already occupies the host root but is **not** a harness tracker (a drop-in host keeping its own changelog/roadmap under that name), `bootstrap` leaves it untouched and offers a separate tracker at the canonical fallback name `LEARNING-PROGRESS.md`. Skills resolve the tracker by shape: a harness-shaped `PROGRESS.md` first, then `LEARNING-PROGRESS.md`.
 
 ### Root PROGRESS.md structure
@@ -161,8 +163,8 @@ When provenance is ambiguous, default to labeling external. Over-labeling is rec
 
 The default conversational language is **English**. The user can override it by declaring `Language: <BCP 47 tag>` in either:
 
-- A **sub-project `CLAUDE.md`** — applies only to that sub-project. This is the usual place.
-- The **host project's root `CLAUDE.md`** — applies as the default across any sub-projects bootstrapped in that project. Sub-project value overrides root.
+- A **sub-project `AGENTS.md`** — applies only to that sub-project. This is the usual place. Older sub-projects may still use `CLAUDE.md`; skills read it as a fallback.
+- The **host project's root `AGENTS.md`** — applies as the default across any sub-projects bootstrapped in that project. Older hosts may still use root `CLAUDE.md`; skills read it as a fallback. Sub-project value overrides root.
 
 The override is scoped to **conversational output only** — chat replies, theory explanations, review feedback, questions to the user. The following stay in **English by default** regardless of the setting:
 

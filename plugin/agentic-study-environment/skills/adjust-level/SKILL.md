@@ -32,7 +32,7 @@ This skill is **not a session** — it does not update `PROGRESS.md`.
 
 ## What to read before writing anything
 
-1. The sub-project's `<name>/CLAUDE.md` — for `Domain:`, `Language:`, learning goals, Tools & Materials.
+1. The sub-project's `<name>/AGENTS.md`, falling back to `<name>/CLAUDE.md` for older projects — for `Domain:`, `Language:`, learning goals, Tools & Materials.
 2. The current `<name>/ai-agent-materials/curriculum.md` — the baseline being adjusted. If it doesn't exist, redirect the user to `set-curriculum` first — there is nothing to adjust yet.
 3. Any source extractions in `<name>/ai-agent-materials/` (concept maps, copied excerpts) — these remain ground-truth for what the user's source actually covers.
 4. The user's `<name>/source-materials/` — to keep firm what is in-source vs. what will be brought in.

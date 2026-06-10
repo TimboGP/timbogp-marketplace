@@ -1,6 +1,6 @@
 # Domain overlay: coding
 
-This overlay applies to any sub-project that declares `Domain: coding` in its `CLAUDE.md`. It refines the generic core defined by the agentic-study-environment plugin (see [`../reference/conventions.md`](../reference/conventions.md) and the four lifecycle skills under `../skills/`) — it does not replace it. Everything not redefined here continues to follow the generic core.
+This overlay applies to any sub-project that declares `Domain: coding` in its `AGENTS.md` (or, for older projects, `CLAUDE.md`). It refines the generic core defined by the agentic-study-environment plugin (see [`../reference/conventions.md`](../reference/conventions.md) and the lifecycle skills under `../skills/`) — it does not replace it. Everything not redefined here continues to follow the generic core.
 
 ## Practice session shape
 
@@ -38,7 +38,7 @@ Layout follows the conventional project structure for the sub-project's tech sta
 
 ## Tools & Materials field
 
-For coding sub-projects, the `Tools & Materials` section in the sub-project `CLAUDE.md` should declare at minimum:
+For coding sub-projects, the `Tools & Materials` section in the sub-project `AGENTS.md` should declare at minimum:
 
 - **language** and version (e.g. *Python ≥ 3.12*, *C23 with C17 fallback*)
 - **build system** (e.g. CMake, Cargo, pyproject + uv/poetry)

@@ -25,7 +25,7 @@ If multiple sub-projects exist in the harness, prefer asking over assuming.
 
 Before writing or updating the curriculum, load context:
 
-1. The sub-project's `<name>/CLAUDE.md` — for `Domain:`, `Language:`, learning goals, and Tools & Materials.
+1. The sub-project's `<name>/AGENTS.md`, falling back to `<name>/CLAUDE.md` for older projects — for `Domain:`, `Language:`, learning goals, and Tools & Materials.
 2. The harness conventions at `../../reference/conventions.md` — for the curriculum format and status legends.
 3. The sub-project's `<name>/ai-agent-materials/` — especially any existing `curriculum.md` and source extractions (concept maps, copied excerpts).
 4. The sub-project's `<name>/source-materials/` — the canonical source content.

@@ -1,6 +1,6 @@
 # Domain overlay: speech therapy (logopedics)
 
-This overlay applies to any sub-project that declares `Domain: speech-therapy` (or the synonym `Domain: logopedics`) in its `CLAUDE.md`. It refines the generic core defined by the agentic-study-environment plugin (see [`../reference/conventions.md`](../reference/conventions.md) and the four lifecycle skills under `../skills/`) — it does not replace it. Everything not redefined here continues to follow the generic core.
+This overlay applies to any sub-project that declares `Domain: speech-therapy` (or the synonym `Domain: logopedics`) in its `AGENTS.md` (or, for older projects, `CLAUDE.md`). It refines the generic core defined by the agentic-study-environment plugin (see [`../reference/conventions.md`](../reference/conventions.md) and the lifecycle skills under `../skills/`) — it does not replace it. Everything not redefined here continues to follow the generic core.
 
 The scope of a speech-therapy sub-project typically spans:
 
@@ -120,7 +120,7 @@ When the user adds or updates a profile, the agent reads it on next session-star
 
 ## Tools & Materials field
 
-For speech-therapy sub-projects, the `Tools & Materials` section in the sub-project `CLAUDE.md` typically declares:
+For speech-therapy sub-projects, the `Tools & Materials` section in the sub-project `AGENTS.md` typically declares:
 
 - the **clinical framework(s)** in use (ICD-10/11, ICF, country-specific guidelines)
 - the **classification / assessment tools** the curriculum applies (aphasia batteries, articulation tests, voice quality scales, fluency measures)

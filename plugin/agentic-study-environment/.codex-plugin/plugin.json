@@ -1,0 +1,41 @@
+{
+  "name": "agentic-study-environment",
+  "version": "0.1.0",
+  "description": "A learning harness for structured tutor sessions over your own source materials, in any domain.",
+  "author": {
+    "name": "TimboGP",
+    "url": "https://github.com/TimboGP"
+  },
+  "homepage": "https://github.com/TimboGP/agentic-study-environment",
+  "repository": "https://github.com/TimboGP/agentic-study-environment",
+  "license": "MIT",
+  "keywords": [
+    "learning",
+    "tutor",
+    "education",
+    "study",
+    "harness",
+    "meta-framework",
+    "domain-overlay"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Agentic Study Environment",
+    "shortDescription": "Run structured tutor sessions over your own source materials.",
+    "longDescription": "Agentic Study Environment turns Codex into a structured tutor: bootstrap learning sub-projects, build source-faithful curricula, run bracketed study sessions, and record progress across domains.",
+    "developerName": "TimboGP",
+    "category": "Education",
+    "capabilities": [
+      "Skills",
+      "File scaffolding",
+      "Progress tracking"
+    ],
+    "websiteURL": "https://github.com/TimboGP/agentic-study-environment",
+    "defaultPrompt": [
+      "Bootstrap a learning project",
+      "Set curriculum from source materials",
+      "Start a study session"
+    ],
+    "brandColor": "#2563EB"
+  }
+}

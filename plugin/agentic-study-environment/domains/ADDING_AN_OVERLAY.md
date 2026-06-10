@@ -6,9 +6,9 @@ If you only need to know *what* an overlay specifies, look at [`coding.md`](codi
 
 ## What a domain overlay is, in one paragraph
 
-A domain overlay refines the generic agentic-study-environment harness for a specific kind of learning. The generic core (defined by the four lifecycle skills under [`../skills/`](../skills/) plus [`../reference/conventions.md`](../reference/conventions.md)) covers sub-project structure, session bracketing, progress tracking, and language handling — none of that changes per domain. What *does* change per domain is the **shape of practice**: what scaffolding looks like, what review focuses on, and how the `/work/` folder is organized. An overlay specifies exactly those domain-specific bits; everything else falls through to the core.
+A domain overlay refines the generic agentic-study-environment harness for a specific kind of learning. The generic core (defined by the lifecycle skills under [`../skills/`](../skills/) plus [`../reference/conventions.md`](../reference/conventions.md)) covers sub-project structure, session bracketing, progress tracking, and language handling — none of that changes per domain. What *does* change per domain is the **shape of practice**: what scaffolding looks like, what review focuses on, and how the `/work/` folder is organized. An overlay specifies exactly those domain-specific bits; everything else falls through to the core.
 
-Overlays are loaded at runtime by `start-session` (and, for some types, `stop-session`) based on the sub-project's `Domain:` declaration. If a sub-project's CLAUDE.md says `Domain: math`, the agent loads `domains/math.md`.
+Overlays are loaded at runtime by `start-session` (and, for some types, `stop-session`) based on the sub-project's `Domain:` declaration. If a sub-project's `AGENTS.md` says `Domain: math`, the agent loads `domains/math.md`. Older projects that still declare `Domain:` in `CLAUDE.md` continue to work as a fallback.
 
 ## Step 1: pick a domain that needs an overlay
 
@@ -33,8 +33,8 @@ State which `Domain:` values activate this overlay (if there are synonyms) and m
 # Domain overlay: math
 
 This overlay applies to any sub-project that declares `Domain: math` in its
-`CLAUDE.md`. It refines the generic core defined by the agentic-study-environment
-plugin (see `../reference/conventions.md` and the four lifecycle skills
+`AGENTS.md`. It refines the generic core defined by the agentic-study-environment
+plugin (see `../reference/conventions.md` and the lifecycle skills
 under `../skills/`) — it does not replace it.
 ```
 
@@ -126,7 +126,7 @@ scanning everything.
 
 ### Tools & Materials field
 
-State what the sub-project's `CLAUDE.md` Tools & Materials section should typically declare for this domain.
+State what the sub-project's `AGENTS.md` Tools & Materials section should typically declare for this domain.
 
 ```markdown
 ## Tools & Materials field
@@ -150,7 +150,7 @@ The four skills under [`../skills/`](../skills/) don't need editing — they con
 
 ## Step 4: declare the overlay's domain value in the bootstrap docs
 
-The `Domain:` value users put in their sub-project's `CLAUDE.md` should match your overlay's filename (without `.md`). For our example, users would write `Domain: math`, and the agent loads `domains/math.md`.
+The `Domain:` value users put in their sub-project's `AGENTS.md` should match your overlay's filename (without `.md`). For our example, users would write `Domain: math`, and the agent loads `domains/math.md`.
 
 No other registration step — there's no central registry. The overlay file's mere presence in `domains/` is what makes it discoverable.
 

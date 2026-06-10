@@ -1,6 +1,6 @@
 # agentic-study-environment plugin
 
-A Claude Code plugin that turns the agent into a **structured tutor** over your own source materials. Drop it into any project; the four bundled skills handle the full lifecycle of a "learning sub-project" — scaffold, plan, study, record.
+A coding-agent plugin that turns the agent into a **structured tutor** over your own source materials. Drop it into any project; the bundled skills handle the full lifecycle of a "learning sub-project" — scaffold, plan, study, record.
 
 ## What you get
 
@@ -8,7 +8,7 @@ Four lifecycle skills plus one auxiliary skill:
 
 | Skill | Use when |
 | --- | --- |
-| `agentic-study-environment:bootstrap` | You want to start studying something new. Scaffolds a new sub-project (`<name>/CLAUDE.md`, `<name>/PROGRESS.md`, `<name>/source-materials/`); registers it in the host project's root `PROGRESS.md`. |
+| `agentic-study-environment:bootstrap` | You want to start studying something new. Scaffolds a new sub-project (`<name>/AGENTS.md`, `<name>/CLAUDE.md`, `<name>/PROGRESS.md`, `<name>/source-materials/`); registers it in the host project's root `PROGRESS.md`. |
 | `agentic-study-environment:set-curriculum` | You've added source materials and want an ordered teaching plan. Writes `<name>/ai-agent-materials/curriculum.md` source-faithfully. |
 | `agentic-study-environment:start-session` | You want to actively study. Begins a bracketed session (theory / practice / domain-specific types) with the agent as tutor. |
 | `agentic-study-environment:stop-session` | You're done for now. Records progress and summarizes. |
@@ -23,7 +23,7 @@ Sub-projects without a declared `Domain:` fall back to neutral defaults (theory 
 
 ## Install
 
-### From the marketplace (recommended)
+### Claude Code marketplace
 
 The repo ships its own marketplace manifest at the repo root, so users can add it as a marketplace and install the plugin in two commands inside Claude Code:
 
@@ -32,7 +32,17 @@ The repo ships its own marketplace manifest at the repo root, so users can add i
 /plugin install agentic-study-environment@timbogp
 ```
 
-The marketplace is named `timbogp`; the plugin is named `agentic-study-environment`. From then on, the four lifecycle skills and `adjust-level` are available from any conversation in the project where you ran the install.
+The marketplace is named `timbogp`; the plugin is named `agentic-study-environment`. From then on, the lifecycle skills are available from any conversation in the project where you ran the install.
+
+### Codex marketplace
+
+The repo also ships a Codex marketplace catalog at `.agents/plugins/marketplace.json`. From a clone of this repo, run:
+
+```
+codex plugin marketplace add .
+```
+
+Then open `/plugins` in Codex, choose the `TimboGP` marketplace, and install `agentic-study-environment`.
 
 ### From a local clone (development / fork)
 
@@ -72,6 +82,7 @@ Quick reference:
 ```
 plugin/agentic-study-environment/
   .claude-plugin/plugin.json   ← plugin manifest (name, description, version)
+  .codex-plugin/plugin.json    ← Codex plugin manifest (skills + interface metadata)
   README.md                    ← this file
   skills/
     bootstrap/SKILL.md
@@ -82,13 +93,14 @@ plugin/agentic-study-environment/
     coding.md                  ← Domain: coding overlay
     speech-therapy.md          ← Domain: speech-therapy (synonym: logopedics) overlay
   templates/
-    sub-project-claude.md      ← rendered into <name>/CLAUDE.md by `bootstrap`
+    sub-project-agents.md      ← rendered into <name>/AGENTS.md by `bootstrap`
+    sub-project-claude.md      ← rendered into <name>/CLAUDE.md as a compatibility pointer
     sub-project-progress.md    ← rendered into <name>/PROGRESS.md by `bootstrap`
   reference/
     conventions.md             ← status legends, layout, language rules, curriculum format
 ```
 
-Skills read shared resources via relative paths from their `SKILL.md` (e.g. a skill at `skills/bootstrap/SKILL.md` references `../../templates/sub-project-claude.md`).
+Skills read shared resources via relative paths from their `SKILL.md` (e.g. a skill at `skills/bootstrap/SKILL.md` references `../../templates/sub-project-agents.md`).
 
 ## Contributing
 

@@ -21,19 +21,19 @@ An overlay should specify, at minimum:
 - the scaffolding form for practice (stub file? blank prompt? structured worksheet? role-play prompt?)
 - what review focuses on for that domain (correctness alone? craft? technique? performance?)
 - the `/work/` layout convention
-- any additional fields the sub-project's `CLAUDE.md` should carry
+- any additional fields the sub-project's `AGENTS.md` should carry
 
-Keep overlays additive — they refine the generic core defined in the plugin's [`reference/conventions.md`](plugin/agentic-study-environment/reference/conventions.md) and the four lifecycle skills, they do not replace them.
+Keep overlays additive — they refine the generic core defined in the plugin's [`reference/conventions.md`](plugin/agentic-study-environment/reference/conventions.md) and lifecycle skills, they do not replace them.
 
 ### Plugin / framework refinements
 
-Improvements to the four lifecycle skills under [`plugin/agentic-study-environment/skills/`](plugin/agentic-study-environment/skills/) — bootstrap, set-curriculum, start-session, stop-session — or to the shared [`reference/conventions.md`](plugin/agentic-study-environment/reference/conventions.md). These touch every sub-project in every host project, so be conservative and explain the motivation in the PR description.
+Improvements to the lifecycle skills under [`plugin/agentic-study-environment/skills/`](plugin/agentic-study-environment/skills/) — bootstrap, set-curriculum, start-session, stop-session, adjust-level — or to the shared [`reference/conventions.md`](plugin/agentic-study-environment/reference/conventions.md). These touch every sub-project in every host project, so be conservative and explain the motivation in the PR description.
 
 When editing skills, mind the YAML front-matter `description` field — that's what Claude matches against user phrasing to decide whether to invoke the skill. Keep it explicit about *when* to trigger; aim for natural-sounding phrasings the way a user would actually say them.
 
 ### Templates
 
-Per-sub-project `CLAUDE.md` and `PROGRESS.md` templates live at [`plugin/agentic-study-environment/templates/`](plugin/agentic-study-environment/templates/). Edits here affect every future `bootstrap`.
+Per-sub-project `AGENTS.md`, `CLAUDE.md`, and `PROGRESS.md` templates live at [`plugin/agentic-study-environment/templates/`](plugin/agentic-study-environment/templates/). Edits here affect every future `bootstrap`.
 
 ### Documentation, examples, clarifications
 

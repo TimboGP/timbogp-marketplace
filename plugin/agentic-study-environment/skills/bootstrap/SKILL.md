@@ -1,6 +1,6 @@
 ---
 name: bootstrap
-description: Scaffold a new learning sub-project under the agentic-study-environment harness — create the directory, generate per-project CLAUDE.md and PROGRESS.md from templates, and register the new project in the root PROGRESS.md. Use this skill whenever the user wants to start studying a new topic, paper, book, language, or domain with the tutor harness — phrases like "bootstrap a new project to learn X", "start a new sub-project for Y", "set up a learning project on Z", or "create a sub-project to study W" should all trigger this skill. Do not use for general project scaffolding outside the agentic-study-environment harness.
+description: Scaffold a new learning sub-project under the agentic-study-environment harness — create the directory, generate per-project AGENTS.md, CLAUDE.md, and PROGRESS.md from templates, and register the new project in the root PROGRESS.md. Use this skill whenever the user wants to start studying a new topic, paper, book, language, or domain with the tutor harness — phrases like "bootstrap a new project to learn X", "start a new sub-project for Y", "set up a learning project on Z", or "create a sub-project to study W" should all trigger this skill. Do not use for general project scaffolding outside the agentic-study-environment harness.
 ---
 
 # Bootstrap a learning sub-project
@@ -20,10 +20,10 @@ This skill does NOT run a teaching session — that's `start-session`. It only s
 - a **sub-project name** (becomes the directory name, e.g. `seam-carver`, `spanish-b2`, `tasep`)
 - a **one-line learning goal** that captures what the user wants to learn
 
-**Optional (use if supplied; do not prompt for them — they can be filled later via the sub-project's `CLAUDE.md`):**
+**Optional (use if supplied; do not prompt for them — they can be filled later via the sub-project's `AGENTS.md`):**
 
 - a **Domain** — controls which overlay applies during sessions. Known values: `coding`, `speech-therapy` (synonym: `logopedics`), `study` (the neutral default), or any user-supplied custom value. If unset, the sub-project falls back to the neutral default.
-- a **Language** — BCP 47 tag (e.g. `de`, `es`, `fr`) overriding the conversational language for chat replies inside this sub-project. Default is English unless the host project's root `CLAUDE.md` sets otherwise. Structural tokens (status legends, field names, trigger words) stay in English regardless — see `../../reference/conventions.md` for the exact rules.
+- a **Language** — BCP 47 tag (e.g. `de`, `es`, `fr`) overriding the conversational language for chat replies inside this sub-project. Default is English unless the host project's root `AGENTS.md` or `CLAUDE.md` sets otherwise. Structural tokens (status legends, field names, trigger words) stay in English regardless — see `../../reference/conventions.md` for the exact rules.
 - **Tools & Materials** — anything the user already knows they'll work with (a language + version for coding, a textbook, a notation convention, …).
 - A note that **source materials are already in place** — controls the starting status of the sub-project.
 
@@ -37,8 +37,9 @@ Working from the current directory as the harness root:
 
 1. **`<name>/`** — the sub-project directory.
 2. **`<name>/source-materials/`** — empty placeholder for the user to drop PDFs, notes, links, prepared code projects.
-3. **`<name>/CLAUDE.md`** — render from `../../templates/sub-project-claude.md` (relative to this SKILL.md). Substitute `<name>`, the learning goal(s), and any supplied `Domain:` / `Language:` / Tools & Materials. If `Domain:` was not supplied, **omit the line entirely** (do not leave a blank or a placeholder string). Same for `Language:`. If Tools & Materials were not supplied, keep the placeholder text `TBD when setting curriculum`.
-4. **`<name>/PROGRESS.md`** — render from `../../templates/sub-project-progress.md`. Status opens at `created`, or at `ready` if the user mentioned source materials are already in place.
+3. **`<name>/AGENTS.md`** — render from `../../templates/sub-project-agents.md` (relative to this SKILL.md). Substitute `<name>`, the learning goal(s), and any supplied `Domain:` / `Language:` / Tools & Materials. If `Domain:` was not supplied, **omit the line entirely** (do not leave a blank or a placeholder string). Same for `Language:`. If Tools & Materials were not supplied, keep the placeholder text `TBD when setting curriculum`.
+4. **`<name>/CLAUDE.md`** — render from `../../templates/sub-project-claude.md`. It is a compatibility pointer to `<name>/AGENTS.md`.
+5. **`<name>/PROGRESS.md`** — render from `../../templates/sub-project-progress.md`. Status opens at `created`, or at `ready` if the user mentioned source materials are already in place.
 
 **Do NOT create** `<name>/ai-agent-materials/` or `<name>/work/`. The `set-curriculum` skill creates `ai-agent-materials/`; sessions create `work/` on demand per the active domain overlay.
 

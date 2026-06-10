@@ -2,7 +2,7 @@
 
 ## Projects
 
-Sub-project status legend (defined in CLAUDE.md → Progress Tracking):
+Sub-project status legend (defined in AGENTS.md -> Progress Tracking):
 `created` · `ready` · `in progress` · `blocked` (reason logged) · `stopped` · `finished`
 
 | Project | Status | Notes |
@@ -11,7 +11,7 @@ Sub-project status legend (defined in CLAUDE.md → Progress Tracking):
 
 ## Grand Topics Covered
 
-Topic status legend (defined in CLAUDE.md → Progress Tracking):
+Topic status legend (defined in AGENTS.md -> Progress Tracking):
 `introduced` · `exercised` · `reviewed`
 
 _(none yet)_
