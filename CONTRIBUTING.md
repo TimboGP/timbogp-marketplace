@@ -41,9 +41,9 @@ Better wording, missing edge cases, clearer templates, fixes to inconsistencies 
 
 ## What does not belong here
 
-- **Personal sub-projects.** This repo is the harness, not anyone's learning history. Don't commit your own `<name>/` directory.
+- **Personal sub-projects.** This repo is the harness, not anyone's learning history. Don't commit your own `.studyenv/` directory.
 - **Source materials.** Books, papers, exercise sheets, prepared code projects — these are user-supplied per sub-project and stay local.
-- **Progress logs.** Root [PROGRESS.md](PROGRESS.md) and per-sub-project `PROGRESS.md` files are written by the agent during use, not edited as content here.
+- **Progress logs.** The harness `.studyenv/PROGRESS.md` and per-sub-project `PROGRESS.md` files are written by the agent during use, not edited as content here.
 
 ## Style
 

@@ -6,6 +6,20 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), a
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-06-21
+
+### Changed
+
+- **Self-contained `.studyenv/` harness root.** All generated files now live under a single `.studyenv/` directory at the host project root — the cross-project tracker (`.studyenv/PROGRESS.md`), each sub-project folder (`.studyenv/<name>/`), and any optional global config (`.studyenv/AGENTS.md` / `.studyenv/CLAUDE.md`). The host project's own files are never read or modified, so the harness footprint is portable: gitignore, delete, zip, or sync it as one folder. See [`reference/conventions.md`](plugin/agentic-study-environment/reference/conventions.md).
+
+### Removed
+
+- **Drop-in/umbrella mode distinction and tracker collision-handling.** Because `.studyenv/PROGRESS.md` is harness-owned it can never collide with a host's own `PROGRESS.md`, so `bootstrap`'s Case A/B/C collision report, the `LEARNING-PROGRESS.md` fallback, and the tracker shape-detection in `bootstrap` / `stop-session` are gone. Global `Language:` and cross-project conventions now live in an optional `.studyenv/AGENTS.md` instead of the host's root `AGENTS.md`.
+
+### Migration
+
+- **Breaking for existing root-level sub-projects.** If you used a pre-`.studyenv/` layout, move each `<name>/` sub-project directory and the cross-project `PROGRESS.md` into a new `.studyenv/` directory at the host root (e.g. `mkdir .studyenv && git mv <name> PROGRESS.md .studyenv/`). New bootstraps create `.studyenv/` automatically.
+
 ## [0.1.0] — 2026-06-06
 
 Initial public release. The harness is packaged as a Claude Code plugin under [`plugin/agentic-study-environment/`](plugin/agentic-study-environment/) and is installable via `claude --plugin-dir` for local use, or via a marketplace once added (`/plugin marketplace add TimboGP/agentic-study-environment` → `/plugin install agentic-study-environment@timbogp`).
@@ -34,5 +48,6 @@ Initial public release. The harness is packaged as a Claude Code plugin under [`
 
 - Smoke testing (`claude --plugin-dir ...`) is recommended before relying on the plugin in production.
 
-[Unreleased]: https://github.com/TimboGP/agentic-study-environment/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/TimboGP/agentic-study-environment/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/TimboGP/agentic-study-environment/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/TimboGP/agentic-study-environment/releases/tag/v0.1.0

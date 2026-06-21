@@ -30,7 +30,7 @@ Fill in what you can; leave sections blank if you're not sure yet.
 
 ## `/work/` layout
 
-<!-- Sketch the directory tree under <sub-project>/work/ for this domain. Per-topic folders? Per-piece folders? Per-case folders? Flat? -->
+<!-- Sketch the directory tree under .studyenv/<sub-project>/work/ for this domain. Per-topic folders? Per-piece folders? Per-case folders? Flat? -->
 
 ```
 work/

@@ -4,9 +4,7 @@ A coding-agent learning harness. The agent acts as a tutor over user-supplied so
 
 ## Language
 
-The default conversational language for all interactions is **English**. To change the default globally for this project, set `Language:` here. Sub-projects can override with their own `Language:` field. Structural tokens (status legends, field names like `Domain:`/`Language:`/`Status:`, table headers, the plugin's skill names) stay in English regardless - see [`plugin/agentic-study-environment/reference/conventions.md`](plugin/agentic-study-environment/reference/conventions.md) for the full rules.
-
-<!-- Language: <BCP 47 tag, e.g. de, es, fr> -->
+The default conversational language for all interactions is **English**. To change the default globally across sub-projects, set `Language:` in an optional `.studyenv/AGENTS.md` (read if present). Sub-projects can override with their own `Language:` field. Structural tokens (status legends, field names like `Domain:`/`Language:`/`Status:`, table headers, the plugin's skill names) stay in English regardless - see [`plugin/agentic-study-environment/reference/conventions.md`](plugin/agentic-study-environment/reference/conventions.md) for the full rules.
 
 ## How the harness works
 
@@ -14,10 +12,10 @@ The harness is shipped as a Claude Code and Codex plugin at [`plugin/agentic-stu
 
 | Trigger phrasing | Skill | What it does |
 | --- | --- | --- |
-| "bootstrap a project for X", "create a sub-project to learn Y" | `agentic-study-environment:bootstrap` | Mint a new sub-project (`<name>/`, per-project AGENTS.md, CLAUDE.md, and PROGRESS.md); register in root PROGRESS.md |
-| "set curriculum for X" | `agentic-study-environment:set-curriculum` | Build or update the sub-project's `ai-agent-materials/curriculum.md` from source materials |
+| "bootstrap a project for X", "create a sub-project to learn Y" | `agentic-study-environment:bootstrap` | Mint a new sub-project (`.studyenv/<name>/`, per-project AGENTS.md, CLAUDE.md, and PROGRESS.md); register in `.studyenv/PROGRESS.md` |
+| "set curriculum for X" | `agentic-study-environment:set-curriculum` | Build or update the sub-project's `.studyenv/<name>/ai-agent-materials/curriculum.md` from source materials |
 | "start session", "let's work on X" | `agentic-study-environment:start-session` | Begin a bracketed learning session (theory / practice / domain-specific types); load the active domain overlay |
-| "stop session", "wrap up" | `agentic-study-environment:stop-session` | Update sub-project + root PROGRESS.md, summarize what was covered |
+| "stop session", "wrap up" | `agentic-study-environment:stop-session` | Update sub-project + `.studyenv/PROGRESS.md`, summarize what was covered |
 | "simplify the curriculum", "make it harder", "build up to this paper" | `agentic-study-environment:adjust-level` | Rewrite the curriculum at a different difficulty level - simpler or harder - pulling in external material with strict source labels |
 
 Each skill is self-sufficient and reads the files it needs (PROGRESS.md, sub-project AGENTS.md with CLAUDE.md fallback, the relevant overlay) - there is no protocol duplicated in this file.
@@ -50,13 +48,15 @@ See [`plugin/agentic-study-environment/README.md`](plugin/agentic-study-environm
 ## Repo layout
 
 ```text
-/                              <- host project root (this is where sub-projects accumulate)
-  AGENTS.md                    <- this file (host-project conventions; canonical)
+/                              <- host project root
+  AGENTS.md                    <- this file (repo conventions; canonical)
   CLAUDE.md                    <- compatibility pointer to AGENTS.md
   .agents/plugins/marketplace.json <- Codex marketplace catalog
-  PROGRESS.md                  <- cross-project tracker (Projects table + Journal)
   README.md
   CONTRIBUTING.md
   plugin/agentic-study-environment/ <- the plugin: skills, overlays, templates, conventions
-  <sub-project>/               <- created by `bootstrap`
+  .studyenv/                   <- created by `bootstrap`; the entire harness footprint
+    PROGRESS.md                <- cross-project tracker (Projects table + Journal)
+    AGENTS.md / CLAUDE.md      <- optional global config (default Language, conventions)
+    <sub-project>/             <- one directory per learning sub-project
 ```

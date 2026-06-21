@@ -105,7 +105,7 @@ order:
 
 ### `/work/` layout
 
-Describe how files are organized under `<sub-project>/work/` for this domain.
+Describe how files are organized under `.studyenv/<sub-project>/work/` for this domain.
 
 ```markdown
 ## `/work/` layout

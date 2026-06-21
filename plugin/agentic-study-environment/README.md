@@ -8,8 +8,8 @@ Four lifecycle skills plus one auxiliary skill:
 
 | Skill | Use when |
 | --- | --- |
-| `agentic-study-environment:bootstrap` | You want to start studying something new. Scaffolds a new sub-project (`<name>/AGENTS.md`, `<name>/CLAUDE.md`, `<name>/PROGRESS.md`, `<name>/source-materials/`); registers it in the host project's root `PROGRESS.md`. |
-| `agentic-study-environment:set-curriculum` | You've added source materials and want an ordered teaching plan. Writes `<name>/ai-agent-materials/curriculum.md` source-faithfully. |
+| `agentic-study-environment:bootstrap` | You want to start studying something new. Scaffolds a new sub-project (`.studyenv/<name>/AGENTS.md`, `.studyenv/<name>/CLAUDE.md`, `.studyenv/<name>/PROGRESS.md`, `.studyenv/<name>/source-materials/`); registers it in `.studyenv/PROGRESS.md`. |
+| `agentic-study-environment:set-curriculum` | You've added source materials and want an ordered teaching plan. Writes `.studyenv/<name>/ai-agent-materials/curriculum.md` source-faithfully. |
 | `agentic-study-environment:start-session` | You want to actively study. Begins a bracketed session (theory / practice / domain-specific types) with the agent as tutor. |
 | `agentic-study-environment:stop-session` | You're done for now. Records progress and summarizes. |
 | `agentic-study-environment:adjust-level` | The curriculum's level doesn't match your starting point. Rewrites it simpler or harder, allowed to pull in external material with strict labels (every external addition is named so the user knows what came from their source vs. elsewhere). |
@@ -57,15 +57,15 @@ You can omit the `.claude-plugin/` segment — Claude Code finds the manifest au
 Once the plugin is installed, the four skills are available from any conversation in that project. Trigger them with natural phrasing:
 
 1. **Bootstrap:** *"Bootstrap a project called `seam-carver` to study the seam-carving paper, `Domain: coding`."*
-2. **Drop materials:** put PDFs / notes / links / prepared code into `seam-carver/source-materials/`.
+2. **Drop materials:** put PDFs / notes / links / prepared code into `.studyenv/seam-carver/source-materials/`.
 3. **Set curriculum:** *"Set curriculum for `seam-carver`."*
 4. **Study:** *"Start a session on `seam-carver`."* — the agent proposes a topic and session type. Override as you like.
 5. **Wrap up:** *"Stop session."* — progress is recorded.
 
 Progress lives in two places:
 
-- The sub-project's `<name>/PROGRESS.md` — Topics, Status, Journal for that sub-project.
-- The host project's root `PROGRESS.md` — Projects table + cross-project Journal. Bootstrap creates a row; stop-session mirrors status updates here.
+- The sub-project's `.studyenv/<name>/PROGRESS.md` — Topics, Status, Journal for that sub-project.
+- The harness's `.studyenv/PROGRESS.md` — Projects table + cross-project Journal. Bootstrap creates a row; stop-session mirrors status updates here.
 
 ## Conventions
 
@@ -93,9 +93,9 @@ plugin/agentic-study-environment/
     coding.md                  ← Domain: coding overlay
     speech-therapy.md          ← Domain: speech-therapy (synonym: logopedics) overlay
   templates/
-    sub-project-agents.md      ← rendered into <name>/AGENTS.md by `bootstrap`
-    sub-project-claude.md      ← rendered into <name>/CLAUDE.md as a compatibility pointer
-    sub-project-progress.md    ← rendered into <name>/PROGRESS.md by `bootstrap`
+    sub-project-agents.md      ← rendered into .studyenv/<name>/AGENTS.md by `bootstrap`
+    sub-project-claude.md      ← rendered into .studyenv/<name>/CLAUDE.md as a compatibility pointer
+    sub-project-progress.md    ← rendered into .studyenv/<name>/PROGRESS.md by `bootstrap`
   reference/
     conventions.md             ← status legends, layout, language rules, curriculum format
 ```

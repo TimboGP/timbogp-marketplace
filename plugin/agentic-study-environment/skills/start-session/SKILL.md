@@ -17,9 +17,9 @@ If the user has not bootstrapped a sub-project yet, redirect them to the `bootst
 
 Before proposing or conducting anything, load context:
 
-1. The host project's root `AGENTS.md` if present, otherwise root `CLAUDE.md` if present (for cross-project conventions and any global `Language:`), and root `PROGRESS.md` (created by `bootstrap` on first use). Both are optional context; if either is missing, continue without it. The plugin supports two host modes — **drop-in** (plugin installed in a project with its own purpose) and **umbrella** (host purpose-built to accumulate learning sub-projects). In drop-in mode the root instructions file may be absent or unrelated to learning and the root `PROGRESS.md` may be a thin index; in umbrella mode both are typically substantive. Behavior here is the same in both modes — see `../../reference/conventions.md` (Host-project modes) for the framing.
-2. The sub-project's `<name>/AGENTS.md`, falling back to `<name>/CLAUDE.md` for older projects (for `Domain:`, `Language:`, goals, Tools & Materials), and `<name>/PROGRESS.md` (for what's been covered and at what status).
-3. The sub-project's `<name>/ai-agent-materials/` — especially `curriculum.md` and any concept maps / excerpts. If there are unanalyzed items in `<name>/source-materials/`, analyze them now and write the intermediate representations into `ai-agent-materials/` before proposing a route.
+1. The harness's optional `.studyenv/AGENTS.md` if present, otherwise `.studyenv/CLAUDE.md` if present (for cross-project conventions and any global `Language:`), and `.studyenv/PROGRESS.md` (created by `bootstrap` on first use). Both are optional context; if either is missing, continue without it. Everything the harness generates lives under `.studyenv/` — the host project's own files are not read or modified.
+2. The sub-project's `.studyenv/<name>/AGENTS.md`, falling back to `.studyenv/<name>/CLAUDE.md` for older projects (for `Domain:`, `Language:`, goals, Tools & Materials), and `.studyenv/<name>/PROGRESS.md` (for what's been covered and at what status).
+3. The sub-project's `.studyenv/<name>/ai-agent-materials/` — especially `curriculum.md` and any concept maps / excerpts. If there are unanalyzed items in `.studyenv/<name>/source-materials/`, analyze them now and write the intermediate representations into `ai-agent-materials/` before proposing a route.
 4. If the sub-project declares `Domain:`, load the matching overlay at `../../domains/<domain>.md` (relative to this SKILL.md). The overlay refines the generic rules in this skill — it does **not** replace them. If no `Domain:` is set, or `Domain: study`, no overlay applies and the neutral defaults stand.
 
 This up-front read is what makes the agent feel like a continuing tutor instead of a stateless responder. Without it, every session restarts from zero.
@@ -56,7 +56,7 @@ Teaching style across all types: **theory-first with explicit examples, definiti
 
 ## Language
 
-Reply in the conversational language declared by the active `Language:` field (BCP 47 tag). Sub-project `Language:` overrides the root setting. If unset, default to English. Code identifiers, file names, scaffolding stub files and their instructional comments, status legends, field names, trigger words, and verbatim source excerpts stay in their original language regardless of the setting — see `../../reference/conventions.md` for the exact rules.
+Reply in the conversational language declared by the active `Language:` field (BCP 47 tag). Sub-project `Language:` overrides the global `.studyenv/AGENTS.md` setting. If unset, default to English. Code identifiers, file names, scaffolding stub files and their instructional comments, status legends, field names, trigger words, and verbatim source excerpts stay in their original language regardless of the setting — see `../../reference/conventions.md` for the exact rules.
 
 ## Why these rules
 

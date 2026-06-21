@@ -9,7 +9,7 @@ This skill builds the teaching plan for a learning sub-project. The curriculum i
 
 ## When to use
 
-The user has bootstrapped a sub-project (via the `bootstrap` skill) and dropped source materials into `<name>/source-materials/`. They want to organize that material into an ordered teaching plan. Phrases: "set curriculum for tasep", "update the curriculum for spanish-b2", "plan how we should work through these papers".
+The user has bootstrapped a sub-project (via the `bootstrap` skill) and dropped source materials into `.studyenv/<name>/source-materials/`. They want to organize that material into an ordered teaching plan. Phrases: "set curriculum for tasep", "update the curriculum for spanish-b2", "plan how we should work through these papers".
 
 This skill is **not a session** — it does **not** update `PROGRESS.md`. It only writes the curriculum file.
 
@@ -25,16 +25,16 @@ If multiple sub-projects exist in the harness, prefer asking over assuming.
 
 Before writing or updating the curriculum, load context:
 
-1. The sub-project's `<name>/AGENTS.md`, falling back to `<name>/CLAUDE.md` for older projects — for `Domain:`, `Language:`, learning goals, and Tools & Materials.
+1. The sub-project's `.studyenv/<name>/AGENTS.md`, falling back to `.studyenv/<name>/CLAUDE.md` for older projects — for `Domain:`, `Language:`, learning goals, and Tools & Materials.
 2. The harness conventions at `../../reference/conventions.md` — for the curriculum format and status legends.
-3. The sub-project's `<name>/ai-agent-materials/` — especially any existing `curriculum.md` and source extractions (concept maps, copied excerpts).
-4. The sub-project's `<name>/source-materials/` — the canonical source content.
+3. The sub-project's `.studyenv/<name>/ai-agent-materials/` — especially any existing `curriculum.md` and source extractions (concept maps, copied excerpts).
+4. The sub-project's `.studyenv/<name>/source-materials/` — the canonical source content.
 
-If `<name>/ai-agent-materials/` does not exist, create it. Concept maps and excerpts are added here over time; this skill primarily writes `curriculum.md`.
+If `.studyenv/<name>/ai-agent-materials/` does not exist, create it. Concept maps and excerpts are added here over time; this skill primarily writes `curriculum.md`.
 
 ## What to write
 
-Render or update `<name>/ai-agent-materials/curriculum.md` with the structure documented in `../../reference/conventions.md` (Curriculum format section):
+Render or update `.studyenv/<name>/ai-agent-materials/curriculum.md` with the structure documented in `../../reference/conventions.md` (Curriculum format section):
 
 - An **overview** paragraph — what this sub-project teaches and the intended end state.
 - A **topics** section: an ordered list of topic entries, each with
@@ -59,7 +59,7 @@ This skill produces a **source-faithful** curriculum by default — every topic 
 
 ## Source-material handling
 
-When extracting material from sources, build intermediate fixed representations under `<name>/ai-agent-materials/` alongside `curriculum.md`:
+When extracting material from sources, build intermediate fixed representations under `.studyenv/<name>/ai-agent-materials/` alongside `curriculum.md`:
 
 - **Terse concept maps** — with references back to the source (page numbers for PDFs, section/heading anchors or URLs for other formats).
 - **Copied verbatim excerpts** — sections, examples, definitions for explicit use during sessions. Keep these in the source's original language regardless of the sub-project's `Language:` setting.

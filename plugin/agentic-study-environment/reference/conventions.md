@@ -16,7 +16,7 @@ A topic is rarely linear: it can sit at `introduced` for a while, advance to `ex
 
 ### Sub-project status
 
-Used in the host project's root `PROGRESS.md` Projects table and mirrored in each sub-project's `PROGRESS.md` Status line.
+Used in the `.studyenv/PROGRESS.md` Projects table and mirrored in each sub-project's `PROGRESS.md` Status line.
 
 - `created` — only project scaffolding exists
 - `ready` — source materials exist
@@ -25,15 +25,28 @@ Used in the host project's root `PROGRESS.md` Projects table and mirrored in eac
 - `stopped` — work stopped but not finished
 - `finished` — all work done and the project explicitly submitted as finished
 
-Mirror the per-sub-project Status into the root `PROGRESS.md` Projects table on every session-end (`stop-session` handles this).
+Mirror the per-sub-project Status into the `.studyenv/PROGRESS.md` Projects table on every session-end (`stop-session` handles this).
+
+## Harness root: `.studyenv/`
+
+Everything the harness generates lives under a single `.studyenv/` directory at the host project root. This keeps the host project clean and makes the whole harness footprint portable — `.studyenv/` is one folder you can gitignore, delete, zip, or sync. The harness owns `.studyenv/` and **never reads or writes the host project's own files** outside it.
+
+`.studyenv/` is the harness's working root. It holds:
+
+- `.studyenv/PROGRESS.md` — the cross-project tracker (created by `bootstrap` on first use).
+- `.studyenv/AGENTS.md` — **optional** global config (a default `Language:` and any cross-project conventions). Not auto-created.
+- `.studyenv/CLAUDE.md` — **optional** compatibility pointer to `.studyenv/AGENTS.md`.
+- `.studyenv/<sub-project>/` — one directory per learning sub-project (see below).
 
 ## Sub-project layout
 
+Each sub-project lives at `.studyenv/<sub-project>/`:
+
 ```
-/<sub-project root>
-  /source-materials/     ← user-provided source content (PDFs, books, papers, links, notes)
-  /ai-agent-materials/   ← agent-generated summaries, extracted concepts, copied excerpts, curriculum
-  /work/                 ← where the agent and the user collaborate.
+.studyenv/<sub-project>/
+  source-materials/      ← user-provided source content (PDFs, books, papers, links, notes)
+  ai-agent-materials/    ← agent-generated summaries, extracted concepts, copied excerpts, curriculum
+  work/                  ← where the agent and the user collaborate.
                            shape depends on the sub-project's domain — see the active overlay
                            (e.g. ../domains/coding.md for code-shaped layouts). With no overlay,
                            the default is a flat folder of exercise/notes markdown files.
@@ -43,49 +56,20 @@ Mirror the per-sub-project Status into the root `PROGRESS.md` Projects table on 
   PROGRESS.md            ← sub-project Status, Topics, and Journal
 ```
 
-`bootstrap` creates `<sub-project>/`, `<sub-project>/source-materials/`, `<sub-project>/AGENTS.md`, `<sub-project>/CLAUDE.md`, and `<sub-project>/PROGRESS.md`. It does **not** create `ai-agent-materials/` or `work/` — those appear when their work begins (`set-curriculum` populates `ai-agent-materials/`; sessions populate `work/`).
+`bootstrap` creates `.studyenv/<name>/`, `.studyenv/<name>/source-materials/`, `.studyenv/<name>/AGENTS.md`, `.studyenv/<name>/CLAUDE.md`, and `.studyenv/<name>/PROGRESS.md` (creating `.studyenv/` itself if it does not yet exist). It does **not** create `ai-agent-materials/` or `work/` — those appear when their work begins (`set-curriculum` populates `ai-agent-materials/`; sessions populate `work/`).
 
 Templates for the per-sub-project `AGENTS.md`, `CLAUDE.md`, and `PROGRESS.md` live at [`../templates/sub-project-agents.md`](../templates/sub-project-agents.md), [`../templates/sub-project-claude.md`](../templates/sub-project-claude.md), and [`../templates/sub-project-progress.md`](../templates/sub-project-progress.md).
 
-## Host-project modes
+## Host-project independence
 
-A host project that uses the agentic-study-environment plugin runs in one of two modes. **The same skills work in both** — they read what exists, create what's needed, and never modify a root `AGENTS.md` or `CLAUDE.md` they didn't create. The mode is a property of how the user is using the plugin, not of the plugin's behavior. Skills should not gate behavior on detecting a mode; they handle missing/present root files uniformly.
+Because the entire harness footprint is contained in `.studyenv/`, the harness is indifferent to whatever else the host project is. It may be a codebase, a notes folder, an empty directory, or a workspace purpose-built to accumulate learning sub-projects — the skills behave identically in all cases. They read and write only inside `.studyenv/` and **never read, require, modify, or create** the host project's own root `AGENTS.md`, `CLAUDE.md`, or `PROGRESS.md`. A host can keep its own `PROGRESS.md` (a changelog, a roadmap) and never collide with the harness tracker at `.studyenv/PROGRESS.md`.
 
-### Drop-in mode
+Global learning conventions (a default `Language:`, preferred notation, default rigor) that should apply across every sub-project go in an **optional** `.studyenv/AGENTS.md` (with `.studyenv/CLAUDE.md` as a compatibility pointer). It is read if present and is never auto-created — a sub-project's own `AGENTS.md` overrides it.
 
-The plugin is installed in a host project that already has its own purpose — a codebase, a notes folder, a personal workspace. One or a few learning sub-projects live alongside the existing files.
-
-- The host's existing root `AGENTS.md` or `CLAUDE.md` (if any) is **not modified** by the plugin and may contain instructions unrelated to learning (e.g. coding conventions, repo-specific agent guidance).
-- A root `PROGRESS.md` is created by `bootstrap` on first use; it stays a lightweight index of whatever sub-projects this host happens to accumulate.
-- The user's mental model: "I'm working in my main project, and I also have a learning sub-project for X over there."
-
-### Umbrella mode
-
-The host project is purpose-built to accumulate multiple learning sub-projects — someone clones the agentic-study-environment repo as a template, or sets up a dedicated `~/learning/` directory, or carves out a learning-only repo.
-
-- The root `AGENTS.md` typically declares a global `Language:` and any cross-project conventions (e.g. preferred notation, default rigor level). `CLAUDE.md` may point to it for Claude Code compatibility. Sub-projects inherit these unless they override.
-- The root `PROGRESS.md` is the substantive cross-project tracker — many Projects rows over time, a real Journal of bootstraps and session-end summaries.
-- The user's mental model: "This is my learning workspace, and it contains all my sub-projects."
-
-### What this means for the skills
-
-- `bootstrap` resolves the cross-project tracker by **file shape, not host mode**: if no root `PROGRESS.md` exists it creates one; if a harness-shaped one exists it appends rows; if a `PROGRESS.md` exists but is foreign (a drop-in host's own changelog/roadmap under that name), it does **not** modify it — it reports the collision and prompts the user (separate `LEARNING-PROGRESS.md` tracker, augment-in-place, or relocate). See the `bootstrap` skill, Case C.
-- `start-session` reads the root `AGENTS.md` for global `Language:` and context **if present**, falls back to root `CLAUDE.md` for older hosts, and skips it cleanly otherwise.
-- `stop-session` mirrors per-sub-project status into the cross-project tracker, resolved by shape: a harness-shaped `PROGRESS.md`, else `LEARNING-PROGRESS.md`.
-- `set-curriculum` is mode-agnostic — it works purely within a single sub-project.
-
-## Host-project layout
-
-What sits at the root of a host project in either mode:
-
-- `AGENTS.md` — **optional**. May declare a global `Language:` default and any other host-project conventions. The plugin's skills read it for context if present but do **not** require, modify, or create it.
-- `CLAUDE.md` — **optional**. Compatibility file for Claude Code. In new umbrella hosts it should point to `AGENTS.md`; older hosts may still keep the actual declarations here, and skills fall back to it.
-- `PROGRESS.md` — the cross-project tracker, created by `bootstrap` on first use if not already present; `stop-session` mirrors per-sub-project status updates here. If a `PROGRESS.md` already occupies the host root but is **not** a harness tracker (a drop-in host keeping its own changelog/roadmap under that name), `bootstrap` leaves it untouched and offers a separate tracker at the canonical fallback name `LEARNING-PROGRESS.md`. Skills resolve the tracker by shape: a harness-shaped `PROGRESS.md` first, then `LEARNING-PROGRESS.md`.
-
-### Root PROGRESS.md structure
+## `.studyenv/PROGRESS.md` structure
 
 ```markdown
-# PROGRESS.md - root
+# PROGRESS.md — studyenv
 
 ## Projects
 
@@ -108,11 +92,11 @@ _(none yet)_
 
 The Journal is dated; new entries go under a `### YYYY-MM-DD` heading. Multiple events on the same date go under the same heading as bullets.
 
-**Tracker resolution.** The cross-project tracker is `PROGRESS.md` at the host root. The three sections above (`## Projects` with its table, `## Grand Topics Covered`, `## Journal`) are what identifies a file as a harness tracker. If the host root already holds a `PROGRESS.md` that is *not* a harness tracker, the canonical fallback is `LEARNING-PROGRESS.md` at the host root. Skills locate the tracker by shape, in order: a harness-shaped `PROGRESS.md`, then `LEARNING-PROGRESS.md`. `bootstrap` never overwrites a foreign `PROGRESS.md` — it reports the collision and lets the user choose (see the `bootstrap` skill, Case C).
+The cross-project tracker is always `.studyenv/PROGRESS.md`. It is created by `bootstrap` on first use and updated by `stop-session`. Since `.studyenv/` is harness-owned, there is no ambiguity about which file is the tracker and no collision to resolve.
 
 ## Curriculum format
 
-Curricula live at `<sub-project>/ai-agent-materials/curriculum.md`. The format:
+Curricula live at `.studyenv/<sub-project>/ai-agent-materials/curriculum.md`. The format:
 
 - A short **overview** paragraph — what this sub-project teaches and the intended end state.
 - A **topics** section: an ordered list of topic entries, each with
@@ -164,7 +148,7 @@ When provenance is ambiguous, default to labeling external. Over-labeling is rec
 The default conversational language is **English**. The user can override it by declaring `Language: <BCP 47 tag>` in either:
 
 - A **sub-project `AGENTS.md`** — applies only to that sub-project. This is the usual place. Older sub-projects may still use `CLAUDE.md`; skills read it as a fallback.
-- The **host project's root `AGENTS.md`** — applies as the default across any sub-projects bootstrapped in that project. Older hosts may still use root `CLAUDE.md`; skills read it as a fallback. Sub-project value overrides root.
+- The **harness `.studyenv/AGENTS.md`** (optional) — applies as the default across every sub-project. Skills read `.studyenv/CLAUDE.md` as a fallback. Sub-project value overrides this.
 
 The override is scoped to **conversational output only** — chat replies, theory explanations, review feedback, questions to the user. The following stay in **English by default** regardless of the setting:
 
@@ -178,9 +162,9 @@ If the user writes a single message in a different language, do **not** auto-swi
 
 ## Source-material handling
 
-Source materials live in `<sub-project>/source-materials/`. They are user-provided and treated as canonical for that sub-project. If trained knowledge enriches a source's content, the agent **explicitly states** that the addition is outside the source.
+Source materials live in `.studyenv/<sub-project>/source-materials/`. They are user-provided and treated as canonical for that sub-project. If trained knowledge enriches a source's content, the agent **explicitly states** that the addition is outside the source.
 
-When analyzing a source, build intermediate fixed representations in `<sub-project>/ai-agent-materials/`:
+When analyzing a source, build intermediate fixed representations in `.studyenv/<sub-project>/ai-agent-materials/`:
 
 - **Terse concept maps** — with references back to the source (page numbers for PDFs, section/heading anchors or URLs for other formats — sources are not always PDFs).
 - **Copied verbatim excerpts** — sections, examples, definitions for explicit use during sessions. Kept in the source's original language.
@@ -206,7 +190,7 @@ The four **lifecycle skills** carry the user through bootstrap → set-curriculu
 | `bootstrap` | Mint a new sub-project | Yes — adds Projects row + Journal entry |
 | `set-curriculum` | Build or update a sub-project's `curriculum.md` from source materials, source-faithful | No (curriculum is reference, not progress) |
 | `start-session` | Begin a bracketed learning session | No (the session itself does the work) |
-| `stop-session` | End the session: record progress and summarize | Yes — Topics, Status, Journal in both sub-project and root PROGRESS.md |
+| `stop-session` | End the session: record progress and summarize | Yes — Topics, Status, Journal in both sub-project and `.studyenv/PROGRESS.md` |
 | `adjust-level` | Shift an existing curriculum simpler or harder; allowed to pull in external material with strict labeling | No (same reasoning as `set-curriculum`) |
 
 Domain overlays at [`../domains/<domain>.md`](../domains/) refine `start-session` and (for speech-therapy `simulation`) `stop-session`. They are additive — they refine the generic core defined here, they do not replace it.

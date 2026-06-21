@@ -15,7 +15,8 @@ Two short transcripts. The fluff is trimmed; everything bracketed `[…]` is par
 ```
 > let's work on tasep
 
-[reads PROGRESS.md, tasep/AGENTS.md, tasep/ai-agent-materials/curriculum.md,
+[reads .studyenv/PROGRESS.md, .studyenv/tasep/AGENTS.md,
+ .studyenv/tasep/ai-agent-materials/curriculum.md,
  loads domains/coding.md (Domain: coding)]
 
 Last session you exercised T0 (env + smoke tests) and got T1 (TASEP model)
@@ -28,9 +29,9 @@ Override?
 
 > sounds good
 
-I'll write a stub at tasep/work/src/tasep/mean_field.py with the signature,
-the boundary-condition cases, and inline TODOs for each block. Tests get
-a corresponding stub at tests/test_mean_field.py.
+I'll write a stub at .studyenv/tasep/work/src/tasep/mean_field.py with the
+signature, the boundary-condition cases, and inline TODOs for each block.
+Tests get a corresponding stub at tests/test_mean_field.py.
 
 [writes the two stub files]
 
@@ -49,8 +50,8 @@ Ping when you have a first pass.
 ```
 > start session on aphasia-cases
 
-[reads PROGRESS.md, aphasia-cases/AGENTS.md (Domain: speech-therapy),
- source-materials/patients/maria-58.md, loads domains/speech-therapy.md]
+[reads .studyenv/PROGRESS.md, .studyenv/aphasia-cases/AGENTS.md (Domain: speech-therapy),
+ .studyenv/aphasia-cases/source-materials/patients/maria-58.md, loads domains/speech-therapy.md]
 
 Three profiles available: maria-58 (Broca's aphasia, post-stroke,
 week 4), tomas-67 (anomic, mild), liam-7 (developmental language delay).
@@ -82,7 +83,7 @@ hello... I... Maria... yes.
 say... come.
 ```
 
-The session ends with `stop session`; the agent steps out of character (for simulations), updates the sub-project's `PROGRESS.md` and the root one, and summarizes what moved.
+The session ends with `stop session`; the agent steps out of character (for simulations), updates the sub-project's `PROGRESS.md` and `.studyenv/PROGRESS.md`, and summarizes what moved.
 
 ## How it works
 
@@ -90,13 +91,13 @@ The harness ships as a plugin at [`plugin/agentic-study-environment/`](plugin/ag
 
 | Skill | Trigger | What it does |
 | --- | --- | --- |
-| `agentic-study-environment:bootstrap` | "bootstrap a project for X" | Mint a new sub-project (`<name>/AGENTS.md`, `<name>/CLAUDE.md`, `<name>/PROGRESS.md`, `<name>/source-materials/`); register in root `PROGRESS.md` |
-| `agentic-study-environment:set-curriculum` | "set curriculum for X" | Build or update `<name>/ai-agent-materials/curriculum.md` from source materials |
+| `agentic-study-environment:bootstrap` | "bootstrap a project for X" | Mint a new sub-project (`.studyenv/<name>/AGENTS.md`, `.studyenv/<name>/CLAUDE.md`, `.studyenv/<name>/PROGRESS.md`, `.studyenv/<name>/source-materials/`); register in `.studyenv/PROGRESS.md` |
+| `agentic-study-environment:set-curriculum` | "set curriculum for X" | Build or update `.studyenv/<name>/ai-agent-materials/curriculum.md` from source materials |
 | `agentic-study-environment:start-session` | "start session", "let's work on X" | Begin a bracketed learning session (theory / practice / domain-specific types); load the active domain overlay |
-| `agentic-study-environment:stop-session` | "stop session", "wrap up" | Update sub-project + root `PROGRESS.md`, summarize what was covered |
+| `agentic-study-environment:stop-session` | "stop session", "wrap up" | Update sub-project + `.studyenv/PROGRESS.md`, summarize what was covered |
 | `agentic-study-environment:adjust-level` | "simplify the curriculum", "make it harder", "build up to this paper" | Rewrite the curriculum at a different level — simpler or harder — pulling in external material with strict labels |
 
-Each sub-project lives in its own `<name>/` directory and declares `Domain:` (and optionally `Language:`) in its own `AGENTS.md`. `CLAUDE.md` is kept as a compatibility pointer. The matching overlay at [`plugin/agentic-study-environment/domains/<domain>.md`](plugin/agentic-study-environment/domains/) specifies the practice/review shape, scaffolding form, and `/work/` layout for that domain. Two overlays ship in the box:
+Each sub-project lives in its own `.studyenv/<name>/` directory and declares `Domain:` (and optionally `Language:`) in its own `AGENTS.md`. `CLAUDE.md` is kept as a compatibility pointer. The matching overlay at [`plugin/agentic-study-environment/domains/<domain>.md`](plugin/agentic-study-environment/domains/) specifies the practice/review shape, scaffolding form, and `/work/` layout for that domain. Two overlays ship in the box:
 
 - [`coding.md`](plugin/agentic-study-environment/domains/coding.md) — stub-file scaffolding, idiomacy review, language-appropriate `/work/` layouts.
 - [`speech-therapy.md`](plugin/agentic-study-environment/domains/speech-therapy.md) — therapist–patient simulation sessions on top of theory and practice.
@@ -140,36 +141,29 @@ If you've cloned the repo and want to use the Claude plugin from the working cop
 claude --plugin-dir /path/to/this/repo/plugin/agentic-study-environment/
 ```
 
-## Two ways to set up a host project
+## The `.studyenv/` harness root
 
-Independent of how you install, the plugin behaves identically whether you point it at an existing project or a brand-new one — the difference is just how much structure you keep at the host root. The plugin's [`reference/conventions.md`](plugin/agentic-study-environment/reference/conventions.md) walks through both as *Host-project modes*.
+Independent of how you install, the plugin keeps its entire footprint in a single `.studyenv/` directory at the host project root. Everything it generates — the cross-project `PROGRESS.md`, each sub-project folder, all source materials, curricula, and work files — lives there. The host project's own files are never read or modified.
 
-### Drop-in mode
+This makes the harness portable and unobtrusive:
 
-Install the plugin into a project that already has its own purpose (a codebase, a notes folder, an empty directory). Bootstrap creates a `PROGRESS.md` at the project root on first use; the project's existing `AGENTS.md` or `CLAUDE.md` (if any) is left alone. Best for when you want **one or a few learning sub-projects alongside an existing project with its own purpose**.
+- **Drop it into any project** — a codebase, a notes folder, an empty directory. `.studyenv/` sits alongside whatever else is there without colliding with it (your own `PROGRESS.md`, `AGENTS.md`, etc. are left alone).
+- **Remove or relocate it in one move** — gitignore `.studyenv/`, delete it, zip it, or sync it as a single folder.
+- **Set global conventions** — a default `Language:`, preferred notation — in an optional `.studyenv/AGENTS.md` that every sub-project inherits unless it overrides.
 
-### Umbrella mode
-
-Use a host project that's *purpose-built* to accumulate learning sub-projects — e.g. clone this repo as a template, or set up a fresh `~/learning/` directory:
-
-```
-git clone https://github.com/TimboGP/agentic-study-environment.git
-cd agentic-study-environment
-```
-
-Sub-projects accumulate as siblings of `plugin/`, `AGENTS.md`, `CLAUDE.md`, and `PROGRESS.md`. The root `PROGRESS.md` becomes a substantive cross-project tracker; the root `AGENTS.md` is a natural place to set a global `Language:` or other conventions inherited by every sub-project. Best for when you want **a dedicated learning workspace** that grows over time.
+For a dedicated learning workspace, just run the plugin in a fresh directory (e.g. `~/learning/`) — `.studyenv/` is created on first bootstrap there too. See the plugin's [`reference/conventions.md`](plugin/agentic-study-environment/reference/conventions.md) for the full layout.
 
 ## Getting started
 
 After install:
 
 1. **Bootstrap a sub-project.** Say something like *"bootstrap a project called `tasep` to learn the totally asymmetric simple exclusion process"*. You can include `Domain:` (e.g. `coding`, `speech-therapy`), `Language:` (BCP 47 tag for chat replies in this sub-project), and Tools & Materials. The skill refuses to overwrite an existing sub-project.
-2. **Drop source materials** (PDFs, papers, notes, links, prepared code projects, …) into `<name>/source-materials/`.
-3. **Set the curriculum** with *"set curriculum for `tasep`"* — the agent builds the teaching plan at `<name>/ai-agent-materials/curriculum.md`.
+2. **Drop source materials** (PDFs, papers, notes, links, prepared code projects, …) into `.studyenv/<name>/source-materials/`.
+3. **Set the curriculum** with *"set curriculum for `tasep`"* — the agent builds the teaching plan at `.studyenv/<name>/ai-agent-materials/curriculum.md`.
 4. **Start a session** with *"start session"* — the agent proposes a topic and session type (theory / practice / simulation). Override as you like.
 5. **Stop the session** with *"stop session"* — the agent records progress in `PROGRESS.md` and summarizes.
 
-Progress lives in two places: each sub-project's `PROGRESS.md` and the host project's root `PROGRESS.md` (Projects table + Journal).
+Progress lives in two places: each sub-project's `PROGRESS.md` and the harness `.studyenv/PROGRESS.md` (Projects table + Journal).
 
 ## Repo layout
 
@@ -179,7 +173,6 @@ Progress lives in two places: each sub-project's `PROGRESS.md` and the host proj
   .agents/plugins/marketplace.json ← Codex marketplace catalog
   AGENTS.md                        ← canonical repo-level agent instructions
   CLAUDE.md                        ← compatibility pointer to AGENTS.md
-  PROGRESS.md                      ← cross-project status + journal
   README.md                        ← this file
   CONTRIBUTING.md                  ← how to contribute (new overlays, framework refinements)
   CHANGELOG.md                     ← version history
@@ -192,18 +185,21 @@ Progress lives in two places: each sub-project's `PROGRESS.md` and the host proj
     domains/                       ← coding.md, speech-therapy.md (+ ADDING_AN_OVERLAY.md walkthrough)
     templates/                     ← per-sub-project AGENTS.md, CLAUDE.md, and PROGRESS.md templates
     reference/conventions.md       ← status legends, layout, language rules, curriculum format
-  <sub-project>/                   ← created by `bootstrap`
-    AGENTS.md
-    CLAUDE.md
-    PROGRESS.md
-    source-materials/
-    ai-agent-materials/
-    work/
+  .studyenv/                       ← created by `bootstrap`; the entire harness footprint
+    PROGRESS.md                    ← cross-project status + journal
+    AGENTS.md / CLAUDE.md          ← optional global config (default Language, conventions)
+    <sub-project>/                 ← one per learning sub-project
+      AGENTS.md
+      CLAUDE.md
+      PROGRESS.md
+      source-materials/
+      ai-agent-materials/
+      work/
 ```
 
 ## Conventions (quick reference)
 
-- Default conversational language is **English**. Override per-sub-project (or globally at the root) with `Language: <BCP 47 tag>`. Structural tokens (status legends, field names, skill names) stay English regardless.
+- Default conversational language is **English**. Override per-sub-project (or globally via `.studyenv/AGENTS.md`) with `Language: <BCP 47 tag>`. Structural tokens (status legends, field names, skill names) stay English regardless.
 - Topic status: `introduced` · `exercised` · `reviewed`.
 - Sub-project status: `created` · `ready` · `in progress` · `blocked` · `stopped` · `finished`.
 
@@ -218,7 +214,7 @@ The harness adds three things on top of a free-form chat: (a) **bracketed sessio
 No. The plugin is pure markdown and skill definitions. If Claude Code works, the harness works. No external services, no model API beyond what Claude Code itself uses.
 
 **Can I share my sub-projects with others?**
-Yes. A sub-project is just a directory of markdown and files (`<name>/AGENTS.md`, `<name>/CLAUDE.md`, `<name>/PROGRESS.md`, `<name>/source-materials/`, `<name>/ai-agent-materials/`, `<name>/work/`). Commit it to a private repo, send it as a zip, or sync it with whatever you'd sync a project folder with. Source materials are user-provided and stay local unless you choose to share them.
+Yes. A sub-project is just a directory of markdown and files (`.studyenv/<name>/AGENTS.md`, `.studyenv/<name>/CLAUDE.md`, `.studyenv/<name>/PROGRESS.md`, `.studyenv/<name>/source-materials/`, `.studyenv/<name>/ai-agent-materials/`, `.studyenv/<name>/work/`). Commit it to a private repo, send it as a zip, or sync it with whatever you'd sync a project folder with. Source materials are user-provided and stay local unless you choose to share them.
 
 **Which domains has it actually been used for?**
 The two overlays in the box (`coding`, `speech-therapy`) are the ones with real-world use behind them. The generic neutral default works for any domain without a custom overlay — you trade some scaffolding polish for portability. New overlays are explicitly welcomed; see [`plugin/agentic-study-environment/domains/ADDING_AN_OVERLAY.md`](plugin/agentic-study-environment/domains/ADDING_AN_OVERLAY.md).
@@ -227,14 +223,14 @@ The two overlays in the box (`coding`, `speech-therapy`) are the ones with real-
 Because the unit is whatever *you* want. A single paper, a textbook, a clinical case load, a language you'll study for years. The harness doesn't presume a duration or a difficulty level — it just brackets your work and tracks what you've covered.
 
 **The agent forgot what we did last session. What happened?**
-Either `stop-session` wasn't called (so nothing was recorded), or `start-session` didn't get a chance to read `PROGRESS.md` (rare; check your sub-project's PROGRESS.md to see if last session's journal entry exists). The skills are designed to read both root and sub-project `PROGRESS.md` at session start — if those files are intact, recall works.
+Either `stop-session` wasn't called (so nothing was recorded), or `start-session` didn't get a chance to read `PROGRESS.md` (rare; check your sub-project's `.studyenv/<name>/PROGRESS.md` to see if last session's journal entry exists). The skills are designed to read both `.studyenv/PROGRESS.md` and the sub-project `PROGRESS.md` at session start — if those files are intact, recall works.
 
 ## Known limitations
 
 Honest snapshot — what doesn't work yet, or works only with friction:
 
 - **No automatic session resumption across Claude Code restarts.** If you start a session, close Claude Code mid-stream, and come back later, the next conversation is fresh — the recorded state is what's in `PROGRESS.md`, not the in-flight session context. Wrap up with `stop-session` before you walk away if you want the journal entry.
-- **Single-machine state.** Sub-project state lives on disk. Working across machines means syncing the directory (git, Dropbox, etc.) yourself; the harness doesn't help with that.
+- **Single-machine state.** Sub-project state lives on disk under `.studyenv/`. Working across machines means syncing that directory (git, Dropbox, etc.) yourself; the harness doesn't help with that.
 - **No cross-sub-project topic linking.** If you're studying real analysis in one sub-project and Lean 4 in another, the harness won't notice the overlap. Each sub-project's curriculum and progress are independent.
 - **Source extraction is on the agent.** When you drop a PDF, the agent reads it during `set-curriculum`. Image-heavy or OCR-fragile PDFs may extract poorly; for those, supplement with notes or a transcript.
 - **Smoke-test coverage is light.** The four skills are written but not yet covered by `evals/` regression tests. Expect occasional rough edges as new use cases surface; please open issues.

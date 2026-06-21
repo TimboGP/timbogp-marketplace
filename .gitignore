@@ -3,6 +3,9 @@
 .claude/settings.local.json
 HANDOFF.md
 
+# agentic-study-environment generated learning state
+.studyenv/
+
 # Editors / IDEs
 .vscode/
 .idea/

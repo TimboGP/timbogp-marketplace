@@ -2,6 +2,8 @@
 
 This overlay applies to any sub-project that declares `Domain: speech-therapy` (or the synonym `Domain: logopedics`) in its `AGENTS.md` (or, for older projects, `CLAUDE.md`). It refines the generic core defined by the agentic-study-environment plugin (see [`../reference/conventions.md`](../reference/conventions.md) and the lifecycle skills under `../skills/`) — it does not replace it. Everything not redefined here continues to follow the generic core.
 
+Paths in this overlay (`work/`, `source-materials/patients/`, …) are relative to the sub-project root, which is `.studyenv/<name>/`.
+
 The scope of a speech-therapy sub-project typically spans:
 
 - ENT medicine and anatomy

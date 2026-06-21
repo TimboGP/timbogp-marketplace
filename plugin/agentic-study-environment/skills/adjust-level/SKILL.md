@@ -32,10 +32,10 @@ This skill is **not a session** — it does not update `PROGRESS.md`.
 
 ## What to read before writing anything
 
-1. The sub-project's `<name>/AGENTS.md`, falling back to `<name>/CLAUDE.md` for older projects — for `Domain:`, `Language:`, learning goals, Tools & Materials.
-2. The current `<name>/ai-agent-materials/curriculum.md` — the baseline being adjusted. If it doesn't exist, redirect the user to `set-curriculum` first — there is nothing to adjust yet.
-3. Any source extractions in `<name>/ai-agent-materials/` (concept maps, copied excerpts) — these remain ground-truth for what the user's source actually covers.
-4. The user's `<name>/source-materials/` — to keep firm what is in-source vs. what will be brought in.
+1. The sub-project's `.studyenv/<name>/AGENTS.md`, falling back to `.studyenv/<name>/CLAUDE.md` for older projects — for `Domain:`, `Language:`, learning goals, Tools & Materials.
+2. The current `.studyenv/<name>/ai-agent-materials/curriculum.md` — the baseline being adjusted. If it doesn't exist, redirect the user to `set-curriculum` first — there is nothing to adjust yet.
+3. Any source extractions in `.studyenv/<name>/ai-agent-materials/` (concept maps, copied excerpts) — these remain ground-truth for what the user's source actually covers.
+4. The user's `.studyenv/<name>/source-materials/` — to keep firm what is in-source vs. what will be brought in.
 5. The harness conventions at `../../reference/conventions.md` — for the curriculum format and the **External-source labeling** rules. The labeling rules are not optional; read them.
 
 ## How to do the adjustment
@@ -84,8 +84,8 @@ When in doubt about a topic's provenance, default to labeling it external. False
 
 ## Writing the new curriculum
 
-1. **Back up the existing curriculum** to `<name>/ai-agent-materials/curriculum-prev.md`, overwriting any previous backup. The user can revert with one `cp` if the adjustment doesn't land.
-2. **Write the adjusted curriculum** to `<name>/ai-agent-materials/curriculum.md`, replacing the file. Follow the standard curriculum format (see `../../reference/conventions.md`).
+1. **Back up the existing curriculum** to `.studyenv/<name>/ai-agent-materials/curriculum-prev.md`, overwriting any previous backup. The user can revert with one `cp` if the adjustment doesn't land.
+2. **Write the adjusted curriculum** to `.studyenv/<name>/ai-agent-materials/curriculum.md`, replacing the file. Follow the standard curriculum format (see `../../reference/conventions.md`).
 3. **Add a header note** at the top of the new curriculum stating: the adjustment direction (simpler / more advanced), the target level if the user specified one, and a one-line summary of what kind of external material was brought in. This makes it obvious to the user (and future agents) that this curriculum isn't source-faithful in the way `set-curriculum` produces.
 4. **Do not modify** `PROGRESS.md` or any sub-project file other than the curriculum and its backup. Adjusting the curriculum is not a session.
 
@@ -94,7 +94,7 @@ When in doubt about a topic's provenance, default to labeling it external. False
 Tell the user concisely:
 
 - The high-level shape of the change: how many topics added, removed, or kept; what flavor of external material was brought in (textbooks, web pages, training knowledge).
-- Where the backup is (`<name>/ai-agent-materials/curriculum-prev.md`) and how to revert (`cp curriculum-prev.md curriculum.md`).
+- Where the backup is (`.studyenv/<name>/ai-agent-materials/curriculum-prev.md`) and how to revert (`cp curriculum-prev.md curriculum.md`).
 - A pointer to glance through the curriculum and confirm the external sources are ones they're happy to study from.
 - If any external citation was a best-guess from training knowledge rather than a specific source you're confident about, flag that explicitly in the summary so they know to verify.
 
