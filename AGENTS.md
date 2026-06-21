@@ -20,7 +20,7 @@ The harness is shipped as a Claude Code and Codex plugin at [`plugin/agentic-stu
 
 Each skill is self-sufficient and reads the files it needs (PROGRESS.md, sub-project AGENTS.md with CLAUDE.md fallback, the relevant overlay) - there is no protocol duplicated in this file.
 
-**Conventions**, **status legends**, **sub-project layout**, **curriculum format**, and the **language override rules** live in [`plugin/agentic-study-environment/reference/conventions.md`](plugin/agentic-study-environment/reference/conventions.md). Domain overlays live alongside at [`plugin/agentic-study-environment/domains/`](plugin/agentic-study-environment/domains/) - currently `coding.md` and `speech-therapy.md`.
+**Conventions**, **status legends**, **sub-project layout**, **curriculum format**, and the **language override rules** live in [`plugin/agentic-study-environment/reference/conventions.md`](plugin/agentic-study-environment/reference/conventions.md). Domain overlays live alongside at [`plugin/agentic-study-environment/domains/`](plugin/agentic-study-environment/domains/) - currently `coding.md`, `speech-therapy.md`, and `legal-documents.md`.
 
 ## Using the plugin
 

@@ -14,10 +14,11 @@ Four lifecycle skills plus one auxiliary skill:
 | `agentic-study-environment:stop-session` | You're done for now. Records progress and summarizes. |
 | `agentic-study-environment:adjust-level` | The curriculum's level doesn't match your starting point. Rewrites it simpler or harder, allowed to pull in external material with strict labels (every external addition is named so the user knows what came from their source vs. elsewhere). |
 
-Plus two domain overlays:
+Plus three domain overlays:
 
 - [`domains/coding.md`](domains/coding.md) — coding sub-projects: stub-file scaffolding, idiomacy review, conventional `/work/` layouts.
 - [`domains/speech-therapy.md`](domains/speech-therapy.md) — speech-therapy / logopedics: therapist–patient simulation sessions with structured debriefs.
+- [`domains/legal-documents.md`](domains/legal-documents.md) — official public and legal documents: prescribed-form drafting scaffolds, analysis frames (IRAC, redlines), and legal-precision / citation review.
 
 Sub-projects without a declared `Domain:` fall back to neutral defaults (theory + practice over markdown notes under `/work/`).
 
@@ -92,6 +93,7 @@ plugin/agentic-study-environment/
   domains/
     coding.md                  ← Domain: coding overlay
     speech-therapy.md          ← Domain: speech-therapy (synonym: logopedics) overlay
+    legal-documents.md         ← Domain: legal-documents (synonyms: official-documents, public-documents) overlay
   templates/
     sub-project-agents.md      ← rendered into .studyenv/<name>/AGENTS.md by `bootstrap`
     sub-project-claude.md      ← rendered into .studyenv/<name>/CLAUDE.md as a compatibility pointer

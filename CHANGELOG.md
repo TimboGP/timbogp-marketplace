@@ -8,6 +8,10 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), a
 
 ## [0.2.0] — 2026-06-21
 
+### Added
+
+- **`legal-documents` domain overlay** in [`plugin/agentic-study-environment/domains/legal-documents.md`](plugin/agentic-study-environment/domains/legal-documents.md) — official public and legal documents (synonyms `official-documents`, `public-documents`). Prescribed-form drafting scaffolds and analysis frames (case briefs, statute breakdowns, redlines, plain-language rewrites); review focused on substantive accuracy, formal compliance, ambiguity, and citation correctness; per-instrument `/work/drafts/` layout and optional `source-materials/briefs/`. Carries a study-not-legal-advice guardrail with a strict no-fabricated-authority rule. No new session type — `theory` + `practice` (analysis and drafting flavors) cover it.
+
 ### Changed
 
 - **Self-contained `.studyenv/` harness root.** All generated files now live under a single `.studyenv/` directory at the host project root — the cross-project tracker (`.studyenv/PROGRESS.md`), each sub-project folder (`.studyenv/<name>/`), and any optional global config (`.studyenv/AGENTS.md` / `.studyenv/CLAUDE.md`). The host project's own files are never read or modified, so the harness footprint is portable: gitignore, delete, zip, or sync it as one folder. See [`reference/conventions.md`](plugin/agentic-study-environment/reference/conventions.md).

@@ -1,6 +1,6 @@
 # AGENTS.md - <name>
 
-Domain: <coding | speech-therapy | math | language | music | study | ...>   <!-- optional; omit the whole line if unsure or unset -->
+Domain: <coding | speech-therapy | legal-documents | math | language | music | study | ...>   <!-- optional; omit the whole line if unsure or unset -->
 Language: <BCP 47 tag, e.g. en, de, es, fr>   <!-- optional; omit for English (or whatever the root default is) -->
 
 ## Goals of this project

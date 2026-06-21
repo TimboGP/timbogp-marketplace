@@ -22,7 +22,7 @@ This skill does NOT run a teaching session — that's `start-session`. It only s
 
 **Optional (use if supplied; do not prompt for them — they can be filled later via the sub-project's `AGENTS.md`):**
 
-- a **Domain** — controls which overlay applies during sessions. Known values: `coding`, `speech-therapy` (synonym: `logopedics`), `study` (the neutral default), or any user-supplied custom value. If unset, the sub-project falls back to the neutral default.
+- a **Domain** — controls which overlay applies during sessions. Known values: `coding`, `speech-therapy` (synonym: `logopedics`), `legal-documents` (synonyms: `official-documents`, `public-documents`), `study` (the neutral default), or any user-supplied custom value. If unset, the sub-project falls back to the neutral default.
 - a **Language** — BCP 47 tag (e.g. `de`, `es`, `fr`) overriding the conversational language for chat replies inside this sub-project. Default is English unless an optional `.studyenv/AGENTS.md` (or `.studyenv/CLAUDE.md`) sets otherwise. Structural tokens (status legends, field names, trigger words) stay in English regardless — see `../../reference/conventions.md` for the exact rules.
 - **Tools & Materials** — anything the user already knows they'll work with (a language + version for coding, a textbook, a notation convention, …).
 - A note that **source materials are already in place** — controls the starting status of the sub-project.

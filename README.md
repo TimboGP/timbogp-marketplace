@@ -97,10 +97,11 @@ The harness ships as a plugin at [`plugin/agentic-study-environment/`](plugin/ag
 | `agentic-study-environment:stop-session` | "stop session", "wrap up" | Update sub-project + `.studyenv/PROGRESS.md`, summarize what was covered |
 | `agentic-study-environment:adjust-level` | "simplify the curriculum", "make it harder", "build up to this paper" | Rewrite the curriculum at a different level — simpler or harder — pulling in external material with strict labels |
 
-Each sub-project lives in its own `.studyenv/<name>/` directory and declares `Domain:` (and optionally `Language:`) in its own `AGENTS.md`. `CLAUDE.md` is kept as a compatibility pointer. The matching overlay at [`plugin/agentic-study-environment/domains/<domain>.md`](plugin/agentic-study-environment/domains/) specifies the practice/review shape, scaffolding form, and `/work/` layout for that domain. Two overlays ship in the box:
+Each sub-project lives in its own `.studyenv/<name>/` directory and declares `Domain:` (and optionally `Language:`) in its own `AGENTS.md`. `CLAUDE.md` is kept as a compatibility pointer. The matching overlay at [`plugin/agentic-study-environment/domains/<domain>.md`](plugin/agentic-study-environment/domains/) specifies the practice/review shape, scaffolding form, and `/work/` layout for that domain. Three overlays ship in the box:
 
 - [`coding.md`](plugin/agentic-study-environment/domains/coding.md) — stub-file scaffolding, idiomacy review, language-appropriate `/work/` layouts.
 - [`speech-therapy.md`](plugin/agentic-study-environment/domains/speech-therapy.md) — therapist–patient simulation sessions on top of theory and practice.
+- [`legal-documents.md`](plugin/agentic-study-environment/domains/legal-documents.md) — official public and legal documents: prescribed-form drafting scaffolds, analysis frames (case briefs, redlines), and legal-precision / citation review.
 
 Sub-projects without a declared `Domain:` fall back to a neutral default (theory + practice over markdown notes under `/work/`).
 
@@ -182,7 +183,7 @@ Progress lives in two places: each sub-project's `PROGRESS.md` and the harness `
     .codex-plugin/plugin.json
     README.md
     skills/                        ← bootstrap, set-curriculum, start-session, stop-session, adjust-level
-    domains/                       ← coding.md, speech-therapy.md (+ ADDING_AN_OVERLAY.md walkthrough)
+    domains/                       ← coding.md, speech-therapy.md, legal-documents.md (+ ADDING_AN_OVERLAY.md walkthrough)
     templates/                     ← per-sub-project AGENTS.md, CLAUDE.md, and PROGRESS.md templates
     reference/conventions.md       ← status legends, layout, language rules, curriculum format
   .studyenv/                       ← created by `bootstrap`; the entire harness footprint
@@ -217,7 +218,7 @@ No. The plugin is pure markdown and skill definitions. If Claude Code works, the
 Yes. A sub-project is just a directory of markdown and files (`.studyenv/<name>/AGENTS.md`, `.studyenv/<name>/CLAUDE.md`, `.studyenv/<name>/PROGRESS.md`, `.studyenv/<name>/source-materials/`, `.studyenv/<name>/ai-agent-materials/`, `.studyenv/<name>/work/`). Commit it to a private repo, send it as a zip, or sync it with whatever you'd sync a project folder with. Source materials are user-provided and stay local unless you choose to share them.
 
 **Which domains has it actually been used for?**
-The two overlays in the box (`coding`, `speech-therapy`) are the ones with real-world use behind them. The generic neutral default works for any domain without a custom overlay — you trade some scaffolding polish for portability. New overlays are explicitly welcomed; see [`plugin/agentic-study-environment/domains/ADDING_AN_OVERLAY.md`](plugin/agentic-study-environment/domains/ADDING_AN_OVERLAY.md).
+`coding` and `speech-therapy` are the overlays with real-world use behind them; `legal-documents` ships in the box as a third. The generic neutral default works for any domain without a custom overlay — you trade some scaffolding polish for portability. New overlays are explicitly welcomed; see [`plugin/agentic-study-environment/domains/ADDING_AN_OVERLAY.md`](plugin/agentic-study-environment/domains/ADDING_AN_OVERLAY.md).
 
 **Why "sub-project" instead of "course" or "lesson"?**
 Because the unit is whatever *you* want. A single paper, a textbook, a clinical case load, a language you'll study for years. The harness doesn't presume a duration or a difficulty level — it just brackets your work and tracks what you've covered.
