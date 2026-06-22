@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<!--
+  Framework-agnostic accessible toast / notification system.
+
+  Accessibility:
+    - A POLITE live region (role="status", aria-live="polite") for success/info.
+    - A separate ASSERTIVE region (role="alert", aria-live="assertive") for errors.
+    - Both regions exist in the DOM at load so injected text is announced.
+    - Auto-dismiss with pause-on-hover and pause-on-focus.
+    - Errors do not auto-dismiss (they require attention).
+    - Non-essential motion gated behind prefers-reduced-motion.
+    - State is conveyed by icon + text, never color alone.
+
+  Open this file directly in a browser — the three demo buttons work as-is.
+  Styling uses CSS custom properties (design tokens).
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Accessible toast system</title>
+    <style>
+      :root {
+        --color-surface: #ffffff;
+        --color-on-surface: #1a1a1a;
+        --color-border: #d4d4d8;
+        --color-accent: #2563eb;
+        --color-success: #15803d;
+        --color-error: #b91c1c;
+        --color-info: #1d4ed8;
+        --space-2: 0.5rem;
+        --space-3: 0.75rem;
+        --space-4: 1rem;
+        --radius-md: 0.5rem;
+        --shadow-md: 0 4px 12px rgb(0 0 0 / 0.15);
+        --focus-ring: 2px solid var(--color-accent);
+        --motion-duration: 200ms;
+        --motion-ease: ease;
+      }
+
+      body {
+        font-family: system-ui, sans-serif;
+        color: var(--color-on-surface);
+        background: var(--color-surface);
+        margin: 0;
+        padding: var(--space-4);
+      }
+
+      .demo-buttons {
+        display: flex;
+        gap: var(--space-3);
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        min-block-size: 24px;
+        padding: var(--space-2) var(--space-4);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        background: var(--color-surface);
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+      }
+      .btn:focus-visible {
+        outline: var(--focus-ring);
+        outline-offset: 2px;
+      }
+
+      /* Toast viewport, stacked bottom-right. */
+      .toast-region {
+        position: fixed;
+        inset-block-end: var(--space-4);
+        inset-inline-end: var(--space-4);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+        max-inline-size: min(28rem, calc(100vw - 2rem));
+        z-index: 1000;
+      }
+
+      .toast {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--space-3);
+        padding: var(--space-3) var(--space-4);
+        background: var(--color-surface);
+        color: var(--color-on-surface);
+        border: 1px solid var(--color-border);
+        border-inline-start: 4px solid var(--color-accent);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-md);
+      }
+      .toast--success { border-inline-start-color: var(--color-success); }
+      .toast--info { border-inline-start-color: var(--color-info); }
+      .toast--error { border-inline-start-color: var(--color-error); }
+
+      .toast__icon { line-height: 1.4; }
+      .toast__body { flex: 1; }
+      .toast__close {
+        min-block-size: 24px;
+        min-inline-size: 24px;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font-size: 1.1rem;
+        cursor: pointer;
+        border-radius: var(--radius-md);
+      }
+      .toast__close:focus-visible {
+        outline: var(--focus-ring);
+        outline-offset: 1px;
+      }
+
+      /* Visually hide the duplicate live-region text (the visible toast carries the meaning). */
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* Entrance animation only when motion is allowed. */
+      @media (prefers-reduced-motion: no-preference) {
+        .toast {
+          animation: toast-in var(--motion-duration) var(--motion-ease);
+        }
+        @keyframes toast-in {
+          from { opacity: 0; transform: translateY(0.5rem); }
+          to { opacity: 1; transform: none; }
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Accessible toast demo</h1>
+    <div class="demo-buttons">
+      <button class="btn" type="button" data-demo="success">
+        Show success
+      </button>
+      <button class="btn" type="button" data-demo="info">Show info</button>
+      <button class="btn" type="button" data-demo="error">Show error</button>
+    </div>
+
+    <!--
+      Two live regions. They are present at load so injected children are announced.
+      Visible toasts are placed in these regions; we also write a hidden text node
+      so the announcement is reliable across screen readers.
+    -->
+    <div
+      class="toast-region"
+      id="toast-region-polite"
+      role="status"
+      aria-live="polite"
+      aria-relevant="additions"
+    ></div>
+    <div
+      class="toast-region"
+      id="toast-region-assertive"
+      role="alert"
+      aria-live="assertive"
+      aria-relevant="additions"
+      style="inset-block-end: auto; inset-block-start: var(--space-4)"
+    ></div>
+
+    <script>
+      (function () {
+        var ICONS = { success: '✔', info: 'ℹ', error: '⚠' };
+        var LABELS = { success: 'Success', info: 'Information', error: 'Error' };
+        var polite = document.getElementById('toast-region-polite');
+        var assertive = document.getElementById('toast-region-assertive');
+
+        /**
+         * showToast(message, { type, duration })
+         *   type: 'success' | 'info' | 'error'  (default 'info')
+         *   duration: ms before auto-dismiss; errors never auto-dismiss.
+         */
+        function showToast(message, options) {
+          options = options || {};
+          var type = options.type || 'info';
+          var isError = type === 'error';
+          var region = isError ? assertive : polite;
+          var defaultDuration = isError ? 0 : 5000;
+          var duration =
+            options.duration != null ? options.duration : defaultDuration;
+
+          var toast = document.createElement('div');
+          toast.className = 'toast toast--' + type;
+
+          var icon = document.createElement('span');
+          icon.className = 'toast__icon';
+          icon.setAttribute('aria-hidden', 'true');
+          icon.textContent = ICONS[type] || ICONS.info;
+
+          var body = document.createElement('div');
+          body.className = 'toast__body';
+          // Prefix the type as text so meaning isn't carried by color alone.
+          var label = document.createElement('strong');
+          label.textContent = (LABELS[type] || LABELS.info) + ': ';
+          var text = document.createElement('span');
+          text.textContent = message;
+          body.appendChild(label);
+          body.appendChild(text);
+
+          var close = document.createElement('button');
+          close.type = 'button';
+          close.className = 'toast__close';
+          close.setAttribute('aria-label', 'Dismiss notification');
+          close.textContent = '×';
+
+          toast.appendChild(icon);
+          toast.appendChild(body);
+          toast.appendChild(close);
+          region.appendChild(toast);
+
+          var timer = null;
+          function dismiss() {
+            if (timer) clearTimeout(timer);
+            if (toast.parentNode) toast.parentNode.removeChild(toast);
+          }
+          function startTimer() {
+            if (duration > 0) timer = setTimeout(dismiss, duration);
+          }
+          function pauseTimer() {
+            if (timer) {
+              clearTimeout(timer);
+              timer = null;
+            }
+          }
+
+          close.addEventListener('click', dismiss);
+          // Pause auto-dismiss on hover and on focus so users can read/act.
+          toast.addEventListener('mouseenter', pauseTimer);
+          toast.addEventListener('mouseleave', startTimer);
+          toast.addEventListener('focusin', pauseTimer);
+          toast.addEventListener('focusout', startTimer);
+
+          startTimer();
+          return dismiss;
+        }
+
+        // Expose for ad-hoc use.
+        window.showToast = showToast;
+
+        document.querySelectorAll('[data-demo]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var kind = btn.getAttribute('data-demo');
+            if (kind === 'success') {
+              showToast('Your changes have been saved.', { type: 'success' });
+            } else if (kind === 'info') {
+              showToast('A new version is available.', { type: 'info' });
+            } else {
+              showToast("Couldn't save — please retry.", { type: 'error' });
+            }
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

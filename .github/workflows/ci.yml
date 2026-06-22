@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # No dependencies to install — the ux-design bundled scripts are zero-dependency.
+      - name: Run script tests
+        run: npm test
+
+      - name: Design-token contrast gate
+        run: npm run contrast:check

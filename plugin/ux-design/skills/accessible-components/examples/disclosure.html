@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<!--
+  Framework-agnostic accessible Disclosure (show/hide).
+
+  Pattern (WAI-ARIA APG):
+    - A native <button> with aria-expanded and aria-controls.
+    - The toggled region is referenced by aria-controls and hidden via [hidden].
+    - Enter / Space toggle it (free with <button>); focus stays on the button.
+
+  This is the no-framework fallback used when no project/framework is detected.
+  All colors/spacing come from CSS custom properties (design tokens).
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Accessible disclosure</title>
+    <style>
+      :root {
+        /* Design tokens — override these from your token system. */
+        --color-surface: #ffffff;
+        --color-on-surface: #1a1a1a;
+        --color-accent: #2563eb;
+        --color-border: #d4d4d8;
+        --space-2: 0.5rem;
+        --space-3: 0.75rem;
+        --space-4: 1rem;
+        --radius-md: 0.5rem;
+        --focus-ring: 2px solid var(--color-accent);
+        --motion-duration-sm: 160ms;
+        --motion-ease: ease;
+      }
+
+      body {
+        font-family: system-ui, sans-serif;
+        color: var(--color-on-surface);
+        background: var(--color-surface);
+        padding: var(--space-4);
+      }
+
+      .disclosure__trigger {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        min-block-size: 24px; /* >= 24px target size */
+        padding: var(--space-2) var(--space-3);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        background: var(--color-surface);
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .disclosure__trigger:focus-visible {
+        outline: var(--focus-ring);
+        outline-offset: 2px;
+      }
+
+      /* Rotate the chevron; gate motion behind reduced-motion. */
+      .disclosure__icon {
+        transition: none;
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .disclosure__icon {
+          transition: transform var(--motion-duration-sm) var(--motion-ease);
+        }
+      }
+      .disclosure__trigger[aria-expanded="true"] .disclosure__icon {
+        transform: rotate(90deg);
+      }
+
+      .disclosure__panel {
+        margin-block-start: var(--space-3);
+        padding: var(--space-3);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Disclosure example</h1>
+
+    <button
+      type="button"
+      class="disclosure__trigger"
+      aria-expanded="false"
+      aria-controls="disclosure-panel"
+      id="disclosure-trigger"
+    >
+      <span class="disclosure__icon" aria-hidden="true">&#9656;</span>
+      <span>Shipping details</span>
+    </button>
+
+    <div id="disclosure-panel" class="disclosure__panel" hidden>
+      <p>
+        Orders ship within 1–2 business days. Tracking is emailed once your
+        package leaves the warehouse.
+      </p>
+    </div>
+
+    <script>
+      // Progressive enhancement: wire any disclosure trigger on the page.
+      document
+        .querySelectorAll('[aria-controls][aria-expanded]')
+        .forEach((trigger) => {
+          const panel = document.getElementById(
+            trigger.getAttribute('aria-controls'),
+          );
+          if (!panel) return;
+
+          trigger.addEventListener('click', () => {
+            const expanded =
+              trigger.getAttribute('aria-expanded') === 'true';
+            trigger.setAttribute('aria-expanded', String(!expanded));
+            // [hidden] removes the region from the accessibility tree and tab order.
+            panel.hidden = expanded;
+          });
+        });
+    </script>
+  </body>
+</html>

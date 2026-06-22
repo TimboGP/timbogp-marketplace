@@ -1,0 +1,228 @@
+<!doctype html>
+<!--
+  Accessible Tabs — framework-agnostic (semantic HTML + vanilla JS).
+
+  Implements the WAI-ARIA APG tabs pattern:
+   - role="tablist" with an accessible name (aria-label)
+   - each tab: role="tab", aria-selected, aria-controls, id
+   - each panel: role="tabpanel", aria-labelledby, tabindex="0"
+   - roving tabindex: only the selected tab has tabindex="0", others -1
+     (the tablist is a single tab stop)
+   - keyboard: Left/Right move between tabs (wrapping), Home/End jump to ends
+
+  Activation model: AUTOMATIC — selection follows focus (good for cheap panels).
+  For MANUAL activation (expensive panels), move focus with the arrows but only
+  select on Enter/Space/click. See the keydown handler note below.
+
+  Open this file directly in a browser to try it. Styling uses CSS-variable
+  design tokens; the selected state is shown with weight + underline, not color
+  alone.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Accessible Tabs</title>
+    <style>
+      :root {
+        /* Design tokens (override in your own theme layer). */
+        --color-surface: #ffffff;
+        --color-on-surface: #111418;
+        --color-on-surface-muted: #5b6470;
+        --color-border: #d4d8dd;
+        --color-accent: #1a5fd0;
+        --space-2: 0.5rem;
+        --space-3: 0.75rem;
+        --space-4: 1rem;
+        --radius-md: 0.5rem;
+        --font-weight-bold: 700;
+        --focus-ring: 2px solid var(--color-accent);
+        --motion-duration-sm: 150ms;
+        --motion-ease: ease-out;
+      }
+
+      body {
+        font-family: system-ui, sans-serif;
+        color: var(--color-on-surface);
+        background: var(--color-surface);
+        margin: var(--space-4);
+      }
+
+      .tabs__list {
+        display: flex;
+        gap: var(--space-2);
+        border-block-end: 1px solid var(--color-border);
+      }
+
+      .tabs__tab {
+        padding: var(--space-2) var(--space-3);
+        border: 0;
+        background: transparent;
+        color: var(--color-on-surface-muted);
+        font: inherit;
+        /* Reserve the underline space so selecting doesn't shift layout. */
+        border-block-end: 2px solid transparent;
+        cursor: pointer;
+      }
+
+      /* Selected state: NOT color alone — also bold weight + bottom border. */
+      .tabs__tab[aria-selected="true"] {
+        color: var(--color-on-surface);
+        font-weight: var(--font-weight-bold);
+        border-block-end-color: var(--color-accent);
+      }
+
+      .tabs__tab:focus-visible {
+        outline: var(--focus-ring);
+        outline-offset: 2px;
+        border-radius: var(--radius-md);
+      }
+
+      .tabs__panel {
+        padding: var(--space-4);
+      }
+
+      .tabs__panel:focus-visible {
+        outline: var(--focus-ring);
+        border-radius: var(--radius-md);
+      }
+
+      /* Only animate when the user has not asked to reduce motion. */
+      @media (prefers-reduced-motion: no-preference) {
+        .tabs__tab {
+          transition: border-color var(--motion-duration-sm) var(--motion-ease);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Account settings</h1>
+
+    <!-- data-tabs marks a self-contained tabs widget for the controller. -->
+    <div class="tabs" data-tabs>
+      <div role="tablist" aria-label="Account settings" class="tabs__list">
+        <button
+          type="button"
+          role="tab"
+          id="tab-profile"
+          aria-controls="panel-profile"
+          aria-selected="true"
+          tabindex="0"
+          class="tabs__tab"
+        >
+          Profile
+        </button>
+        <button
+          type="button"
+          role="tab"
+          id="tab-billing"
+          aria-controls="panel-billing"
+          aria-selected="false"
+          tabindex="-1"
+          class="tabs__tab"
+        >
+          Billing
+        </button>
+        <button
+          type="button"
+          role="tab"
+          id="tab-notifications"
+          aria-controls="panel-notifications"
+          aria-selected="false"
+          tabindex="-1"
+          class="tabs__tab"
+        >
+          Notifications
+        </button>
+      </div>
+
+      <div
+        role="tabpanel"
+        id="panel-profile"
+        aria-labelledby="tab-profile"
+        tabindex="0"
+        class="tabs__panel"
+      >
+        <p>Profile settings. Update your name, photo, and bio.</p>
+      </div>
+      <div
+        role="tabpanel"
+        id="panel-billing"
+        aria-labelledby="tab-billing"
+        tabindex="0"
+        class="tabs__panel"
+        hidden
+      >
+        <p>Billing settings. Manage your plan and payment method.</p>
+      </div>
+      <div
+        role="tabpanel"
+        id="panel-notifications"
+        aria-labelledby="tab-notifications"
+        tabindex="0"
+        class="tabs__panel"
+        hidden
+      >
+        <p>Notification settings. Choose what we email you about.</p>
+      </div>
+    </div>
+
+    <script>
+      // Vanilla controller — enhances any [data-tabs] block on the page.
+      function initTabs(root) {
+        const tabs = Array.from(root.querySelectorAll('[role="tab"]'));
+        const panels = tabs.map((tab) =>
+          document.getElementById(tab.getAttribute("aria-controls")),
+        );
+
+        function select(index, { focus = true } = {}) {
+          tabs.forEach((tab, i) => {
+            const isSelected = i === index;
+            tab.setAttribute("aria-selected", String(isSelected));
+            // Roving tabindex: only the selected tab is in the tab order.
+            tab.tabIndex = isSelected ? 0 : -1;
+            panels[i].hidden = !isSelected;
+          });
+          if (focus) tabs[index].focus();
+        }
+
+        root.addEventListener("keydown", (event) => {
+          const current = tabs.indexOf(document.activeElement);
+          if (current === -1) return; // not on a tab
+          const last = tabs.length - 1;
+          let next = null;
+
+          switch (event.key) {
+            case "ArrowRight":
+              next = current === last ? 0 : current + 1; // wrap
+              break;
+            case "ArrowLeft":
+              next = current === 0 ? last : current - 1; // wrap
+              break;
+            case "Home":
+              next = 0;
+              break;
+            case "End":
+              next = last;
+              break;
+            default:
+              return;
+          }
+
+          event.preventDefault();
+          // AUTOMATIC activation: moving focus also selects.
+          // For MANUAL activation, call tabs[next].focus() here instead, and
+          // select() only inside a separate Enter/Space handler.
+          select(next);
+        });
+
+        // Click activates a tab (no focus jump needed — it's already focused).
+        tabs.forEach((tab, i) => {
+          tab.addEventListener("click", () => select(i, { focus: false }));
+        });
+      }
+
+      document.querySelectorAll("[data-tabs]").forEach(initTabs);
+    </script>
+  </body>
+</html>
