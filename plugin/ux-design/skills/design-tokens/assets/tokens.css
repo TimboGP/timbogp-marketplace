@@ -1,0 +1,153 @@
+/*
+ * Design tokens — starter set
+ * Single source of truth for color, type, spacing, radius, shadow, motion,
+ * z-index. Components must reference these custom properties (var(--token)),
+ * never raw values.
+ *
+ * Layering:
+ *   1. Primitive palette  — small neutral + brand ramps. Internal only.
+ *   2. Semantic roles     — map primitives to meaning (bg, fg, primary, ...).
+ *      Only these change between themes.
+ *   3. Scales             — type, spacing, radius, shadow, motion. Theme-stable.
+ */
+
+:root {
+  /* ---- Primitive palette (internal — do not use directly in components) ---- */
+  /* Neutral ramp */
+  --neutral-0:   #ffffff;
+  --neutral-50:  #f7f8fa;
+  --neutral-100: #eceef2;
+  --neutral-200: #d9dde3;
+  --neutral-300: #b9c0cb;
+  --neutral-400: #8b94a3;
+  --neutral-500: #5f6877;
+  --neutral-600: #444c59;
+  --neutral-700: #2d343f;
+  --neutral-800: #1b2027;
+  --neutral-900: #0e1116;
+
+  /* Brand ramp */
+  --brand-50:  #eef4ff;
+  --brand-100: #d9e6ff;
+  --brand-300: #8fb4ff;
+  --brand-500: #2563eb;
+  --brand-600: #1d4ed8;
+  --brand-700: #1740a8;
+
+  /* State primitives */
+  --green-600:  #15803d;
+  --green-100:  #dcfce7;
+  --amber-600:  #b45309;
+  --amber-100:  #fef3c7;
+  --red-600:    #dc2626;
+  --red-100:    #fee2e2;
+
+  /* ---- Semantic color roles (light theme) ---- */
+  --color-bg:          var(--neutral-0);   /* page background */
+  --color-surface:     var(--neutral-50);  /* cards, panels */
+  --color-fg:          var(--neutral-900); /* primary text — near-black on white */
+  --color-muted-fg:    var(--neutral-500); /* secondary text */
+  --color-border:      var(--neutral-200); /* hairlines, dividers */
+
+  --color-primary:     var(--brand-600);
+  --color-primary-fg:  var(--neutral-0);   /* text/icon on primary */
+
+  --color-success:     var(--green-600);
+  --color-success-fg:  var(--neutral-0);
+  --color-warning:     var(--amber-600);
+  --color-warning-fg:  var(--neutral-0);
+  --color-danger:      var(--red-600);
+  --color-danger-fg:   var(--neutral-0);
+
+  /* ---- Type scale (rem, base 16px, ratio ~1.25) ---- */
+  --font-size-xs:   0.75rem;   /* 12px */
+  --font-size-sm:   0.875rem;  /* 14px */
+  --font-size-base: 1rem;      /* 16px */
+  --font-size-md:   1.25rem;   /* 20px */
+  --font-size-lg:   1.5625rem; /* 25px */
+  --font-size-xl:   1.9375rem; /* ~31px */
+  --font-size-2xl:  2.4375rem; /* ~39px */
+  --font-size-3xl:  3.0625rem; /* ~49px */
+
+  /* ---- Spacing scale (4px base) ---- */
+  --space-1:  0.25rem; /* 4px */
+  --space-2:  0.5rem;  /* 8px */
+  --space-3:  0.75rem; /* 12px */
+  --space-4:  1rem;    /* 16px */
+  --space-5:  1.25rem; /* 20px */
+  --space-6:  1.5rem;  /* 24px */
+  --space-8:  2rem;    /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+
+  /* ---- Radius ---- */
+  --radius-sm:   0.25rem; /* 4px */
+  --radius-md:   0.5rem;  /* 8px */
+  --radius-lg:   1rem;    /* 16px */
+  --radius-full: 9999px;
+
+  /* ---- Shadow / elevation ---- */
+  --shadow-sm: 0 1px 2px rgba(14, 17, 22, 0.08);
+  --shadow-md: 0 4px 12px rgba(14, 17, 22, 0.12);
+  --shadow-lg: 0 12px 32px rgba(14, 17, 22, 0.18);
+
+  /* ---- Motion ---- */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --ease-standard:   cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.3, 0, 0, 1);
+
+  /* ---- Z-index layers ---- */
+  --z-dropdown: 1000;
+  --z-modal:    1300;
+}
+
+/* ---- Dark theme: explicit opt-in via [data-theme="dark"] ---- */
+/* Only semantic roles flip; scales stay fixed. */
+[data-theme="dark"] {
+  --color-bg:          var(--neutral-900);
+  --color-surface:     var(--neutral-800);
+  --color-fg:          var(--neutral-50);  /* near-white on near-black */
+  --color-muted-fg:    var(--neutral-400);
+  --color-border:      var(--neutral-700);
+
+  --color-primary:     var(--brand-500);
+  --color-primary-fg:  var(--neutral-900);
+
+  --color-success:     #22c55e;
+  --color-success-fg:  var(--neutral-900);
+  --color-warning:     #f59e0b;
+  --color-warning-fg:  var(--neutral-900);
+  --color-danger:      #ef4444;
+  --color-danger-fg:   var(--neutral-900);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.65);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.7);
+}
+
+/* ---- Dark theme: follow OS when no explicit theme is set ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg:          var(--neutral-900);
+    --color-surface:     var(--neutral-800);
+    --color-fg:          var(--neutral-50);
+    --color-muted-fg:    var(--neutral-400);
+    --color-border:      var(--neutral-700);
+
+    --color-primary:     var(--brand-500);
+    --color-primary-fg:  var(--neutral-900);
+
+    --color-success:     #22c55e;
+    --color-success-fg:  var(--neutral-900);
+    --color-warning:     #f59e0b;
+    --color-warning-fg:  var(--neutral-900);
+    --color-danger:      #ef4444;
+    --color-danger-fg:   var(--neutral-900);
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.6);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.65);
+    --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.7);
+  }
+}

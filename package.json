@@ -1,0 +1,12 @@
+{
+  "name": "timbogp-plugins",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Tooling for TimboGP's Claude Code marketplace: tests for the ux-design plugin's bundled scripts.",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test",
+    "contrast:check": "node plugin/ux-design/skills/design-tokens/scripts/contrast-check.mjs"
+  }
+}

@@ -6,6 +6,15 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), a
 
 ## [Unreleased]
 
+### Added
+
+- **`ux-design` plugin** in [`plugin/ux-design/`](plugin/ux-design/) — a second plugin in the `timbogp` marketplace that helps guide, measure, and implement UX best practices. Eight skills (`ux-foundations`, `ux-audit`, `accessibility-audit`, `ux-metrics`, `design-tokens`, `accessible-components`, `interaction-feedback`, `ux-copy`), three commands (`/ux-audit`, `/ux-bootstrap`, `/ux-review`), and a `ux-reviewer` agent. Covers scored usability (Nielsen heuristics) and WCAG 2.2 AA accessibility audits, quantitative measures (Core Web Vitals, SUS), and stack-adaptive scaffolding — design tokens, accessible WAI-ARIA APG component patterns (with React/Vue/Svelte/vanilla examples), and interaction-feedback states. Bundles zero-dependency CLI tools (WCAG contrast checker, modular type-scale generator, SUS scorer, design-token contrast gate) covered by a new `node:test` suite ([`test/scripts.test.mjs`](test/scripts.test.mjs)) and a CI workflow ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)). Install with `/plugin install ux-design@timbogp`; per-skill guides in [`plugin/ux-design/docs/`](plugin/ux-design/docs/README.md).
+- **Per-skill documentation for `agentic-study-environment`** in [`plugin/agentic-study-environment/docs/`](plugin/agentic-study-environment/docs/README.md) — a usage guide for each lifecycle skill (bootstrap, set-curriculum, start-session, stop-session, adjust-level) plus a [domain-overlays overview](plugin/agentic-study-environment/docs/domains.md).
+
+### Changed
+
+- **Restructured the repository README into a marketplace overview.** The root [`README.md`](README.md) now introduces the `timbogp` marketplace and both plugins (with install commands and links) rather than documenting the study harness directly. The harness's full content — transcripts, the `.studyenv/` layout, getting-started, FAQ, and limitations — now lives in its own plugin README at [`plugin/agentic-study-environment/README.md`](plugin/agentic-study-environment/README.md).
+
 ## [0.2.0] — 2026-06-21
 
 ### Added

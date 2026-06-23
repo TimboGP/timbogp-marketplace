@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<!--
+  Framework-agnostic accessible Menu Button (actions menu).
+
+  Pattern (WAI-ARIA APG — "Menu Button"):
+    - Trigger is a native <button aria-haspopup="true" aria-expanded
+      aria-controls> that opens a popup menu of *actions* (not navigation
+      links, and not value selection — use a listbox/combobox for those).
+    - The menu is role="menu"; each item is role="menuitem".
+    - Roving focus: real DOM focus moves between menuitems (each menuitem is
+      tabindex=-1 so it is focusable programmatically but not a tab stop).
+
+  Keyboard:
+    - On the button: Enter / Space / Down open the menu and focus the FIRST
+      item; Up opens and focuses the LAST item.
+    - In the menu: Up / Down move (wrapping), Home / End jump to first / last,
+      Escape closes and returns focus to the trigger, Tab closes the menu.
+    - Selecting an item runs its action, closes the menu, and returns focus to
+      the trigger. Clicking outside closes.
+
+  The focused item is marked with a visible focus ring (not color alone).
+  All colors/spacing come from CSS custom properties (design tokens).
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Accessible menu button</title>
+    <style>
+      :root {
+        /* Design tokens — override these from your token system. */
+        --color-surface: #ffffff;
+        --color-on-surface: #1a1a1a;
+        --color-accent: #2563eb;
+        --color-border: #d4d4d8;
+        --color-hover: #f1f5f9;
+        --space-1: 0.25rem;
+        --space-2: 0.5rem;
+        --space-3: 0.75rem;
+        --space-4: 1rem;
+        --radius-md: 0.5rem;
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+        --focus-ring: 2px solid var(--color-accent);
+        --motion-duration-sm: 120ms;
+        --motion-ease: ease;
+      }
+
+      body {
+        font-family: system-ui, sans-serif;
+        color: var(--color-on-surface);
+        background: var(--color-surface);
+        padding: var(--space-4);
+      }
+
+      .menu-button {
+        position: relative;
+        display: inline-block;
+      }
+
+      .menu-button__trigger {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        min-block-size: 24px; /* >= 24px target size */
+        padding: var(--space-2) var(--space-3);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        background: var(--color-surface);
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .menu-button__trigger:focus-visible {
+        outline: var(--focus-ring);
+        outline-offset: 2px;
+      }
+
+      /* Rotate the chevron; gate motion behind reduced-motion. */
+      .menu-button__icon {
+        transition: none;
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .menu-button__icon {
+          transition: transform var(--motion-duration-sm) var(--motion-ease);
+        }
+      }
+      .menu-button__trigger[aria-expanded="true"] .menu-button__icon {
+        transform: rotate(180deg);
+      }
+
+      .menu-button__menu {
+        position: absolute;
+        inset-block-start: calc(100% + var(--space-1));
+        inset-inline-start: 0;
+        min-inline-size: 12rem;
+        margin: 0;
+        padding: var(--space-1);
+        list-style: none;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-md);
+        z-index: 10;
+      }
+
+      .menu-button__menu[hidden] {
+        display: none;
+      }
+
+      .menu-button__item {
+        display: block;
+        inline-size: 100%;
+        text-align: start;
+        min-block-size: 24px;
+        padding: var(--space-2) var(--space-3);
+        border: 0;
+        border-radius: var(--radius-md);
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .menu-button__item:hover {
+        background: var(--color-hover);
+      }
+
+      /* Visible focus ring marks the active item — never color alone. */
+      .menu-button__item:focus-visible {
+        outline: var(--focus-ring);
+        outline-offset: -2px;
+        background: var(--color-hover);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Menu button example</h1>
+
+    <div class="menu-button">
+      <button
+        type="button"
+        class="menu-button__trigger"
+        id="menu-trigger"
+        aria-haspopup="true"
+        aria-expanded="false"
+        aria-controls="actions-menu"
+      >
+        <span>Actions</span>
+        <span class="menu-button__icon" aria-hidden="true">&#9662;</span>
+      </button>
+
+      <ul
+        class="menu-button__menu"
+        id="actions-menu"
+        role="menu"
+        aria-labelledby="menu-trigger"
+        hidden
+      >
+        <li role="none">
+          <button type="button" class="menu-button__item" role="menuitem" tabindex="-1">
+            Edit
+          </button>
+        </li>
+        <li role="none">
+          <button type="button" class="menu-button__item" role="menuitem" tabindex="-1">
+            Duplicate
+          </button>
+        </li>
+        <li role="none">
+          <button type="button" class="menu-button__item" role="menuitem" tabindex="-1">
+            Archive
+          </button>
+        </li>
+        <li role="none">
+          <button type="button" class="menu-button__item" role="menuitem" tabindex="-1">
+            Delete
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <script>
+      // Wire any menu button on the page.
+      document.querySelectorAll('.menu-button').forEach((root) => {
+        const trigger = root.querySelector('.menu-button__trigger');
+        const menu = root.querySelector('[role="menu"]');
+        const items = Array.from(menu.querySelectorAll('[role="menuitem"]'));
+
+        const isOpen = () => trigger.getAttribute('aria-expanded') === 'true';
+
+        // Open the menu and focus the item at `index` (first by default).
+        function open(index = 0) {
+          menu.hidden = false;
+          trigger.setAttribute('aria-expanded', 'true');
+          focusItem(index);
+          document.addEventListener('pointerdown', onOutsidePointer, true);
+        }
+
+        // Close the menu. By default return DOM focus to the trigger.
+        function close({ restoreFocus = true } = {}) {
+          menu.hidden = true;
+          trigger.setAttribute('aria-expanded', 'false');
+          document.removeEventListener('pointerdown', onOutsidePointer, true);
+          if (restoreFocus) trigger.focus();
+        }
+
+        // Roving focus: move real DOM focus to the chosen menuitem (wrapping).
+        function focusItem(index) {
+          const max = items.length - 1;
+          const next = index < 0 ? max : index > max ? 0 : index;
+          items[next].focus();
+        }
+
+        function currentIndex() {
+          return items.indexOf(document.activeElement);
+        }
+
+        function onOutsidePointer(event) {
+          if (!root.contains(event.target)) close({ restoreFocus: false });
+        }
+
+        // --- Trigger keyboard: open to first / open to last ---
+        trigger.addEventListener('keydown', (event) => {
+          switch (event.key) {
+            case 'Enter':
+            case ' ':
+            case 'ArrowDown':
+              event.preventDefault();
+              open(0); // focus FIRST item
+              break;
+            case 'ArrowUp':
+              event.preventDefault();
+              open(items.length - 1); // focus LAST item
+              break;
+          }
+        });
+
+        trigger.addEventListener('click', () => {
+          if (isOpen()) close();
+          else open(0);
+        });
+
+        // --- Menu keyboard: move / jump / close ---
+        menu.addEventListener('keydown', (event) => {
+          switch (event.key) {
+            case 'ArrowDown':
+              event.preventDefault();
+              focusItem(currentIndex() + 1);
+              break;
+            case 'ArrowUp':
+              event.preventDefault();
+              focusItem(currentIndex() - 1);
+              break;
+            case 'Home':
+              event.preventDefault();
+              focusItem(0);
+              break;
+            case 'End':
+              event.preventDefault();
+              focusItem(items.length - 1);
+              break;
+            case 'Escape':
+              event.preventDefault();
+              close(); // returns focus to trigger
+              break;
+            case 'Tab':
+              // Tab closes the menu but lets focus move on naturally.
+              close({ restoreFocus: false });
+              break;
+          }
+        });
+
+        // Selecting an item runs its action, closes, returns focus to trigger.
+        items.forEach((item) => {
+          item.addEventListener('click', () => {
+            // Run the item's action here (demo: log the label).
+            console.log('Selected:', item.textContent.trim());
+            close();
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

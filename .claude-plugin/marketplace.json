@@ -27,6 +27,28 @@
         "meta-framework",
         "domain-overlay"
       ]
+    },
+    {
+      "name": "ux-design",
+      "source": "./plugin/ux-design",
+      "description": "Guide, measure, and implement UX best practices: scored usability + accessibility (WCAG 2.2 AA) audits, quantitative UX metrics (Core Web Vitals, SUS), and stack-adaptive scaffolding for design tokens, accessible components, interaction feedback, and UX copy.",
+      "version": "0.1.0",
+      "author": {
+        "name": "TimboGP"
+      },
+      "homepage": "https://github.com/TimboGP/agentic-study-environment",
+      "repository": "https://github.com/TimboGP/agentic-study-environment",
+      "license": "MIT",
+      "category": "design",
+      "keywords": [
+        "ux",
+        "ui",
+        "accessibility",
+        "wcag",
+        "design-system",
+        "design-tokens",
+        "usability"
+      ]
     }
   ]
 }
