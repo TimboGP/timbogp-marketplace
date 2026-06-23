@@ -17,6 +17,7 @@ The plugin works across three overlapping modes:
 | Skill | Mode | Use it to… |
 |---|---|---|
 | [ux-foundations](ux-foundations.md) | Implement | Bootstrap a whole UX baseline into a project |
+| [ux-onboarding](ux-onboarding.md) | Guide | Get walked through an existing project's UX/design patterns |
 | [ux-audit](ux-audit.md) | Measure / Guide | Run a scored usability (heuristics) audit |
 | [accessibility-audit](accessibility-audit.md) | Measure | Run a scored WCAG 2.2 AA audit |
 | [ux-metrics](ux-metrics.md) | Measure | Set up Core Web Vitals, analytics, and SUS scoring |
@@ -31,12 +32,16 @@ Slash commands are explicit entry points that drive one or more skills:
 
 - **`/ux-audit [path\|url]`** → runs `ux-audit` + `accessibility-audit`, producing one consolidated scored report.
 - **`/ux-bootstrap`** → runs `ux-foundations`, which orchestrates `design-tokens`, `accessible-components`, `interaction-feedback`, and `ux-metrics`.
-- **`/ux-onboarding [path\|area]`** → a guided, part-by-part walkthrough of the project's existing UX/design choices and patterns, ending in a reimplement-a-recent-change exercise. Familiarization, not scaffolding or scoring.
+- **`/ux-onboarding [path\|area]`** → drives the `ux-onboarding` skill: a guided, part-by-part walkthrough of the project's existing UX/design choices and patterns, ending in a reimplement-a-recent-change exercise. Familiarization, not scaffolding or scoring.
 - **`/ux-review [file\|url]`** → launches the `ux-reviewer` agent for a fast, scored review of a single artifact.
 
 ## Agent
 
 - **`ux-reviewer`** — a specialized subagent that scores a single component or screen across four lenses (usability heuristics, accessibility, visual hierarchy, interaction feedback) from code, a screenshot, or a live page. Invoked by `/ux-review`, or ask to "review this component".
+
+## Claude Code & Codex
+
+The plugin ships for **both** named coding agents. Its **skills are the shared, cross-agent surface** — on Codex they're exposed as slash commands (`/ux-design:ux-audit`, `/ux-design:ux-onboarding`, …) and trigger from natural language on either agent. The `/ux-*` **commands** above and the **`ux-reviewer` agent** are Claude-Code conveniences that orchestrate those skills; Codex has no command/agent concept, so there you invoke the skills directly (or by natural language).
 
 ## How skills cooperate
 

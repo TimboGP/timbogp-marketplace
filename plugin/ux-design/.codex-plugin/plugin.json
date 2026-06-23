@@ -1,0 +1,43 @@
+{
+  "name": "ux-design",
+  "version": "0.3.0",
+  "description": "Guide, measure, and implement UX best practices. Scored usability + accessibility audits, quantitative UX metrics, and stack-adaptive scaffolding for design tokens, accessible components, interaction feedback, and UX copy.",
+  "author": {
+    "name": "TimboGP",
+    "url": "https://github.com/TimboGP"
+  },
+  "homepage": "https://github.com/TimboGP/timbogp-marketplace",
+  "repository": "https://github.com/TimboGP/timbogp-marketplace",
+  "license": "MIT",
+  "keywords": [
+    "ux",
+    "ui",
+    "accessibility",
+    "wcag",
+    "design-system",
+    "design-tokens",
+    "usability",
+    "ux-writing",
+    "core-web-vitals"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "UX Design",
+    "shortDescription": "Guide, measure, and implement UX best practices.",
+    "longDescription": "UX Design brings UX best practices to Codex as skills: scored usability (Nielsen heuristics) and WCAG 2.2 AA accessibility audits, quantitative measures (Core Web Vitals, SUS), and stack-adaptive scaffolding for design tokens, accessible WAI-ARIA components, interaction-feedback states, and UX copy.",
+    "developerName": "TimboGP",
+    "category": "Design",
+    "capabilities": [
+      "Skills",
+      "Accessibility & usability audits",
+      "Design scaffolding"
+    ],
+    "websiteURL": "https://github.com/TimboGP/timbogp-marketplace",
+    "defaultPrompt": [
+      "Audit this page for accessibility",
+      "Set up design tokens for this project",
+      "Walk me through this project's UX patterns"
+    ],
+    "brandColor": "#7C3AED"
+  }
+}

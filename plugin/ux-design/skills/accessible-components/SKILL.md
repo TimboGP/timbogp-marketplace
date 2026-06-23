@@ -20,7 +20,7 @@ Use this skill for requests such as:
 
 ## Workflow
 
-1. **Detect the stack.** Read `${CLAUDE_PLUGIN_ROOT}/skills/ux-foundations/references/stack-detection.md` and run that procedure before writing any code. Hold the resulting `framework`, `styling`, `language`, and `rootDir`. Report what was detected in one line. With no project, fall back to framework-agnostic HTML + vanilla JS + CSS custom properties (see `examples/disclosure.html`).
+1. **Detect the stack.** Read `../ux-foundations/references/stack-detection.md` and run that procedure before writing any code. Hold the resulting `framework`, `styling`, `language`, and `rootDir`. Report what was detected in one line. With no project, fall back to framework-agnostic HTML + vanilla JS + CSS custom properties (see `examples/disclosure.html`).
 
 2. **Pick the correct APG pattern.** Map the requested component to its WAI-ARIA Authoring Practices (APG) pattern and read `references/aria-patterns.md` for required roles/attributes, the full keyboard map, focus rules, and common mistakes. Do not invent ARIA — use the established pattern.
 

@@ -101,4 +101,4 @@ Group findings by severity (Critical first). End with the manual checks still ou
 - `references/wcag-2.2-aa-checklist.md` — full POUR checklist with criterion numbers and test methods.
 - `scripts/contrast.mjs` — contrast ratio calculator.
 - `scripts/axe-scan.mjs` — axe-core live scan (graceful if deps absent).
-- For stack-aware code fixes, follow `${CLAUDE_PLUGIN_ROOT}/skills/ux-foundations/references/stack-detection.md` and the `accessible-components` skill.
+- For stack-aware code fixes, follow `../ux-foundations/references/stack-detection.md` and the `accessible-components` skill.

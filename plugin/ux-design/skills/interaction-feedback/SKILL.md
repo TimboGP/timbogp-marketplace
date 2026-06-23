@@ -77,7 +77,7 @@ Treat "no design for this state" as a bug. A blank screen during loading, a list
 
 ## Adapt to the stack
 
-Read `${CLAUDE_PLUGIN_ROOT}/skills/ux-foundations/references/stack-detection.md` and run that procedure before writing code; report the detected `framework`, `styling`, and `language` in one line. With no project, fall back to the framework-agnostic pattern in `examples/toast-aria-live.html`.
+Read `../ux-foundations/references/stack-detection.md` and run that procedure before writing code; report the detected `framework`, `styling`, and `language` in one line. With no project, fall back to the framework-agnostic pattern in `examples/toast-aria-live.html`.
 
 **Reuse what exists.** Before adding dependencies, check for existing toast/notification libraries (e.g. `react-hot-toast`, `sonner`, `vue-toastification`, `svelte-french-toast`), form/validation libraries (`react-hook-form`, `zod`, `vee-validate`, `formik`), and state/data libraries (`@tanstack/react-query`, `swr`, `redux-toolkit`, Pinia) — they often already model loading/error/success states. Wire feedback into those rather than introducing parallel systems. Style via design tokens, not hardcoded values.
 

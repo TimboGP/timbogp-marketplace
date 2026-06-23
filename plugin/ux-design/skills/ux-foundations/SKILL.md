@@ -22,7 +22,7 @@ Always run these in order. Do not generate code before detection.
 
 ### 1. Detect the stack
 
-Read `${CLAUDE_PLUGIN_ROOT}/skills/ux-foundations/references/stack-detection.md` and follow it. Determine, in this order:
+Read `references/stack-detection.md` and follow it. Determine, in this order:
 - **Framework** (React / Vue / Svelte / Angular / none)
 - **Styling approach** (Tailwind / CSS Modules / styled-components or Emotion / vanilla CSS)
 - **Token output format** that matches the above
@@ -44,7 +44,7 @@ State a short plan and confirm the target. By default the baseline includes all 
 
 ### 4. Write the project UX checklist
 
-Create `UX-CHECKLIST.md` at the project root from `${CLAUDE_PLUGIN_ROOT}/skills/ux-foundations/assets/UX-CHECKLIST.md`, trimmed to what applies. This is the durable artifact the team uses on every PR.
+Create `UX-CHECKLIST.md` at the project root from `assets/UX-CHECKLIST.md`, trimmed to what applies. This is the durable artifact the team uses on every PR.
 
 ### 5. Summarize
 

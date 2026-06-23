@@ -30,7 +30,7 @@ Two operating modes share most of the workflow:
 ## Step 1 — Detect the stack
 
 Before generating anything, READ
-`${CLAUDE_PLUGIN_ROOT}/skills/ux-foundations/references/stack-detection.md`
+`../ux-foundations/references/stack-detection.md`
 and run the procedure. Do not duplicate it here. Hold the resulting decisions:
 
 ```
@@ -143,4 +143,4 @@ Reference and reuse these:
 
 ## References
 
-- Stack detection: `${CLAUDE_PLUGIN_ROOT}/skills/ux-foundations/references/stack-detection.md`
+- Stack detection: `../ux-foundations/references/stack-detection.md`

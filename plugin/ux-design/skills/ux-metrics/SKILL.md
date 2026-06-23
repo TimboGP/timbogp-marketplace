@@ -10,7 +10,7 @@ The quantitative measurement layer for UX. Use it to choose meaningful metrics, 
 
 ## When to use
 
-Trigger when the user wants to "measure UX", set up or "track LCP/INP/CLS", instrument "Core Web Vitals", interpret a "Lighthouse score", "design analytics events", compute a "SUS score", define "usability metrics", or asks "how do I quantify UX". Detect the project's stack first via `${CLAUDE_PLUGIN_ROOT}/skills/ux-foundations/references/stack-detection.md` and adapt to any analytics or perf library already present.
+Trigger when the user wants to "measure UX", set up or "track LCP/INP/CLS", instrument "Core Web Vitals", interpret a "Lighthouse score", "design analytics events", compute a "SUS score", define "usability metrics", or asks "how do I quantify UX". Detect the project's stack first via `../ux-foundations/references/stack-detection.md` and adapt to any analytics or perf library already present.
 
 ## 1. Core Web Vitals
 

@@ -32,7 +32,7 @@
       "name": "ux-design",
       "source": "./plugin/ux-design",
       "description": "Guide, measure, and implement UX best practices: scored usability + accessibility (WCAG 2.2 AA) audits, quantitative UX metrics (Core Web Vitals, SUS), and stack-adaptive scaffolding for design tokens, accessible components, interaction feedback, and UX copy.",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "author": {
         "name": "TimboGP"
       },

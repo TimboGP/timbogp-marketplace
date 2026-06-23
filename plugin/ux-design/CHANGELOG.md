@@ -6,6 +6,17 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), a
 
 ## [Unreleased]
 
+## [0.3.0] — 2026-06-23
+
+### Added
+
+- **Codex support.** `ux-design` now ships for **Codex** as well as Claude Code. Added a Codex plugin manifest ([`.codex-plugin/plugin.json`](.codex-plugin/plugin.json)) and registered the plugin in the repo's Codex catalog ([`.agents/plugins/marketplace.json`](../../.agents/plugins/marketplace.json)). On Codex the plugin's **skills** are the cross-agent surface — exposed as slash commands (`/ux-design:<skill>`) and via natural language; the Claude Code `/ux-*` commands and the `ux-reviewer` agent remain Claude-Code conveniences over those same skills (Codex has no command/agent concept).
+- **`ux-onboarding` skill** ([`skills/ux-onboarding/`](skills/ux-onboarding/SKILL.md)) — the onboarding capability (previously only the `/ux-onboarding` command) is now a skill, so it reaches Codex too. The `/ux-onboarding` command delegates to it.
+
+### Changed
+
+- **Portable skill references.** Skills now reference the shared `stack-detection.md` and other bundled files by **relative path** instead of `${CLAUDE_PLUGIN_ROOT}`, so they resolve on both Claude Code and Codex.
+
 ## [0.2.0] — 2026-06-23
 
 ### Added
@@ -23,6 +34,7 @@ Initial release — a second plugin in the `timbogp` marketplace that helps guid
 - **A `ux-reviewer` agent** — scores a single component or screen across four lenses (usability heuristics, accessibility, visual hierarchy, interaction feedback).
 - **Bundled zero-dependency CLI tools** — WCAG contrast checker, modular type-scale generator, SUS scorer, and a design-token contrast gate — covered by a `node:test` suite ([`test/scripts.test.mjs`](../../test/scripts.test.mjs)) and a CI workflow ([`.github/workflows/ci.yml`](../../.github/workflows/ci.yml)).
 
-[Unreleased]: https://github.com/TimboGP/timbogp-marketplace/compare/ux-design-v0.2.0...HEAD
+[Unreleased]: https://github.com/TimboGP/timbogp-marketplace/compare/ux-design-v0.3.0...HEAD
+[0.3.0]: https://github.com/TimboGP/timbogp-marketplace/compare/ux-design-v0.2.0...ux-design-v0.3.0
 [0.2.0]: https://github.com/TimboGP/timbogp-marketplace/releases/tag/ux-design-v0.2.0
 [0.1.0]: https://github.com/TimboGP/timbogp-marketplace/pull/3
