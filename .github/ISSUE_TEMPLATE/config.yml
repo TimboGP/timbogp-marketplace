@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Plugin docs
+    url: https://github.com/TimboGP/timbogp-marketplace#readme
+    about: Per-plugin READMEs and usage guides — check these before filing.
+  - name: Contributing guide
+    url: https://github.com/TimboGP/timbogp-marketplace/blob/main/CONTRIBUTING.md
+    about: How to propose overlays, skills, and fixes (one plugin per PR).

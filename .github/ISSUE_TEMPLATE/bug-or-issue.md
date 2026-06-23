@@ -1,13 +1,17 @@
 ---
 name: Bug or unexpected behaviour
-about: Something the plugin did (or didn't do) that surprised you
+about: Something a plugin did (or didn't do) that surprised you
 title: ""
 labels: bug
 ---
 
+## Which plugin
+
+<!-- `agentic-study-environment` or `ux-design`. -->
+
 ## What happened
 
-<!-- One paragraph. Which skill, what you said, what the agent did. -->
+<!-- One paragraph. Which skill / command, what you said, what the agent did. -->
 
 ## What you expected
 
@@ -19,9 +23,9 @@ labels: bug
 
 ## Environment
 
-- Claude Code version:
-- Plugin version (from `plugin/agentic-study-environment/.claude-plugin/plugin.json`):
+- Host: Claude Code or Codex (and version):
+- Plugin version (from the affected plugin's `.claude-plugin/plugin.json`, e.g. `plugin/ux-design/.claude-plugin/plugin.json`):
 - OS:
-- Domain of the affected sub-project (or "no sub-project"):
+- For `agentic-study-environment`: domain of the affected sub-project (or "no sub-project"):
 
 ## Anything else
