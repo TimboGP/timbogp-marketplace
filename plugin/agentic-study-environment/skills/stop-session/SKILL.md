@@ -53,6 +53,10 @@ Some overlays introduce an in-character session type whose overlay specifies a s
 
 After the debrief, this skill's normal `PROGRESS.md` updates still apply.
 
+## Onboarding sessions (coding)
+
+`onboarding` under `Domain: coding` is **not** in-character, so there is no role-play debrief — it closes through the standard flow above. When recording it, the Journal entry notes which subsystems were walked and at what comprehension, which recent change was reimplemented and how the user's version compared to the real one, and the next part to onboard onto. Topics in the Topics table map to subsystems / areas of the codebase. Artifacts live under `work/onboarding/` (see `../../domains/coding.md`).
+
 ## Why these rules
 
 - "Highest stage ever reached" status is what makes `PROGRESS.md` a useful map: it answers "have we ever exercised this?" rather than "what did we touch most recently?".

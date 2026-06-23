@@ -23,12 +23,14 @@ Per-skill usage guides live in [`docs/`](docs/README.md).
 
 ```sh
 /ux-bootstrap          # lay a UX baseline into the current project
+/ux-onboarding         # get walked through this project's UX/design patterns
 /ux-audit ./index.html # score an existing page
 /ux-review ./Button.tsx
 ```
 
 Or just ask in natural language — skills trigger automatically:
 - "audit this page for accessibility"
+- "walk me through how this app does UX"
 - "set up design tokens for this project"
 - "make this modal accessible"
 - "add proper loading and error states to this form"

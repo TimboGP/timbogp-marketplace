@@ -103,7 +103,7 @@ Curricula live at `.studyenv/<sub-project>/ai-agent-materials/curriculum.md`. Th
   - a stable **id** (e.g. `T1`, `T2.a`) so `PROGRESS.md` can cross-reference without restating the topic description, and so reordering doesn't break references
   - a one-line **description**
   - **prerequisites** — other topic ids; `none` if root
-  - suggested **session type** — `theory`, `practice`, or `both`. Domain overlays may add types (`simulation` for `Domain: speech-therapy`, `defense` for `Domain: academic-research`).
+  - suggested **session type** — `theory`, `practice`, or `both`. Domain overlays may add types (`simulation` for `Domain: speech-therapy`, `defense` for `Domain: academic-research`, `onboarding` for `Domain: coding`).
   - **sources** — entries are either in-source (file + anchor back to `source-materials/`) or external (prefixed `[ext]` with a concrete citation). See *External-source labeling* below for the format.
   - **exercise hooks** — short outlines of proposed practice/theory exercises. The actual exercise artifacts live in `work/` and are created at session time per the active overlay; do not duplicate exercise content into the curriculum.
 

@@ -37,7 +37,7 @@ It's a harness, not a course — there's no curated content; you provide the mat
 
 ### ux-design
 
-A UX/UI toolkit that works in three modes — **guide** (explain the right pattern), **measure** (scored usability + WCAG 2.2 AA audits, Core Web Vitals, SUS), and **implement** (detect your stack and scaffold design tokens, accessible WAI-ARIA components, interaction-feedback states, and UX copy). Ships eight skills, three commands (`/ux-audit`, `/ux-bootstrap`, `/ux-review`), a `ux-reviewer` agent, and zero-dependency CLI tools covered by tests.
+A UX/UI toolkit that works in three modes — **guide** (explain the right pattern), **measure** (scored usability + WCAG 2.2 AA audits, Core Web Vitals, SUS), and **implement** (detect your stack and scaffold design tokens, accessible WAI-ARIA components, interaction-feedback states, and UX copy). Ships eight skills, four commands (`/ux-audit`, `/ux-bootstrap`, `/ux-onboarding`, `/ux-review`), a `ux-reviewer` agent, and zero-dependency CLI tools covered by tests.
 
 → Full details: [plugin README](plugin/ux-design/README.md) · per-skill guides: [docs/](plugin/ux-design/docs/README.md)
 

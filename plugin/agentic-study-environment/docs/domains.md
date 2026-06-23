@@ -33,12 +33,13 @@ Every overlay supports the two base types; some add their own:
 | `practice` | all | Hands-on work — shape depends on the overlay. |
 | `simulation` | speech-therapy | The agent role-plays a patient; you conduct the session, then debrief out of character. |
 | `defense` | academic-research | The agent role-plays a committee / reviewer panel; you defend your work, then debrief. |
+| `onboarding` | coding | The agent walks you through an existing codebase part by part, sends you to read it, checks comprehension, then has you reimplement a small recent change. |
 
 ## Overlays that ship
 
 | Overlay | `Domain:` (synonyms) | Shape |
 |---|---|---|
-| [coding](../domains/coding.md) | `coding` | Stub-file scaffolding, idiomacy review, language-appropriate `/work/` layouts. |
+| [coding](../domains/coding.md) | `coding` | Stub-file scaffolding, idiomacy review, language-appropriate `/work/` layouts, plus an `onboarding` session type for getting up to speed on an existing codebase. |
 | [speech-therapy](../domains/speech-therapy.md) | `speech-therapy` (`logopedics`) | Therapist–patient `simulation` sessions on top of theory and practice, with structured debriefs. |
 | [legal-documents](../domains/legal-documents.md) | `legal-documents` (`official-documents`, `public-documents`) | Prescribed-form drafting scaffolds, analysis frames (case briefs, redlines), legal-precision / citation review. |
 | [academic-research](../domains/academic-research.md) | `academic-research` (`research`, `scholarship`) | Critical-reading and literature-synthesis frames, manuscript/proposal drafting, peer-review and venue-fit exercises, a `defense` session type, rigor / contribution / citation-integrity review. |

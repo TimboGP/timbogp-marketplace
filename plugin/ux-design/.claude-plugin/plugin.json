@@ -1,6 +1,6 @@
 {
   "name": "ux-design",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Guide, measure, and implement UX best practices in Claude Code. Scored usability + accessibility audits, quantitative UX metrics, and stack-adaptive scaffolding for design tokens, accessible components, interaction feedback, and UX copy.",
   "author": {
     "name": "TimboGP"

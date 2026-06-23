@@ -39,6 +39,10 @@ Per-sub-project `AGENTS.md`, `CLAUDE.md`, and `PROGRESS.md` templates live at [`
 
 Better wording, missing edge cases, clearer templates, fixes to inconsistencies between the skills and overlays.
 
+## Coding-agent parity
+
+The plugins here target multiple named coding agents — currently **Claude Code** and **Codex**. Keep support at parity: when a change adds or updates a plugin manifest, a marketplace entry, a skill, or install/usage docs for one agent, make the equivalent change for the other in the **same PR**. A plugin should never gain a capability for one agent and silently lack it for the other. Concretely, `.claude-plugin/plugin.json` ↔ `.codex-plugin/plugin.json` and [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) ↔ [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json) move together. When a new named coding agent is added to the supported set, bring every plugin up to parity for it.
+
 ## What does not belong here
 
 - **Personal sub-projects.** This repo is the harness, not anyone's learning history. Don't commit your own `.studyenv/` directory.

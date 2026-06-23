@@ -31,6 +31,7 @@ Sessions focus on **one** type, though a theory session may include some groundi
 - **`theory`** — concept discussion, definitions, intuitions, proofs/derivations on request.
 - **`practice`** — work an exercise grounded in the current theory topic; the agent prepares scaffolding (the active overlay specifies the form), the user implements, the agent reviews and pushes deeper.
 - **`simulation` / `defense`** — in-character session types, available only when the active overlay introduces one (`simulation` for `speech-therapy`, `defense` for `academic-research`). See the overlay for the protocol.
+- **`onboarding`** — a guided walkthrough of an existing codebase, available only under `Domain: coding`. The agent explains the code part by part, sends the user to read it, checks comprehension, then has the user reimplement a small recent change picked from the project's history. See `../../domains/coding.md` for the protocol.
 
 ## Propose a route
 

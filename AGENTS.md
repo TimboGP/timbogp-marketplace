@@ -45,6 +45,19 @@ claude --plugin-dir ./plugin/agentic-study-environment/
 
 See [`plugin/agentic-study-environment/README.md`](plugin/agentic-study-environment/README.md) for full install paths and usage notes.
 
+## Coding-agent parity
+
+This repository's plugins target multiple **named coding agents** — currently **Claude Code** and **Codex**. Keep them at parity: any capability added or updated for one agent must ship for the other in the **same change**, never one without the other.
+
+Concretely, when you touch a plugin:
+
+- **Manifests** — a change to a plugin's `.claude-plugin/plugin.json` must be matched in its `.codex-plugin/plugin.json` (and vice versa). A plugin that ships for one agent ships for both.
+- **Marketplace catalogs** — an added entry or a version bump in the Claude Code catalog [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) must be mirrored in the Codex catalog [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json).
+- **Capabilities** — skills, overlays, templates, and conventions live in shared directories and already serve both agents; keep any agent-specific surface (e.g. Claude Code `commands/`) matched by an equivalent on the other agent.
+- **Docs** — install and usage instructions must show the path for every supported agent.
+
+If a plugin is not yet at parity, that is a gap to close, not a precedent to follow. When a new named coding agent joins the supported set, update this list and bring every plugin up to parity for it.
+
 ## Repo layout
 
 ```text

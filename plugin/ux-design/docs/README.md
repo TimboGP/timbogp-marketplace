@@ -31,6 +31,7 @@ Slash commands are explicit entry points that drive one or more skills:
 
 - **`/ux-audit [path\|url]`** → runs `ux-audit` + `accessibility-audit`, producing one consolidated scored report.
 - **`/ux-bootstrap`** → runs `ux-foundations`, which orchestrates `design-tokens`, `accessible-components`, `interaction-feedback`, and `ux-metrics`.
+- **`/ux-onboarding [path\|area]`** → a guided, part-by-part walkthrough of the project's existing UX/design choices and patterns, ending in a reimplement-a-recent-change exercise. Familiarization, not scaffolding or scoring.
 - **`/ux-review [file\|url]`** → launches the `ux-reviewer` agent for a fast, scored review of a single artifact.
 
 ## Agent
@@ -38,6 +39,8 @@ Slash commands are explicit entry points that drive one or more skills:
 - **`ux-reviewer`** — a specialized subagent that scores a single component or screen across four lenses (usability heuristics, accessibility, visual hierarchy, interaction feedback) from code, a screenshot, or a live page. Invoked by `/ux-review`, or ask to "review this component".
 
 ## How skills cooperate
+
+Joining a codebase someone else built? Start with **`/ux-onboarding`** — it walks you through the existing design layer part by part and has you reimplement a recent change, so the loop below starts from understanding rather than guesswork.
 
 A typical end-to-end loop:
 
