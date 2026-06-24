@@ -21,7 +21,7 @@ Skills activate automatically based on your request. This one triggers on phrase
 - **Typical flow:**
   1. You name the **sub-project** to act on. If you don't, the agent asks — it never guesses or defaults to "all sub-projects".
   2. It loads context: the sub-project's `AGENTS.md` (Domain, Language, goals, Tools), the harness conventions, any existing `curriculum.md` and extractions, and the canonical `source-materials/`.
-  3. It writes (or updates) `curriculum.md` with an overview plus ordered topic entries — each with a stable id (`T1`, `T2.a`), description, prerequisites, suggested session type (`theory`/`practice`/`both`; `simulation` for speech-therapy), source references, and exercise hooks.
+  3. It writes (or updates) `curriculum.md` with an overview plus ordered topic entries — each with a stable id (`T1`, `T2.a`), description, prerequisites, suggested session type (one of the four core types `theory`/`practice`/`role-play`/`onboarding`, or `both`; a curriculum may name an overlay flavor such as `simulation`/`defense`/`review`), source references, and exercise hooks.
   4. If a curriculum already exists, it **updates** rather than overwrites — folding in new materials and your corrections, re-checking ordering.
 
 ## Reads / writes

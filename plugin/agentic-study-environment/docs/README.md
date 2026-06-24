@@ -25,7 +25,7 @@ bootstrap → set-curriculum → start-session ⇄ stop-session
 |---|---|
 | [bootstrap](bootstrap.md) | Scaffold a new learning sub-project and register it in the tracker |
 | [set-curriculum](set-curriculum.md) | Build or refresh the teaching plan from source materials |
-| [start-session](start-session.md) | Begin a bracketed study session (theory / practice / simulation / defense) |
+| [start-session](start-session.md) | Begin a bracketed study session (theory / practice / role-play / onboarding) |
 | [stop-session](stop-session.md) | Record progress, update the journals, and summarize |
 | [adjust-level](adjust-level.md) | Re-level the curriculum up or down, labeling any external material |
 

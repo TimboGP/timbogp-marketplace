@@ -6,13 +6,14 @@ Paths in this overlay (`work/`, …) are relative to the sub-project root, which
 
 ## Session types
 
-In addition to the generic `theory` and `practice` session types, this overlay introduces a third:
+Beyond the generic `theory` and `practice` types, this overlay flavors two of the core types defined in [`../reference/conventions.md`](../reference/conventions.md) (*Session types vs. flavors*):
 
-- `onboarding` — the agent walks the user through an **existing codebase** part by part to build familiarity: it explains one subsystem at a time, sends the user to read the actual code, checks comprehension with questions, and then has the user **reimplement a small recent change** picked from the project's history. Use it when joining a codebase someone else wrote, rather than learning a topic from scratch.
+- `onboarding` (the core onboarding type, flavored for a **codebase**) — the agent walks the user through an existing codebase part by part to build familiarity: it explains one subsystem at a time, sends the user to read the actual code, checks comprehension with questions, and then has the user **reimplement a small recent change** picked from the project's history. Use it when joining a codebase someone else wrote, rather than learning a topic from scratch.
+- `review` / `interview` (flavors of the core `role-play` type) — an in-character session: in `review` the agent plays a **senior code reviewer** and the user defends their own change or design; in `interview` the agent plays a **technical interviewer** probing the user on a problem. See *Review / interview session protocol* below.
 
-Curriculum entries (in `ai-agent-materials/curriculum.md`) may use `onboarding` as a session-type value alongside `theory` and `practice`. At session start, the agent considers all three when proposing a route.
+Curriculum entries (in `ai-agent-materials/curriculum.md`) may use `onboarding`, `review`, or `interview` as session-type values alongside `theory` and `practice`. At session start, the agent considers them all when proposing a route.
 
-Theory and practice sessions keep their generic coding shape (below). Onboarding sessions follow the protocol further down.
+Theory and practice sessions keep their generic coding shape (below). Onboarding follows the coding flavor of the generic onboarding protocol; `review` / `interview` follow the coding flavor of the generic role-play protocol.
 
 ## Practice session shape
 
@@ -26,6 +27,8 @@ For coding sub-projects, a practice session is **"implement it, test it, break i
 Theory sessions for coding domains lean on the matching vocabulary: complexity, correctness, formal definitions, invariants.
 
 ## Onboarding session protocol
+
+This is **coding's flavor of the generic onboarding protocol** ([`../reference/conventions.md`](../reference/conventions.md) → *Onboarding session protocol (generic)*). The generic skeleton — survey → part-by-part walkthrough with comprehension checks → reproduce a recent change → standard close — holds; this section fills the coding-specific parameters: the **corpus** is a codebase, "send the user to read" points at source files and symbols, and "a recent change" is a commit/PR from the project's history.
 
 Onboarding familiarizes the user with a codebase they did **not** write — a new job's repository, an open-source project, a teammate's service. Here the codebase *is* the source material; the goal is a working mental model and the confidence to make changes, not learning a topic from first principles.
 
@@ -59,6 +62,17 @@ To convert reading into doing, the agent picks **a few smaller recent changes** 
 ### Phase 3 — Wrap up
 
 Onboarding is not an in-character session, so there is no role-play debrief. On the user's stop signal the agent records the session per the generic `stop-session` flow: which subsystems were walked and at what comprehension, which change was reimplemented and how it compared, and a suggested next part to onboard onto.
+
+## Review / interview session protocol
+
+This is **coding's flavor of the generic role-play protocol** ([`../reference/conventions.md`](../reference/conventions.md) → *Role-play session protocol (generic)*). The three-phase shape (setup out of character → in character → out-of-character debrief) and the `[square-bracket]` break-character convention hold as defined there; this section fixes the three parameters for two sub-flavors:
+
+- **`review`** — **the agent's role** is a senior code reviewer; **whose work is scrutinized** is the user's own change or design (a diff under `work/`, or a design they describe). In character, the agent runs a realistic review: asks why a choice was made, pushes on edge cases and failure modes, requests justification, plays a demanding-but-fair reviewer — without rewriting the code for the user.
+- **`interview`** — **the agent's role** is a technical interviewer; **whose work is scrutinized** is the user's live problem-solving on a posed problem. In character, the agent poses the problem, probes the approach, applies time pressure and follow-ups, and does not hand over the solution.
+
+**The debrief rubric** (phase 3, out of character): for `review` — were design choices justified, edge cases anticipated, the change defended on correctness and idiomacy grounds, and what would a real reviewer still block on; for `interview` — problem decomposition, correctness, complexity analysis, communication, and what a real panel would flag. Then the standard `stop-session` updates apply.
+
+Artifacts go under `work/reviews/<change-id>/` (transcript + debrief), mirroring the per-item folders used elsewhere in this overlay.
 
 ## Scaffolding form
 
@@ -99,6 +113,8 @@ work/
         <scratch files>    ← affected files with the change stubbed/reverted, for the user to redo
         review.md          ← the agent's review + comparison against the real change
 ```
+
+For `review` / `interview` sessions (the `role-play` flavor), artifacts live under `work/reviews/<change-id>/` — a dated transcript and a debrief per session, mirroring the per-item folders above.
 
 ## Tools & Materials field
 

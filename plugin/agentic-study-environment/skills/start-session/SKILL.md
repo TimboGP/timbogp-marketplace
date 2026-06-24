@@ -26,12 +26,12 @@ This up-front read is what makes the agent feel like a continuing tutor instead 
 
 ## Decide session type
 
-Sessions focus on **one** type, though a theory session may include some grounding practice and a practice session may include some motivating theory:
+Sessions focus on **one** of four core **types**, though a theory session may include some grounding practice and a practice session may include some motivating theory. Overlays don't add types — they supply domain-specific *flavors* of these (see `../../reference/conventions.md` → *Session types vs. flavors*):
 
 - **`theory`** — concept discussion, definitions, intuitions, proofs/derivations on request.
 - **`practice`** — work an exercise grounded in the current theory topic; the agent prepares scaffolding (the active overlay specifies the form), the user implements, the agent reviews and pushes deeper.
-- **`simulation` / `defense`** — in-character session types, available only when the active overlay introduces one (`simulation` for `speech-therapy`, `defense` for `academic-research`). See the overlay for the protocol.
-- **`onboarding`** — a guided walkthrough of an existing codebase, available only under `Domain: coding`. The agent explains the code part by part, sends the user to read it, checks comprehension, then has the user reimplement a small recent change picked from the project's history. See `../../domains/coding.md` for the protocol.
+- **`role-play`** — an in-character session: setup out of character, role-play in character, debrief out of character. Available when the active overlay flavors it — `simulation` (`speech-therapy`: agent = patient), `defense` (`academic-research`: agent = examiner), `review` / `interview` (`coding`: agent = reviewer / interviewer). Generic protocol in `../../reference/conventions.md` → *Role-play session protocol (generic)*; the overlay fixes the role, whose work is scrutinized, and the debrief rubric.
+- **`onboarding`** — a guided walkthrough of an existing artifact you didn't author (a codebase, a document corpus, a body of papers): survey → part-by-part walkthrough with comprehension checks → reproduce a recent change. Available wherever an overlay flavors it (`coding` ships the canonical codebase flavor). Generic protocol in `../../reference/conventions.md` → *Onboarding session protocol (generic)*; see the active overlay for its corpus-specific shape.
 
 ## Propose a route
 

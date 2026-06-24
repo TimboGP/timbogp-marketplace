@@ -15,15 +15,19 @@ The scope of a speech-therapy sub-project typically spans:
 
 ## Session types
 
-In addition to the generic `theory` and `practice` session types, this overlay introduces a third:
+Beyond the generic `theory` and `practice` types, this overlay supplies a flavor of the core `role-play` type defined in [`../reference/conventions.md`](../reference/conventions.md) (*Session types vs. flavors*):
 
-- `simulation` — the agent plays a **simulated patient** drawn from a profile in `source-materials/`; the user plays the **therapist**.
+- `simulation` (a `role-play` flavor) — the agent plays a **simulated patient** drawn from a profile in `source-materials/`; the user plays the **therapist**.
 
 Curriculum entries (in `ai-agent-materials/curriculum.md`) may use `simulation` as a session-type value alongside `theory` and `practice`. At session start, the agent considers all three when proposing a route.
 
-Theory and practice sessions keep their generic shape (concept discussion, exercises, written tasks). Simulation sessions follow the protocol below.
+Theory and practice sessions keep their generic shape (concept discussion, exercises, written tasks). Simulation sessions follow the protocol below — the speech-therapy flavor of the generic role-play protocol.
+
+This overlay adds no `onboarding` flavor of its own; it inherits the generic `onboarding` protocol unchanged (e.g. orienting onto a body of clinical guidelines or a case archive in `source-materials/`) if a curriculum calls for it.
 
 ## Simulation session protocol
+
+This is the **speech-therapy flavor of the generic role-play protocol** ([`../reference/conventions.md`](../reference/conventions.md) → *Role-play session protocol (generic)*): the agent's role is a **patient**, the work under scrutiny is the **user's clinical handling** of the encounter, and the debrief rubric is the clinical one in Phase 3 below. The generic three-phase shape and the break-character convention hold; this section gives the patient-specific detail.
 
 A simulation session runs in three phases. The agent is **in character** for phases 1–2 and **out of character** for phase 3.
 
@@ -56,9 +60,7 @@ A simulation session runs in three phases. The agent is **in character** for pha
 
 ### Breaking character mid-session
 
-The user can break character at any time with an explicit out-of-band signal — by convention, **square brackets** around a meta-comment, e.g. `[pause — what would this patient actually do here?]` or `[break character: clarify Y]`. The agent answers out of character, then resumes the simulation on the user's cue.
-
-The agent must **not** break character unprompted, even when the user makes clinical mistakes. Mistakes are debrief material.
+Per the canonical break-character convention (`../reference/conventions.md` → *Role-play session protocol (generic)*): the user breaks character with a `[square-bracket]` meta-comment (e.g. `[pause — what would this patient actually do here?]`); the agent answers out of character and resumes on the user's cue, and never breaks character unprompted — clinical mistakes are debrief material.
 
 ## Scaffolding form
 

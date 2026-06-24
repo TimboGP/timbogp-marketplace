@@ -28,10 +28,12 @@ When a question crosses from "help me learn this document" into "tell me what I 
 
 ## Session types
 
-Uses the generic `theory` and `practice` session types. **No domain-specific session type.** Practice in this domain comes in two flavors, both of which are ordinary `practice` sessions:
+Uses the generic `theory` and `practice` types, and adds **no `role-play` flavor of its own**. Practice in this domain comes in two flavors, both of which are ordinary `practice` sessions:
 
 - **Analysis** — the user works *with* an existing document: brief a case, extract the operative rule from a statute, map a contract's parties/obligations/conditions, redline a clause, or rewrite legalese into plain language.
 - **Drafting** — the user *produces* a document from a brief or fact pattern: a contract clause, a motion section, a formal administrative letter, a completed official form, a statutory-style provision.
+
+It inherits the generic `onboarding` type unchanged (see [`../reference/conventions.md`](../reference/conventions.md) → *Onboarding session protocol (generic)*) — useful for orienting onto an inherited **legal corpus** (a statute set, a contract suite, a matter file): walk it part by part, then reproduce a recent change (e.g. redraft a recent amendment or clause revision). Analysis and drafting are `practice` flavors, per *Session types vs. flavors* in the conventions.
 
 Theory sessions lean on the matching vocabulary: sources of law, hierarchy of norms, statutory-interpretation canons, elements of a cause of action, the anatomy of each document type, and the conventions of legal citation.
 

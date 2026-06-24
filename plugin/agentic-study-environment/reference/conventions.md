@@ -38,6 +38,20 @@ Everything the harness generates lives under a single `.studyenv/` directory at 
 - `.studyenv/CLAUDE.md` — **optional** compatibility pointer to `.studyenv/AGENTS.md`.
 - `.studyenv/<sub-project>/` — one directory per learning sub-project (see below).
 
+### Tracking scope
+
+A sub-project declares how its progress is tracked with an optional `Tracking:` field in its own `AGENTS.md`:
+
+- `Tracking: global` (the **default** — also assumed when the field is **absent**) — the sub-project is registered in the cross-project `.studyenv/PROGRESS.md` tracker and its status is mirrored there on every session-end. This is the umbrella mode: many sub-projects indexed in one place.
+- `Tracking: local-only` — the sub-project keeps **only its own** `.studyenv/<name>/PROGRESS.md`. It is **not** registered in `.studyenv/PROGRESS.md`, and `stop-session` does not mirror into or warn about a missing cross-project tracker. Use it for a lone learning project (often one you've dropped the harness into) where a global index across sub-projects isn't wanted.
+
+Behavioral contract:
+
+- `bootstrap` reads the requested scope. Under `local-only` it **skips** creating and registering `.studyenv/PROGRESS.md` entirely and writes `Tracking: local-only` into the sub-project's `AGENTS.md`. Under `global` (or unset) it behaves as before.
+- `stop-session` reads the sub-project's `Tracking:` field first. Under `local-only` it updates only the sub-project's own `PROGRESS.md` and skips the cross-project mirror. Under `global` it mirrors as usual; if the tracker is genuinely missing it tells the user rather than recreating it (`bootstrap` owns tracker creation).
+
+The field is omitted-when-default (like `Domain:` and `Language:`): absent means `global`, so every existing sub-project is unaffected.
+
 ## Sub-project layout
 
 Each sub-project lives at `.studyenv/<sub-project>/`:
@@ -103,11 +117,35 @@ Curricula live at `.studyenv/<sub-project>/ai-agent-materials/curriculum.md`. Th
   - a stable **id** (e.g. `T1`, `T2.a`) so `PROGRESS.md` can cross-reference without restating the topic description, and so reordering doesn't break references
   - a one-line **description**
   - **prerequisites** — other topic ids; `none` if root
-  - suggested **session type** — `theory`, `practice`, or `both`. Domain overlays may add types (`simulation` for `Domain: speech-therapy`, `defense` for `Domain: academic-research`, `onboarding` for `Domain: coding`).
+  - suggested **session type** — one of the four core types `theory`, `practice`, `role-play`, `onboarding` (or `both` as shorthand for theory + practice). Overlays do not add new *types*; they supply domain-specific **flavors** of these, and a curriculum may name a flavor where one exists — `simulation` (a `role-play` flavor under `Domain: speech-therapy`), `defense` (`role-play`, `Domain: academic-research`), `review` (`role-play`, `Domain: coding`). `onboarding` is a core type any overlay may flavor. See *Session types vs. flavors* below.
   - **sources** — entries are either in-source (file + anchor back to `source-materials/`) or external (prefixed `[ext]` with a concrete citation). See *External-source labeling* below for the format.
   - **exercise hooks** — short outlines of proposed practice/theory exercises. The actual exercise artifacts live in `work/` and are created at session time per the active overlay; do not duplicate exercise content into the curriculum.
 
 The curriculum is **reference-only**. It does not constrain `start-session` routing; the agent may consult it when proposing a route, but is free to deviate.
+
+### Session types vs. flavors
+
+The harness distinguishes a small fixed set of session **types** from open-ended overlay **flavors**. The rule:
+
+- A **type** changes the session *protocol* — the loop the agent and user run. There are exactly four, and they are the only values a curriculum's `session type` field holds:
+  - `theory` — concept discussion, definitions, intuitions, proofs on request.
+  - `practice` — the agent scaffolds an exercise, the user produces, the agent reviews and pushes deeper.
+  - `role-play` — an in-character session: setup out of character, role-play in character, debrief out of character. Generic protocol below.
+  - `onboarding` — a guided walkthrough of an existing artifact: survey → part-by-part walkthrough with comprehension checks → reproduce a recent change. Generic protocol below.
+- A **flavor** keeps the type's protocol but swaps the *scaffolding form*, the *review focus*, and sometimes the `/work/` sub-layout. Flavors are overlay-local and are **not** new types.
+
+Worked classification:
+
+| Overlay artifact | Type | Notes |
+|---|---|---|
+| legal `analysis` / `drafting` | `practice` flavors | same practice loop; different scaffolding + review |
+| research `analysis` / `synthesis` / `design` / `drafting` / `review` / `venue-fit` | `practice` flavors | six flavors of one type |
+| speech-therapy `simulation` | `role-play` flavor | agent = patient; user = therapist |
+| academic-research `defense` | `role-play` flavor | agent = examiner; user defends own work |
+| coding `review` / `interview` | `role-play` flavors | agent = reviewer / interviewer |
+| coding `onboarding` (a codebase) | `onboarding` (type) | onboarding is a *type*, not a practice flavor — its loop differs |
+
+Overlay authors: reach for a **flavor** (a new scaffolding/review shape under an existing type) before inventing anything. A genuinely new *type* would require a new protocol the four above don't cover — a high bar.
 
 ## External-source labeling
 
@@ -181,6 +219,33 @@ Across all session types:
 - **Scaffolding for practice exercises** takes the form appropriate to the domain — the active overlay specifies it. Without an overlay, the default is a `work/<exercise-name>.md` file with the prompt, success criteria, and any reference excerpts inline.
 - **Review covers both correctness and craft** (style, idiomacy, clarity) appropriate to the domain — call out better alternatives, not just mistakes.
 
+## Onboarding session protocol (generic)
+
+`onboarding` is a core session type for **getting up to speed on an existing artifact you didn't author** — a codebase, a corpus of documents, a body of papers. The artifact *is* the source material; the goal is a working mental model and the confidence to make changes, not learning a topic from first principles. Each overlay flavors this skeleton by filling the four parameters in **bold**; the canonical worked flavor is `coding` (see `../domains/coding.md`).
+
+The session runs in phases:
+
+- **Phase 0 — Set up.** Identify the **target artifact** (the corpus): it is treated as a source material — either it lives under `source-materials/` (a clone/copy of a repo, a folder of documents) or the user explicitly points the agent at a path to read. The agent reads the target **read-only** and never modifies it; this is the one case it may read outside `.studyenv/`, and only the designated target. The agent then builds a terse **map** at `work/onboarding/map.md` (structure, how the pieces connect, key concepts, how to build/run where applicable) and proposes an ordering to walk through.
+- **Phase 1 — Part-by-part walkthrough.** The agent teaches **one part at a time**, never a wall of explanation. For each part it (1) **explains** the part's responsibility and how it fits the whole, (2) **sends the user to read the real artifact** — naming concrete files/sections rather than pasting them — and (3) **asks comprehension/prediction questions**, checks the answers, corrects misconceptions, and pushes deeper. Progress per part is tracked in `work/onboarding/map.md` so successive sessions resume where the last left off.
+- **Phase 2 — Reproduce a recent change.** To convert reading into doing, the agent picks **a few small recent changes** from the artifact's history (**what "a recent change" means** is the overlay's parameter — a commit/PR for code, a recent amendment/revision for a document corpus), presents them as an interactive choice, sets up the chosen one under `work/onboarding/reimplement/<change-id>/` with the intent and acceptance criteria but **without** the original, and has the user reproduce it. The agent then reviews and compares against what the artifact actually did.
+- **Phase 3 — Wrap up.** Onboarding is **not** in-character, so there is no role-play debrief; it closes through the standard `stop-session` flow. The Journal records which parts were walked and at what comprehension, which change was reproduced and how it compared, and the next part to onboard onto.
+
+Overlay parameters: **what the corpus is**, **what "send the user to read" points at**, **what "a recent change" means**, and the **`work/onboarding/` artifact layout**. An overlay that wants onboarding states it flavors this protocol; one that doesn't, inherits it as-is over a flat corpus.
+
+## Role-play session protocol (generic)
+
+`role-play` is a core session type for **in-character rehearsal**: the agent plays a role, the user plays a counterpart, and the value is in the live interaction plus the out-of-character debrief afterward. Overlays flavor it by fixing three parameters in **bold**; shipped flavors are `simulation` (speech-therapy), `defense` (academic-research), and `review` / `interview` (coding).
+
+The session runs in three phases — the agent is **out of character** for phase 0 and phase 3, and **in character** for phases 1–2:
+
+- **Phase 0 — Set up (out of character).** Identify what is being role-played and confirm parameters with the user: **the agent's role** (patient / examiner / reviewer / interviewer / …), **whose work is under scrutiny** (the user's own clinical handling, their research, their code change), and the format/stakes. Then announce entering character.
+- **Phases 1–2 — In character.** The agent stays in role and responds as that role plausibly would. It does **not** hand over answers, coach, or break character to flag mistakes — a weak performance is met with realistic pressure, not rescue.
+- **Phase 3 — Debrief (out of character).** On the user's signal, the agent steps out of character and gives a structured debrief against **the overlay's debrief rubric**, then writes artifacts to the overlay's `/work/` location and runs the standard `stop-session` updates.
+
+**Breaking character mid-session (canonical convention).** The user can break character at any time with an explicit out-of-band signal — by convention, **square brackets** around a meta-comment, e.g. `[pause — what would this role actually do here?]` or `[break character: clarify Y]`. The agent answers out of character, then resumes on the user's cue. The agent must **never** break character *unprompted*, even when the user errs — mistakes are debrief material. Overlays reference this convention; they do not restate it.
+
+Overlay parameters: **the agent's role**, **whose work is scrutinized**, and **the debrief rubric** (plus the `/work/` artifact location).
+
 ## Skills
 
 The four **lifecycle skills** carry the user through bootstrap → set-curriculum → session → session-end. The one **auxiliary skill** (`adjust-level`) operates off-cycle on an existing curriculum.
@@ -193,4 +258,4 @@ The four **lifecycle skills** carry the user through bootstrap → set-curriculu
 | `stop-session` | End the session: record progress and summarize | Yes — Topics, Status, Journal in both sub-project and `.studyenv/PROGRESS.md` |
 | `adjust-level` | Shift an existing curriculum simpler or harder; allowed to pull in external material with strict labeling | No (same reasoning as `set-curriculum`) |
 
-Domain overlays at [`../domains/<domain>.md`](../domains/) refine `start-session` and (for the in-character session types — speech-therapy `simulation` and academic-research `defense`) `stop-session`. They are additive — they refine the generic core defined here, they do not replace it.
+Domain overlays at [`../domains/<domain>.md`](../domains/) refine `start-session` and (for the `role-play` and `onboarding` types — whose generic protocols are defined above) `stop-session`. They are additive — they supply domain-specific flavors of the core types and refine the generic core defined here; they do not replace it.

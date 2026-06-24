@@ -6,6 +6,21 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), a
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-06-24
+
+### Added
+
+- **`Tracking: local-only` sub-project option.** A sub-project can now opt out of the cross-project `.studyenv/PROGRESS.md` tracker. `bootstrap` accepts a `Tracking:` input (`global` default, or `local-only`); under `local-only` it skips creating/registering the tracker and records the field in the sub-project's `AGENTS.md`, and `stop-session` reads the field and skips the cross-project mirror without warning. This makes the "drop the harness onto one standalone project" case first-class, alongside the umbrella-of-many-sub-projects default. Absent field = `global`, so existing sub-projects are unaffected. Defined in [`reference/conventions.md`](reference/conventions.md) → *Tracking scope*; documented in [`docs/bootstrap.md`](docs/bootstrap.md).
+- **`onboarding` generalized to a cross-domain session type.** The survey → part-by-part walkthrough (with comprehension checks) → reproduce-a-recent-change loop is now a generic protocol in [`reference/conventions.md`](reference/conventions.md) (*Onboarding session protocol (generic)*), available to any overlay that flavors it. `coding` keeps the canonical codebase flavor; `academic-research`, `legal-documents`, and `speech-therapy` inherit/flavor it for paper corpora, legal corpora, and clinical material.
+- **`role-play` core session type.** A single in-character type — setup out of character → role-play in character → out-of-character debrief — parameterized by (agent's role, whose work is scrutinized, debrief rubric), with the `[square-bracket]` break-character convention defined once in [`reference/conventions.md`](reference/conventions.md) (*Role-play session protocol (generic)*). Speech-therapy `simulation` and academic-research `defense` are now flavors of it, and `coding` adds new `review` / `interview` flavors (agent as senior reviewer / technical interviewer; artifacts under `work/reviews/<change-id>/`).
+- **Type-vs-flavor decision rule** in [`reference/conventions.md`](reference/conventions.md) (*Session types vs. flavors*): a **type** changes the session loop (the four core types are `theory`, `practice`, `role-play`, `onboarding`); a **flavor** keeps the loop and swaps scaffolding + review focus. Includes a worked classification table and guidance for overlay authors.
+
+### Changed
+
+- **De-duplicated the break-character convention and the onboarding/role-play protocol skeletons** into [`reference/conventions.md`](reference/conventions.md); the `coding`, `speech-therapy`, and `academic-research` overlays now reference the canonical protocols and carry only their domain-specific deltas. `start-session`, `stop-session`, `set-curriculum`, [`domains/ADDING_AN_OVERLAY.md`](domains/ADDING_AN_OVERLAY.md), and the per-skill docs were updated to enumerate the four core types and their flavors consistently.
+
+All changes are backward compatible: `simulation`, `defense`, and `onboarding` remain valid curriculum values (now understood as flavors / a generic type), and an absent `Tracking:` field behaves exactly as before.
+
 ## [0.3.0] — 2026-06-23
 
 ### Added
@@ -60,7 +75,8 @@ Initial public release. The harness is packaged as a Claude Code plugin under [`
 
 - Smoke testing (`claude --plugin-dir ...`) is recommended before relying on the plugin in production.
 
-[Unreleased]: https://github.com/TimboGP/timbogp-marketplace/compare/agentic-study-environment-v0.3.0...HEAD
+[Unreleased]: https://github.com/TimboGP/timbogp-marketplace/compare/agentic-study-environment-v0.4.0...HEAD
+[0.4.0]: https://github.com/TimboGP/timbogp-marketplace/compare/agentic-study-environment-v0.3.0...agentic-study-environment-v0.4.0
 [0.3.0]: https://github.com/TimboGP/timbogp-marketplace/compare/v0.2.0...agentic-study-environment-v0.3.0
 [0.2.0]: https://github.com/TimboGP/timbogp-marketplace/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/TimboGP/timbogp-marketplace/releases/tag/v0.1.0

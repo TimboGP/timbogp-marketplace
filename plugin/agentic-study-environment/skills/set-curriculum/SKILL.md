@@ -41,7 +41,7 @@ Render or update `.studyenv/<name>/ai-agent-materials/curriculum.md` with the st
   - a stable **id** (`T1`, `T2.a`, …) so `PROGRESS.md` can cross-reference
   - a one-line **description**
   - **prerequisites** (other topic ids; `none` if root)
-  - suggested **session type** — `theory`, `practice`, or `both`. For sub-projects with `Domain: speech-therapy`, `simulation` is also valid.
+  - suggested **session type** — one of the four core types `theory`, `practice`, `role-play`, `onboarding` (or `both` for theory + practice). Where the active overlay flavors `role-play`, the curriculum may name the flavor — `simulation` (`Domain: speech-therapy`), `defense` (`Domain: academic-research`), `review` / `interview` (`Domain: coding`). See `../../reference/conventions.md` → *Session types vs. flavors*.
   - **source references** — page numbers, section anchors, URLs
   - **exercise hooks** — short outlines of proposed practice/theory exercises; the actual exercise artifacts live in `work/`, created at session time per the active domain overlay.
 

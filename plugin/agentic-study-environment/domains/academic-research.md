@@ -29,11 +29,13 @@ This domain also carries a **research-ethics** stance baked into how the agent t
 
 ## Session types
 
-In addition to the generic `theory` and `practice` session types, this overlay introduces a third:
+Beyond the generic `theory` and `practice` types, this overlay supplies a flavor of the core `role-play` type defined in [`../reference/conventions.md`](../reference/conventions.md) (*Session types vs. flavors*):
 
-- `defense` — the agent plays a **skeptical examiner** (a thesis committee, a reviewer panel, a conference Q&A audience, or a grant panel); the user **presents and defends** their research under adversarial questioning. This is a live, in-character dialogue that ends in an out-of-character debrief — structurally a sibling of the speech-therapy `simulation` type.
+- `defense` (a `role-play` flavor) — the agent plays a **skeptical examiner** (a thesis committee, a reviewer panel, a conference Q&A audience, or a grant panel); the user **presents and defends** their research under adversarial questioning. This is a live, in-character dialogue that ends in an out-of-character debrief — the same skeleton as the speech-therapy `simulation` flavor, differing only in the examiner role and that the user defends their own work.
 
 Curriculum entries (in `ai-agent-materials/curriculum.md`) may use `defense` as a session-type value alongside `theory` and `practice`. At session start, the agent considers all three when proposing a route.
+
+This overlay adds no `onboarding` flavor of its own; it inherits the generic `onboarding` protocol unchanged — useful for orienting onto an inherited body of papers or a research codebase in `source-materials/`, where "a recent change" is a recent revision or finding to reconstruct.
 
 `practice` in this domain comes in several flavors, all of them ordinary `practice` sessions; the agent picks one and states which:
 
@@ -59,7 +61,9 @@ When using a real paper, prefer one already in `source-materials/`; if the agent
 
 ## Defense session protocol
 
-A defense session runs in three phases. The agent is **in character** for phases 1–2 and **out of character** for phase 3. It mirrors the speech-therapy `simulation` protocol; the differences are that the agent plays an *examiner*, not a patient, and the user defends *their own* work.
+This is the **academic-research flavor of the generic role-play protocol** ([`../reference/conventions.md`](../reference/conventions.md) → *Role-play session protocol (generic)*): the agent's role is a **skeptical examiner**, the work under scrutiny is the **user's own research**, and the debrief rubric is the scholarly one in Phase 3 below. The generic three-phase shape and the break-character convention hold; this section gives the examiner-specific detail. It is the same skeleton as the speech-therapy `simulation` flavor — the differences are that the agent plays an *examiner*, not a patient, and the user defends *their own* work.
+
+A defense session runs in three phases. The agent is **in character** for phases 1–2 and **out of character** for phase 3.
 
 ### Phase 0 — Set up (out of character)
 
@@ -85,7 +89,7 @@ A defense session runs in three phases. The agent is **in character** for phases
 
 ### Breaking character mid-session
 
-The user can break character at any time with an explicit out-of-band signal — by convention, **square brackets** around a meta-comment, e.g. `[pause — would a reviewer actually ask that?]` or `[break character: clarify the question]`. The agent answers out of character, then resumes the defense on the user's cue. The agent must **not** break character unprompted, even when the user's defense is weak — that's debrief material.
+Per the canonical break-character convention (`../reference/conventions.md` → *Role-play session protocol (generic)*): the user breaks character with a `[square-bracket]` meta-comment (e.g. `[pause — would a reviewer actually ask that?]`); the agent answers out of character and resumes the defense on the user's cue, and never breaks character unprompted — a weak defense is debrief material, not a cue to coach.
 
 ## Scaffolding form
 

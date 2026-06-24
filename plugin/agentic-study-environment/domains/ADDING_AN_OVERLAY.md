@@ -17,7 +17,7 @@ A domain needs its own overlay if the *shape* of practice and review is recogniz
 - The practice artifact isn't a code stub or a markdown worksheet — it's a proof, a transcript, a sketch, a recording.
 - Review attends to something the existing overlays don't name — say, performance, style, technique, clinical judgment.
 - `/work/` needs a non-flat layout (per-case folders, per-piece folders, per-exam folders).
-- A new session *type* is needed beyond `theory` + `practice`.
+- The domain calls for an in-character `role-play` flavor, or an `onboarding` flavor over a non-code corpus.
 
 For our worked example, **math**: practice is "work the proof" or "compute this integral and explain the steps", not "implement and test". Review attends to rigor and elegance, not idiomacy. `/work/` benefits from grouping by chapter or topic. No new session type needed — `theory` + `practice` cover it.
 
@@ -40,15 +40,21 @@ under `../skills/`) — it does not replace it.
 
 ### Session types
 
-If you need a session type beyond `theory` and `practice`, name it and state when it applies. For math, none needed:
+There are four **core types** (`theory`, `practice`, `role-play`, `onboarding`) defined in [`../reference/conventions.md`](../reference/conventions.md) (*Session types vs. flavors*). Overlays do **not** invent new types — they supply domain-specific **flavors** of these. The two heavyweight types, `role-play` and `onboarding`, have generic protocols in the conventions that your overlay *flavors* by filling a few parameters rather than re-describing the loop:
+
+- **`role-play`** — fix the agent's role, whose work is scrutinized, and the debrief rubric (e.g. `simulation` = patient, `defense` = examiner, coding `review` = reviewer). Do **not** restate the break-character convention; reference the canonical one.
+- **`onboarding`** — fix what the corpus is, what "send the user to read" points at, and what "a recent change" means. If your domain has nothing special to add, you inherit it as-is.
+
+For math, no flavor is needed:
 
 ```markdown
 ## Session types
 
-Uses the generic `theory` and `practice` types. No domain-specific session type.
+Uses the generic `theory` and `practice` types. No `role-play` flavor; inherits
+generic `onboarding` unchanged.
 ```
 
-For comparison, `speech-therapy.md` adds `simulation` — that's the model to copy if you do need a new type.
+For comparison, `speech-therapy.md` flavors `role-play` as `simulation` — that's the model to copy if you need an in-character flavor.
 
 ### Practice session shape
 
@@ -146,7 +152,8 @@ The four skills under [`../skills/`](../skills/) don't need editing — they con
 
 - The overlay should not redefine **status legends** (those live in `../reference/conventions.md` and are domain-agnostic).
 - The overlay should not redefine **session bracketing** — `start-session`/`stop-session` handle that.
-- If your overlay adds a session type (like `simulation`), state that `start-session` should consider it when proposing a route, and that `stop-session` may need to follow a domain-specific debrief flow before its standard updates.
+- The overlay should not invent a new session **type** or restate a generic protocol (the `role-play` three-phase shape, the break-character convention, the `onboarding` skeleton). Flavor an existing type and reference the canonical protocol instead.
+- If your overlay flavors `role-play` (like `simulation`/`defense`/`review`), state that `start-session` should consider the flavor when proposing a route, and that `stop-session` runs the generic debrief against your flavor's rubric before its standard updates.
 
 ## Step 4: declare the overlay's domain value in the bootstrap docs
 
@@ -160,7 +167,7 @@ Follow the conventions in [the repo's CONTRIBUTING.md](https://github.com/TimboG
 
 - One overlay per PR.
 - Mirror the shape of `coding.md` or `speech-therapy.md`.
-- If your overlay adds a session type, explain in the PR why a new type is necessary (rather than reusing `theory` or `practice`).
+- If your overlay flavors `role-play` or `onboarding`, explain in the PR why the flavor is needed and confirm it references the canonical protocol rather than restating it.
 - Include a 5–10-line snippet showing what a `start-session` proposal would look like under this overlay — same shape as the transcripts in the [root README](../../README.md).
 
 ## Things to avoid

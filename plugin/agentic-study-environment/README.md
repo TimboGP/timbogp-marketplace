@@ -88,16 +88,16 @@ Five lifecycle skills:
 | --- | --- | --- |
 | `agentic-study-environment:bootstrap` | "bootstrap a project for X" | Mint a new sub-project (`.studyenv/<name>/AGENTS.md`, `CLAUDE.md`, `PROGRESS.md`, `source-materials/`); register it in `.studyenv/PROGRESS.md` |
 | `agentic-study-environment:set-curriculum` | "set curriculum for X" | Build or update `.studyenv/<name>/ai-agent-materials/curriculum.md` from source materials |
-| `agentic-study-environment:start-session` | "start session", "let's work on X" | Begin a bracketed learning session (theory / practice / domain-specific types); load the active domain overlay |
+| `agentic-study-environment:start-session` | "start session", "let's work on X" | Begin a bracketed learning session (one of four core types: theory / practice / role-play / onboarding, with domain-specific flavors); load the active domain overlay |
 | `agentic-study-environment:stop-session` | "stop session", "wrap up" | Update the sub-project + `.studyenv/PROGRESS.md`, summarize what was covered |
 | `agentic-study-environment:adjust-level` | "simplify the curriculum", "make it harder", "build up to this paper" | Rewrite the curriculum at a different level — simpler or harder — pulling in external material with strict labels |
 
 Plus the swappable **domain overlays** that shape how a session runs:
 
-- [`domains/coding.md`](domains/coding.md) — stub-file scaffolding, idiomacy review, language-appropriate `/work/` layouts.
-- [`domains/speech-therapy.md`](domains/speech-therapy.md) — therapist–patient simulation sessions on top of theory and practice.
+- [`domains/coding.md`](domains/coding.md) — stub-file scaffolding, idiomacy review, language-appropriate `/work/` layouts, the codebase flavor of `onboarding`, and `review` / `interview` flavors of `role-play`.
+- [`domains/speech-therapy.md`](domains/speech-therapy.md) — therapist–patient `simulation` (a `role-play` flavor) on top of theory and practice.
 - [`domains/legal-documents.md`](domains/legal-documents.md) — official public and legal documents: prescribed-form drafting scaffolds, analysis frames (case briefs, redlines), legal-precision / citation review.
-- [`domains/academic-research.md`](domains/academic-research.md) — the research lifecycle: critical-reading and literature-synthesis frames, manuscript/proposal drafting scaffolds, peer-review and venue-fit exercises, a `defense` session type for mock vivas and reviewer Q&A.
+- [`domains/academic-research.md`](domains/academic-research.md) — the research lifecycle: critical-reading and literature-synthesis frames, manuscript/proposal drafting scaffolds, peer-review and venue-fit exercises, a `defense` (`role-play`) flavor for mock vivas and reviewer Q&A.
 
 Sub-projects without a declared `Domain:` fall back to a neutral default (theory + practice over markdown notes under `/work/`). Each sub-project declares `Domain:` (and optionally `Language:`) in its own `AGENTS.md`; the matching overlay specifies the practice/review shape, scaffolding form, and `/work/` layout.
 
@@ -145,7 +145,7 @@ For a dedicated learning workspace, just run the plugin in a fresh directory (e.
 1. **Bootstrap a sub-project** — *"bootstrap a project called `tasep` to learn the totally asymmetric simple exclusion process"*. You can include `Domain:` (e.g. `coding`, `speech-therapy`), `Language:` (BCP 47 tag), and Tools & Materials. The skill refuses to overwrite an existing sub-project.
 2. **Drop source materials** (PDFs, papers, notes, links, prepared code) into `.studyenv/<name>/source-materials/`.
 3. **Set the curriculum** — *"set curriculum for `tasep`"* writes the plan to `.studyenv/<name>/ai-agent-materials/curriculum.md`.
-4. **Start a session** — *"start session"* proposes a topic and session type (theory / practice / simulation / defense). Override as you like.
+4. **Start a session** — *"start session"* proposes a topic and session type (theory / practice / role-play / onboarding, with the active overlay's flavor). Override as you like.
 5. **Stop the session** — *"stop session"* records progress and summarizes.
 
 Progress lives in two places: each sub-project's `PROGRESS.md` and the harness `.studyenv/PROGRESS.md` (Projects table + Journal).
@@ -162,6 +162,7 @@ Per-skill usage guides live in [`docs/`](docs/README.md):
 - Default conversational language is **English**. Override per-sub-project (or globally via `.studyenv/AGENTS.md`) with `Language: <BCP 47 tag>`. Structural tokens (status legends, field names, skill names) stay English regardless.
 - **Topic status:** `introduced` · `exercised` · `reviewed` (record the highest stage reached).
 - **Sub-project status:** `created` · `ready` · `in progress` · `blocked` · `stopped` · `finished`.
+- **Tracking scope:** `Tracking: global` (default) registers a sub-project in the cross-project `.studyenv/PROGRESS.md`; `Tracking: local-only` keeps just the sub-project's own `PROGRESS.md` — for dropping the harness onto one standalone project with no global index.
 
 Full conventions live at [`reference/conventions.md`](reference/conventions.md).
 
@@ -184,7 +185,7 @@ Skills read shared resources via relative paths from their `SKILL.md` (e.g. a sk
 ## FAQ
 
 **How is this different from just chatting with the agent about a topic?**
-The harness adds three things on top of free-form chat: (a) **bracketed sessions** with explicit start/stop and a recorded summary, (b) a per-project **curriculum** and **progress log** the agent reads at the start of every session — so you don't restart from zero, and (c) **domain-specific shape** — practice in a coding sub-project produces stub files; practice in a speech-therapy sub-project produces a simulation transcript.
+The harness adds three things on top of free-form chat: (a) **bracketed sessions** with explicit start/stop and a recorded summary, (b) a per-project **curriculum** and **progress log** the agent reads at the start of every session — so you don't restart from zero, and (c) **domain-specific shape** — practice in a coding sub-project produces stub files, while a speech-therapy `role-play` session produces a patient-simulation transcript.
 
 **Do I need an API key, internet access, or anything beyond Claude Code?**
 No. The plugin is pure markdown and skill definitions. If Claude Code (or Codex) works, the harness works.

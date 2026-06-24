@@ -25,6 +25,7 @@ This skill does NOT run a teaching session — that's `start-session`. It only s
 - a **Domain** — controls which overlay applies during sessions. Known values: `coding`, `speech-therapy` (synonym: `logopedics`), `legal-documents` (synonyms: `official-documents`, `public-documents`), `academic-research` (synonyms: `research`, `scholarship`), `study` (the neutral default), or any user-supplied custom value. If unset, the sub-project falls back to the neutral default.
 - a **Language** — BCP 47 tag (e.g. `de`, `es`, `fr`) overriding the conversational language for chat replies inside this sub-project. Default is English unless an optional `.studyenv/AGENTS.md` (or `.studyenv/CLAUDE.md`) sets otherwise. Structural tokens (status legends, field names, trigger words) stay in English regardless — see `../../reference/conventions.md` for the exact rules.
 - **Tools & Materials** — anything the user already knows they'll work with (a language + version for coding, a textbook, a notation convention, …).
+- **Tracking** — `global` (default) or `local-only`. `global` registers the sub-project in the cross-project `.studyenv/PROGRESS.md` tracker (the umbrella mode). `local-only` keeps just the sub-project's own `PROGRESS.md` and skips the cross-project tracker entirely — for a lone learning project where no global index is wanted. Default to `global` when unstated; do not prompt. See `../../reference/conventions.md` → *Tracking scope*.
 - A note that **source materials are already in place** — controls the starting status of the sub-project.
 
 ## Refuse to overwrite
@@ -37,7 +38,7 @@ Everything the harness generates lives under `.studyenv/` at the current working
 
 1. **`.studyenv/<name>/`** — the sub-project directory.
 2. **`.studyenv/<name>/source-materials/`** — empty placeholder for the user to drop PDFs, notes, links, prepared code projects.
-3. **`.studyenv/<name>/AGENTS.md`** — render from `../../templates/sub-project-agents.md` (relative to this SKILL.md). Substitute `<name>`, the learning goal(s), and any supplied `Domain:` / `Language:` / Tools & Materials. If `Domain:` was not supplied, **omit the line entirely** (do not leave a blank or a placeholder string). Same for `Language:`. If Tools & Materials were not supplied, keep the placeholder text `TBD when setting curriculum`.
+3. **`.studyenv/<name>/AGENTS.md`** — render from `../../templates/sub-project-agents.md` (relative to this SKILL.md). Substitute `<name>`, the learning goal(s), and any supplied `Domain:` / `Language:` / Tools & Materials. If `Domain:` was not supplied, **omit the line entirely** (do not leave a blank or a placeholder string). Same for `Language:`. If `Tracking: local-only` was requested, write that line; otherwise (the `global` default) **omit the `Tracking:` line**. If Tools & Materials were not supplied, keep the placeholder text `TBD when setting curriculum`.
 4. **`.studyenv/<name>/CLAUDE.md`** — render from `../../templates/sub-project-claude.md`. It is a compatibility pointer to `.studyenv/<name>/AGENTS.md`.
 5. **`.studyenv/<name>/PROGRESS.md`** — render from `../../templates/sub-project-progress.md`. Status opens at `created`, or at `ready` if the user mentioned source materials are already in place.
 
@@ -45,7 +46,9 @@ Everything the harness generates lives under `.studyenv/` at the current working
 
 ## Update the cross-project tracker (`.studyenv/PROGRESS.md`)
 
-After creating the sub-project, register it in the cross-project tracker at `.studyenv/PROGRESS.md`. Because `.studyenv/` is harness-owned, this file is always either the harness tracker or absent — there is no foreign file to collide with and no shape to detect.
+**If `Tracking: local-only` was requested, skip this entire section** — do not create or register `.studyenv/PROGRESS.md`. The sub-project's own `PROGRESS.md` is its only tracker (see `../../reference/conventions.md` → *Tracking scope*).
+
+Otherwise (the `global` default), after creating the sub-project, register it in the cross-project tracker at `.studyenv/PROGRESS.md`. Because `.studyenv/` is harness-owned, this file is always either the harness tracker or absent — there is no foreign file to collide with and no shape to detect.
 
 The tracker structure (a `# PROGRESS.md — studyenv` heading, a `## Projects` table, `## Grand Topics Covered`, and `## Journal`) is documented in `../../reference/conventions.md` → *`.studyenv/PROGRESS.md` structure*.
 
@@ -60,9 +63,9 @@ Whatever the outcome, the sub-project directory (`.studyenv/<name>/`) is already
 
 After scaffolding is in place:
 
-- Tell the user concisely what was created (paths, opening status).
+- Tell the user concisely what was created (paths, opening status). For `local-only`, note that the sub-project is self-tracked and was **not** registered in a cross-project tracker.
 - **Prompt the user to drop source materials into `.studyenv/<name>/source-materials/`** — PDFs, papers, links, prepared code projects, exercise sheets, anything.
-- If the user supplies materials in the same turn (or confirms they've already added some), flip the sub-project's `PROGRESS.md` Status line and the `.studyenv/PROGRESS.md` Projects row from `created` to `ready`.
+- If the user supplies materials in the same turn (or confirms they've already added some), flip the sub-project's `PROGRESS.md` Status line from `created` to `ready` — and the `.studyenv/PROGRESS.md` Projects row too, unless this is a `local-only` sub-project (which has no Projects row).
 
 ## Why these rules
 
@@ -70,6 +73,7 @@ After scaffolding is in place:
 - Everything generated goes under `.studyenv/` so the harness footprint is fully contained and portable — the host project stays clean, and the whole study environment can be gitignored, deleted, zipped, or synced as one folder. The harness never touches the host's own root files.
 - Domain and Language stay **optional and omitted-when-unset** rather than written as placeholders, because the agent uses presence/absence of those fields at session time to decide whether to load an overlay or switch conversational language. A placeholder string would falsely trigger.
 - `ai-agent-materials/` and `work/` are deliberately not created here. Bootstrap should be cheap and reversible; the heavier folders appear when their work actually begins.
+- `Tracking: local-only` exists so the harness can be dropped onto a single existing project as a lone learning unit without spinning up (or polluting) a cross-project index. It's the opt-out from the umbrella; `global` stays the default so the common multi-sub-project case needs no flag.
 
 ## Related skills
 

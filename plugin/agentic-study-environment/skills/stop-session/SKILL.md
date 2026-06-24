@@ -1,6 +1,6 @@
 ---
 name: stop-session
-description: End the current learning session — update the sub-project's PROGRESS.md (topics + journal), mirror status changes into the .studyenv/PROGRESS.md cross-project tracker, and produce a concise summary of what was covered. Use whenever the user signals the session is over — phrases like "stop session", "let's wrap up", "end session", "we're done for today", or any out-of-character debrief signal (for speech-therapy simulations — "debrief", "end simulation"; for academic-research defenses — "debrief", "end defense"). Do not invoke this skill proactively at the end of a long conversation unless the user signals it.
+description: End the current learning session — update the sub-project's PROGRESS.md (topics + journal), mirror status changes into the .studyenv/PROGRESS.md cross-project tracker (unless the sub-project is Tracking: local-only), and produce a concise summary of what was covered. Use whenever the user signals the session is over — phrases like "stop session", "let's wrap up", "end session", "we're done for today", or any out-of-character role-play debrief signal ("debrief", or a flavor-specific "end simulation" / "end defense" / "end review"). Do not invoke this skill proactively at the end of a long conversation unless the user signals it.
 ---
 
 # Stop a learning session
@@ -9,7 +9,7 @@ This skill closes a bracketed session: it records what happened in `PROGRESS.md`
 
 ## When to use
 
-The user explicitly signals the session is ending: "stop session", "let's wrap up for today", "end session", "we're done". For in-character session types — `simulation` under `Domain: speech-therapy`, `defense` under `Domain: academic-research` — the signals also include "debrief" (and "end simulation" / "end defense" respectively), per the active overlay.
+The user explicitly signals the session is ending: "stop session", "let's wrap up for today", "end session", "we're done". For `role-play` sessions the signals also include "debrief" plus the flavor-specific signal per the active overlay — "end simulation" (`speech-therapy`), "end defense" (`academic-research`), "end review" (`coding`).
 
 Do **not** invoke this skill proactively just because a conversation got long. The user brackets sessions explicitly; respect that.
 
@@ -32,7 +32,9 @@ Read and update `.studyenv/<name>/PROGRESS.md` (the sub-project the session ran 
 
 ### Cross-project tracker (`.studyenv/PROGRESS.md`)
 
-Mirror any sub-project status change into the **Projects** table of `.studyenv/PROGRESS.md`. Update the Projects row for this sub-project; the Notes column is a one-line snapshot of where the project is now (typically the latest journal-entry summary, compressed). If `.studyenv/PROGRESS.md` is not found, the sub-project's own `PROGRESS.md` stays the source of truth — tell the user no tracker was located rather than creating one (`bootstrap` owns tracker creation).
+First read the sub-project `AGENTS.md` `Tracking:` field (`../../reference/conventions.md` → *Tracking scope*). **If `Tracking: local-only`, skip this section entirely** — the sub-project is self-tracked; do not mirror and do not warn about a missing cross-project tracker.
+
+Otherwise (the `global` default, including an absent field), mirror any sub-project status change into the **Projects** table of `.studyenv/PROGRESS.md`. Update the Projects row for this sub-project; the Notes column is a one-line snapshot of where the project is now (typically the latest journal-entry summary, compressed). If `.studyenv/PROGRESS.md` is not found, the sub-project's own `PROGRESS.md` stays the source of truth — tell the user no tracker was located rather than creating one (`bootstrap` owns tracker creation).
 
 ## Summarize for the user
 
@@ -44,18 +46,19 @@ After updates are written, give the user a concise summary:
 
 Keep this short. The full record is now in `PROGRESS.md`; the summary is the human-readable highlight reel.
 
-## In-character session debriefs (simulation, defense)
+## Role-play debriefs (simulation, defense, review)
 
-Some overlays introduce an in-character session type whose overlay specifies a structured **debrief** that runs out of character before the standard `stop-session` flow:
+A `role-play` session runs a structured **debrief out of character** before the standard `stop-session` flow (see `../../reference/conventions.md` → *Role-play session protocol (generic)*, Phase 3). The generic move is the same — step out of character, debrief against the overlay's rubric, write artifacts, then run the normal updates below. The flavor supplies the rubric and the artifact path:
 
-- **`simulation`** under `Domain: speech-therapy` — see `../../domains/speech-therapy.md` Phase 3 for the debrief protocol (which conditions were uncovered vs. missed during anamnesis, clinical reasoning, communication, what a supervisor would flag). Artifacts (transcript, debrief) go to `.studyenv/<name>/work/cases/<patient-id>/`.
-- **`defense`** under `Domain: academic-research` — see `../../domains/academic-research.md` Phase 3 for the debrief protocol (which questions were handled vs. fumbled, whether the contribution was defended, soundness of the method/stats answers, what a real committee would flag). Artifacts (transcript, debrief) go to `.studyenv/<name>/work/defenses/<topic-id>/`.
+- **`simulation`** (`Domain: speech-therapy`) — see `../../domains/speech-therapy.md` Phase 3 (which conditions were uncovered vs. missed during anamnesis, clinical reasoning, communication, what a supervisor would flag). Artifacts go to `.studyenv/<name>/work/cases/<patient-id>/`.
+- **`defense`** (`Domain: academic-research`) — see `../../domains/academic-research.md` Phase 3 (which questions were handled vs. fumbled, whether the contribution was defended, soundness of the method/stats answers, what a real committee would flag). Artifacts go to `.studyenv/<name>/work/defenses/<topic-id>/`.
+- **`review` / `interview`** (`Domain: coding`) — see `../../domains/coding.md` *Review / interview session protocol* (were design choices justified and edge cases anticipated; for interviews, decomposition / correctness / complexity / communication; what a real reviewer or panel would flag). Artifacts go to `.studyenv/<name>/work/reviews/<change-id>/`.
 
 After the debrief, this skill's normal `PROGRESS.md` updates still apply.
 
-## Onboarding sessions (coding)
+## Onboarding sessions
 
-`onboarding` under `Domain: coding` is **not** in-character, so there is no role-play debrief — it closes through the standard flow above. When recording it, the Journal entry notes which subsystems were walked and at what comprehension, which recent change was reimplemented and how the user's version compared to the real one, and the next part to onboard onto. Topics in the Topics table map to subsystems / areas of the codebase. Artifacts live under `work/onboarding/` (see `../../domains/coding.md`).
+`onboarding` is **not** in-character, so there is no role-play debrief — it closes through the standard flow above, for any overlay that flavors it (`coding` ships the canonical codebase flavor). When recording it, the Journal entry notes which parts of the corpus were walked and at what comprehension, which recent change was reproduced and how the user's version compared to the real one, and the next part to onboard onto. Topics in the Topics table map to subsystems / areas of the corpus. Artifacts live under `work/onboarding/` (see the active overlay, e.g. `../../domains/coding.md`).
 
 ## Why these rules
 
