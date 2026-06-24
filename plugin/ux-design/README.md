@@ -34,6 +34,7 @@ Per-skill usage guides live in [`docs/`](docs/README.md).
 /ux-onboarding         # get walked through this project's UX/design patterns
 /ux-audit ./index.html # score an existing page
 /ux-review ./Button.tsx
+/ux-help                 # explain the plugin (or: /ux-help design-tokens)
 ```
 
 Or just ask in natural language — skills trigger automatically:
@@ -55,6 +56,7 @@ Or just ask in natural language — skills trigger automatically:
 - **`accessible-components`** — accessible patterns (dialog, tabs, menu, combobox, disclosure, fields, tooltip) + a11y linting.
 - **`interaction-feedback`** — empty/loading/error/success states, `aria-live` toasts, inline validation, optimistic UI, reduced-motion.
 - **`ux-copy`** — microcopy, error messages, empty states, CTAs, voice & tone.
+- **`help`** — explains the plugin: the full overview, or a specific skill/command/agent/tool if you name one. Backs the `/ux-help` command.
 
 ## Bundled tools (run standalone)
 

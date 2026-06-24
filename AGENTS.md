@@ -61,7 +61,7 @@ The marketplace is named **`timbogp`**; the repo is named `timbogp-marketplace`.
 
 A domain-agnostic tutor harness. The agent acts as a tutor over user-supplied source materials, organized as one or more **sub-projects** — each targeting one topic (a paper, a piece of math, a language, a clinical case load, a programming domain, …). Per-domain refinement happens through **overlays**.
 
-It exposes five lifecycle skills that handle the whole sub-project workflow:
+It exposes five lifecycle skills that handle the whole sub-project workflow (plus a `help` skill — backed by the `/study-help` command — that explains the harness or any one skill, domain, session type, or convention):
 
 | Trigger phrasing | Skill | What it does |
 | --- | --- | --- |
@@ -81,7 +81,7 @@ The default conversational language for all interactions is **English**. To chan
 
 ## The ux-design plugin
 
-A UX/UI toolkit that works in three modes — **guide**, **measure**, and **implement**. It ships **nine skills** (`ux-foundations`, `ux-onboarding`, `ux-audit`, `accessibility-audit`, `ux-metrics`, `design-tokens`, `accessible-components`, `interaction-feedback`, `ux-copy`), **four commands** (`/ux-audit`, `/ux-bootstrap`, `/ux-onboarding`, `/ux-review`), a `ux-reviewer` agent, and zero-dependency CLI tools (contrast checker, type-scale generator, SUS scorer, contrast gate).
+A UX/UI toolkit that works in three modes — **guide**, **measure**, and **implement**. It ships **ten skills** (`ux-foundations`, `ux-onboarding`, `ux-audit`, `accessibility-audit`, `ux-metrics`, `design-tokens`, `accessible-components`, `interaction-feedback`, `ux-copy`, `help`), **five commands** (`/ux-audit`, `/ux-bootstrap`, `/ux-onboarding`, `/ux-review`, `/ux-help`), a `ux-reviewer` agent, and zero-dependency CLI tools (contrast checker, type-scale generator, SUS scorer, contrast gate).
 
 On Codex, the plugin's **skills** are the cross-agent surface (exposed as `/ux-design:<skill>`); the slash commands and the `ux-reviewer` agent are Claude-Code conveniences over them. When generating code, the implement skills first read the shared `references/stack-detection.md` in the `ux-foundations` skill (referenced by relative path so it resolves on both agents) and prefer the project's existing idioms over new dependencies. Full detail: [`plugin/ux-design/README.md`](plugin/ux-design/README.md) and [`plugin/ux-design/docs/`](plugin/ux-design/docs/README.md).
 

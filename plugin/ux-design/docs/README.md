@@ -25,6 +25,7 @@ The plugin works across three overlapping modes:
 | [accessible-components](accessible-components.md) | Implement | Scaffold accessible UI patterns + a11y linting |
 | [interaction-feedback](interaction-feedback.md) | Implement / Guide | Add loading / empty / error / success states & toasts |
 | [ux-copy](ux-copy.md) | Guide | Write or review microcopy, errors, CTAs |
+| [help](help.md) | — | Explain the plugin, or a specific skill/command/tool |
 
 ## Commands
 
@@ -34,6 +35,7 @@ Slash commands are explicit entry points that drive one or more skills:
 - **`/ux-bootstrap`** → runs `ux-foundations`, which orchestrates `design-tokens`, `accessible-components`, `interaction-feedback`, and `ux-metrics`.
 - **`/ux-onboarding [path\|area]`** → drives the `ux-onboarding` skill: a guided, part-by-part walkthrough of the project's existing UX/design choices and patterns, ending in a reimplement-a-recent-change exercise. Familiarization, not scaffolding or scoring.
 - **`/ux-review [file\|url]`** → launches the `ux-reviewer` agent for a fast, scored review of a single artifact.
+- **`/ux-help [topic]`** → drives the `help` skill: explains the whole plugin, or a specific skill/command/agent/tool if you name one.
 
 ## Agent
 

@@ -82,7 +82,7 @@ The session ends with `stop session`; the agent steps out of character (for simu
 
 ## What you get
 
-Five lifecycle skills:
+Five lifecycle skills, plus a built-in `help` guide:
 
 | Skill | Trigger | What it does |
 | --- | --- | --- |
@@ -91,6 +91,7 @@ Five lifecycle skills:
 | `agentic-study-environment:start-session` | "start session", "let's work on X" | Begin a bracketed learning session (one of four core types: theory / practice / role-play / onboarding, with domain-specific flavors); load the active domain overlay |
 | `agentic-study-environment:stop-session` | "stop session", "wrap up" | Update the sub-project + `.studyenv/PROGRESS.md`, summarize what was covered |
 | `agentic-study-environment:adjust-level` | "simplify the curriculum", "make it harder", "build up to this paper" | Rewrite the curriculum at a different level — simpler or harder — pulling in external material with strict labels |
+| `agentic-study-environment:help` | "help with the harness", "what can this do", "explain set-curriculum" | Explain the harness — the full overview, or a specific skill, domain, session type, or convention. Backs the `/study-help` command. Explains only; never edits `.studyenv/` |
 
 Plus the swappable **domain overlays** that shape how a session runs:
 
@@ -154,7 +155,7 @@ Progress lives in two places: each sub-project's `PROGRESS.md` and the harness `
 
 Per-skill usage guides live in [`docs/`](docs/README.md):
 
-- [bootstrap](docs/bootstrap.md) · [set-curriculum](docs/set-curriculum.md) · [start-session](docs/start-session.md) · [stop-session](docs/stop-session.md) · [adjust-level](docs/adjust-level.md)
+- [bootstrap](docs/bootstrap.md) · [set-curriculum](docs/set-curriculum.md) · [start-session](docs/start-session.md) · [stop-session](docs/stop-session.md) · [adjust-level](docs/adjust-level.md) · [help](docs/help.md)
 - [Domain overlays](docs/domains.md) — what overlays are and how to pick one.
 
 ## Conventions (quick reference)
@@ -174,7 +175,8 @@ plugin/agentic-study-environment/
   .codex-plugin/plugin.json    ← Codex plugin manifest
   README.md                    ← this file
   docs/                        ← per-skill usage guides + domain overview
-  skills/                      ← bootstrap, set-curriculum, start-session, stop-session, adjust-level
+  skills/                      ← bootstrap, set-curriculum, start-session, stop-session, adjust-level, help
+  commands/                    ← /study-help (Claude Code convenience over the help skill)
   domains/                     ← coding, speech-therapy, legal-documents, academic-research (+ ADDING_AN_OVERLAY.md)
   templates/                   ← per-sub-project AGENTS.md, CLAUDE.md, PROGRESS.md templates
   reference/conventions.md     ← status legends, layout, language rules, curriculum format

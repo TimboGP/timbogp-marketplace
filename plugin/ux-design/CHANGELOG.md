@@ -6,6 +6,12 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), a
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-06-24
+
+### Added
+
+- **`help` skill + `/ux-help` command.** A built-in guide to the plugin. With no topic it gives the full overview — the three modes, every skill, all `/ux-*` commands, the `ux-reviewer` agent, and the bundled CLI tools; with a named skill, command, agent, tool, or concept (e.g. "tokens", "accessibility") it resolves the topic and explains just that one, reading its `docs/` page or `SKILL.md`. The `help` **skill** ([`skills/help/`](skills/help/SKILL.md)) is the cross-agent surface (on Codex, `/ux-design:help`); the `/ux-help` **command** ([`commands/ux-help.md`](commands/ux-help.md)) is the Claude Code convenience over it. Brings the skill count to ten and the command count to five. Documented in [`docs/help.md`](docs/help.md).
+
 ## [0.3.0] — 2026-06-23
 
 ### Added
@@ -34,7 +40,8 @@ Initial release — a second plugin in the `timbogp` marketplace that helps guid
 - **A `ux-reviewer` agent** — scores a single component or screen across four lenses (usability heuristics, accessibility, visual hierarchy, interaction feedback).
 - **Bundled zero-dependency CLI tools** — WCAG contrast checker, modular type-scale generator, SUS scorer, and a design-token contrast gate — covered by a `node:test` suite ([`test/scripts.test.mjs`](../../test/scripts.test.mjs)) and a CI workflow ([`.github/workflows/ci.yml`](../../.github/workflows/ci.yml)).
 
-[Unreleased]: https://github.com/TimboGP/timbogp-marketplace/compare/ux-design-v0.3.0...HEAD
+[Unreleased]: https://github.com/TimboGP/timbogp-marketplace/compare/ux-design-v0.4.0...HEAD
+[0.4.0]: https://github.com/TimboGP/timbogp-marketplace/compare/ux-design-v0.3.0...ux-design-v0.4.0
 [0.3.0]: https://github.com/TimboGP/timbogp-marketplace/compare/ux-design-v0.2.0...ux-design-v0.3.0
 [0.2.0]: https://github.com/TimboGP/timbogp-marketplace/releases/tag/ux-design-v0.2.0
 [0.1.0]: https://github.com/TimboGP/timbogp-marketplace/pull/3

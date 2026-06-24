@@ -6,6 +6,12 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), a
 
 ## [Unreleased]
 
+## [0.5.0] — 2026-06-24
+
+### Added
+
+- **`help` skill + `/study-help` command.** A built-in guide to the harness. With no topic it gives the full overview — what the harness is, the lifecycle skills and their loop, the four session types and their domain flavors, the domain overlays, and the key conventions (language, status, tracking); with a named skill, overlay, session type, or convention it explains just that one, reading the matching [`docs/`](docs/README.md) page, [`domains/`](domains/) overlay, or [`reference/conventions.md`](reference/conventions.md) section. The `help` **skill** ([`skills/help/`](skills/help/SKILL.md)) is the cross-agent surface (on Codex, `/agentic-study-environment:help`); the `/study-help` **command** ([`commands/study-help.md`](commands/study-help.md)) is the Claude Code convenience over it — this is the plugin's first `commands/` entry. The skill is read-only: it explains the harness and never creates or edits `.studyenv/` files. Documented in [`docs/help.md`](docs/help.md).
+
 ## [0.4.0] — 2026-06-24
 
 ### Added
@@ -75,7 +81,8 @@ Initial public release. The harness is packaged as a Claude Code plugin under [`
 
 - Smoke testing (`claude --plugin-dir ...`) is recommended before relying on the plugin in production.
 
-[Unreleased]: https://github.com/TimboGP/timbogp-marketplace/compare/agentic-study-environment-v0.4.0...HEAD
+[Unreleased]: https://github.com/TimboGP/timbogp-marketplace/compare/agentic-study-environment-v0.5.0...HEAD
+[0.5.0]: https://github.com/TimboGP/timbogp-marketplace/compare/agentic-study-environment-v0.4.0...agentic-study-environment-v0.5.0
 [0.4.0]: https://github.com/TimboGP/timbogp-marketplace/compare/agentic-study-environment-v0.3.0...agentic-study-environment-v0.4.0
 [0.3.0]: https://github.com/TimboGP/timbogp-marketplace/compare/v0.2.0...agentic-study-environment-v0.3.0
 [0.2.0]: https://github.com/TimboGP/timbogp-marketplace/compare/v0.1.0...v0.2.0

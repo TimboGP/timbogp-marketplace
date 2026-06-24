@@ -28,6 +28,13 @@ bootstrap → set-curriculum → start-session ⇄ stop-session
 | [start-session](start-session.md) | Begin a bracketed study session (theory / practice / role-play / onboarding) |
 | [stop-session](stop-session.md) | Record progress, update the journals, and summarize |
 | [adjust-level](adjust-level.md) | Re-level the curriculum up or down, labeling any external material |
+| [help](help.md) | Explain the harness, or a specific skill / domain / session type / convention |
+
+## Commands
+
+A Claude Code convenience over the skills above:
+
+- **`/study-help [topic]`** → drives the `help` skill: explains the whole harness, or a specific skill, domain overlay, session type, or convention if you name one. On Codex, use `/agentic-study-environment:help`.
 
 ## Domains
 
