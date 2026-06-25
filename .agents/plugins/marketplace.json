@@ -27,6 +27,18 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Design"
+    },
+    {
+      "name": "lean-coach",
+      "source": {
+        "source": "local",
+        "path": "./plugin/lean-coach"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Business"
     }
   ]
 }

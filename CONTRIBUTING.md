@@ -1,9 +1,10 @@
 # Contributing
 
-Contributions are welcome. This repo is the **`timbogp`** marketplace — it hosts two independent plugins that share a distribution channel and dev tooling but are otherwise unrelated:
+Contributions are welcome. This repo is the **`timbogp`** marketplace — it hosts three independent plugins that share a distribution channel and dev tooling but are otherwise unrelated:
 
 - **`agentic-study-environment`** ([`plugin/agentic-study-environment/`](plugin/agentic-study-environment/)) — a learning harness that turns a coding agent into a tutor over your own source materials.
 - **`ux-design`** ([`plugin/ux-design/`](plugin/ux-design/)) — a UX/UI toolkit: usability + accessibility audits, UX metrics, and stack-adaptive scaffolding.
+- **`lean-coach`** ([`plugin/lean-coach/`](plugin/lean-coach/)) — a Lean business-development coach over Ash Maurya's _Running Lean_: Lean Canvas, risk prioritization, customer-interview and investor-pitch role-play, experiments, and product/market fit.
 
 Pick the plugin your change belongs to and **keep each PR scoped to one plugin**. If you have an idea or hit something a plugin doesn't handle well, open an issue first; smaller fixes are fine as direct PRs.
 
@@ -65,6 +66,28 @@ Slash commands live in [`plugin/ux-design/commands/`](plugin/ux-design/commands/
 ### Bundled CLI scripts and references
 
 The zero-dependency CLI tools (contrast checker, type-scale generator, SUS scorer, contrast gate) live under their skills' `scripts/` directories and are covered by [`test/scripts.test.mjs`](test/scripts.test.mjs). **Any change to a script's math or exit codes must keep `npm test` and `npm run contrast:check` green** — add or update a test if you change the contract. Accessibility references (WCAG checklist, ARIA patterns) must cite the spec, not invent criteria.
+
+---
+
+## Contributing to `lean-coach`
+
+The goal for this plugin is a faithful, practical coach for Ash Maurya's *Running Lean* — one that guides a venture through the methodology and convincingly role-plays the counterparts a founder tests it against.
+
+### Skills
+
+The nine skills live under [`plugin/lean-coach/skills/`](plugin/lean-coach/skills/). Skill bodies are imperative and concise; deep methodology detail belongs in each skill's `references/` and in the shared [`reference/`](plugin/lean-coach/reference/) (`methodology.md`, `roles.md`, `workspace.md`), referenced by relative path so it resolves on both Claude Code and Codex. As with the other plugins, mind each skill's front-matter `description` — it drives triggering. Keep methodology claims grounded in the source and credited to Ash Maurya; don't present a paraphrased benchmark as the plugin's own invention, and never invent citations.
+
+### Roles and the role-play protocol
+
+The plugin's distinctive surface is its **roles**. New or refined personas go in [`reference/roles.md`](plugin/lean-coach/reference/roles.md) and must follow the shared role-play protocol (Phase 0 set up out of character → Phases 1–2 in character → Phase 3 debrief; break character with `[square brackets]`; never break unprompted). A role-play role must never coach mid-scene — mistakes are debrief material.
+
+### Commands and the agent
+
+Slash commands live in [`plugin/lean-coach/commands/`](plugin/lean-coach/commands/) (`/lean-coach`, `/lean-canvas`, `/lean-interview`, `/lean-role`, `/lean-help`) and the `lean-mentor` agent in [`plugin/lean-coach/agents/`](plugin/lean-coach/agents/). Keep them thin — they orchestrate skills, they don't re-implement them. These are Claude-Code-only conveniences; on Codex the capability must live in a skill.
+
+### The `.lean/` workspace
+
+The plugin reads and writes only inside the host project's `.lean/` directory and never touches the host's own files. Workspace file templates live in the relevant skills' `assets/`. Don't commit a real `.lean/` to this repo — it's gitignored, like `.studyenv/`.
 
 ---
 

@@ -6,6 +6,9 @@ HANDOFF.md
 # agentic-study-environment generated learning state
 .studyenv/
 
+# lean-coach generated venture workspace
+.lean/
+
 # Editors / IDEs
 .vscode/
 .idea/

@@ -1,0 +1,24 @@
+lean-coach
+Copyright (c) TimboGP. Licensed under the MIT License.
+
+This plugin is an independent, unofficial educational tool. It implements and
+teaches the "Running Lean" methodology created by Ash Maurya (Running Lean,
+O'Reilly Media), which builds on Eric Ries's The Lean Startup, Steve Blank's
+Customer Development, and Alex Osterwalder's Business Model Canvas. All credit
+for the methodology belongs to its authors. Please read the book and support
+the source: https://www.leanfoundry.com/books/running-lean
+
+Trademarks (used nominatively, only to refer to the frameworks themselves):
+  - "Lean Canvas" is a trademark of Ash Maurya / LEANSTACK.
+  - "The Lean Startup" / "Lean Startup" is a trademark of Eric Ries.
+  - "Business Model Canvas" is a trademark of Strategyzer AG; the canvas is
+    licensed under CC BY-SA 3.0.
+
+This plugin is NOT affiliated with, authorized, sponsored, or endorsed by Ash
+Maurya, LEANSTACK, Eric Ries, Strategyzer, or O'Reilly Media. All trademarks
+are the property of their respective owners.
+
+This plugin does not reproduce the text of Running Lean. It provides original
+guidance over a publicly described methodology, with attribution. Short quoted
+passages, where present, are attributed to their authors and used for
+educational commentary.

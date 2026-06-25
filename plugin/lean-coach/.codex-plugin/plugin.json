@@ -1,0 +1,43 @@
+{
+  "name": "lean-coach",
+  "version": "0.1.0",
+  "description": "A Lean business-development coach: guide a venture through Running Lean — Lean Canvas, riskiest-assumption testing, customer interviews, experiments, and product/market fit — and role-play the customers, investors, and advisors you test it with.",
+  "author": {
+    "name": "TimboGP",
+    "url": "https://github.com/TimboGP"
+  },
+  "homepage": "https://github.com/TimboGP/timbogp-marketplace",
+  "repository": "https://github.com/TimboGP/timbogp-marketplace",
+  "license": "MIT",
+  "keywords": [
+    "lean",
+    "lean-startup",
+    "running-lean",
+    "lean-canvas",
+    "startup",
+    "business-model",
+    "customer-development",
+    "product-market-fit",
+    "entrepreneurship"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Lean Coach",
+    "shortDescription": "Guide a venture through Running Lean, and role-play the people you test it with.",
+    "longDescription": "Lean Coach brings Ash Maurya's Running Lean to Codex as skills: build a Lean Canvas, rank your riskiest assumptions, run Problem/Solution/MVP customer interviews, design Build-Measure-Learn experiments, and measure product/market fit. It can also step into roles — customer, investor, devil's advocate, business partner, mentor — so you can rehearse the hard conversations, then break character and debrief.",
+    "developerName": "TimboGP",
+    "category": "Business",
+    "capabilities": [
+      "Skills",
+      "Business-model & risk strategy",
+      "Customer-interview & pitch role-play"
+    ],
+    "websiteURL": "https://github.com/TimboGP/timbogp-marketplace",
+    "defaultPrompt": [
+      "Help me build a Lean Canvas for my idea",
+      "Play a customer so I can practice a problem interview",
+      "What's the riskiest assumption in my plan?"
+    ],
+    "brandColor": "#059669"
+  }
+}

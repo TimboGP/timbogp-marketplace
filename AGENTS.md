@@ -1,11 +1,12 @@
 # AGENTS.md — timbogp marketplace
 
-This repository is the **`timbogp`** marketplace: a curated catalog of Claude Code plugins (also published for Codex). It currently hosts **two plugins**, which are independent of each other — the marketplace is just the shared distribution channel and the place their dev tooling lives.
+This repository is the **`timbogp`** marketplace: a curated catalog of Claude Code plugins (also published for Codex). It currently hosts **three plugins**, which are independent of each other — the marketplace is just the shared distribution channel and the place their dev tooling lives.
 
 | Plugin | Directory | What it is |
 | --- | --- | --- |
 | `agentic-study-environment` | [`plugin/agentic-study-environment/`](plugin/agentic-study-environment/) | A coding-agent learning harness — structured tutor sessions over user-supplied source materials, with swappable domain overlays. |
 | `ux-design` | [`plugin/ux-design/`](plugin/ux-design/) | A UX/UI toolkit — scored usability + accessibility audits, UX metrics, and stack-adaptive scaffolding (skills, commands, an agent, and zero-dependency CLI tools). |
+| `lean-coach` | [`plugin/lean-coach/`](plugin/lean-coach/) | A Lean business-development coach — guide a venture through Ash Maurya's _Running Lean_ (Lean Canvas, riskiest-assumption testing, customer interviews, experiments, product/market fit) and role-play the customer, investor, devil's-advocate, business-partner, and mentor you test it with. |
 
 Each plugin is independently versioned and self-documenting; work on one rarely touches the other. When working **inside a plugin**, read that plugin's `README.md` (and its `docs/`) first — they carry the operational detail this file intentionally does not duplicate.
 
@@ -13,8 +14,8 @@ Each plugin is independently versioned and self-documenting; work on one rarely 
 
 The marketplace is published in two manifest formats that must stay in sync — when you add, rename, or re-version a plugin, update **both**:
 
-- [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) — the Claude Code catalog (lists both plugins).
-- [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json) — the Codex catalog (lists both plugins).
+- [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) — the Claude Code catalog (lists all three plugins).
+- [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json) — the Codex catalog (lists all three plugins).
 
 Each plugin additionally carries its own manifests: `<plugin>/.claude-plugin/plugin.json` (Claude) and `<plugin>/.codex-plugin/plugin.json` (Codex, with an `interface` block). A plugin's `version` and `description` must match across its own two manifests **and** the catalog entries.
 
@@ -85,6 +86,16 @@ A UX/UI toolkit that works in three modes — **guide**, **measure**, and **impl
 
 On Codex, the plugin's **skills** are the cross-agent surface (exposed as `/ux-design:<skill>`); the slash commands and the `ux-reviewer` agent are Claude-Code conveniences over them. When generating code, the implement skills first read the shared `references/stack-detection.md` in the `ux-foundations` skill (referenced by relative path so it resolves on both agents) and prefer the project's existing idioms over new dependencies. Full detail: [`plugin/ux-design/README.md`](plugin/ux-design/README.md) and [`plugin/ux-design/docs/`](plugin/ux-design/docs/README.md).
 
+## The lean-coach plugin
+
+A Lean business-development coach built on **Ash Maurya's _Running Lean_** (which adapts Eric Ries, Steve Blank, and Osterwalder). Concept: **one coach, many hats** — it guides a venture through the methodology *and* role-plays the counterparts you test it against, then breaks character to debrief.
+
+It works across the methodology's spine — **document Plan A (Lean Canvas) → identify the riskiest parts → systematically test** (Build-Measure-Learn) — iterating toward product/market fit. It ships **nine skills** (`lean-coach`, `lean-canvas`, `prioritize-risks`, `customer-interview`, `investor-pitch`, `run-experiment`, `measure-fit`, `lean-roles`, `help`), **five commands** (`/lean-coach`, `/lean-canvas`, `/lean-interview`, `/lean-role`, `/lean-help`), and a `lean-mentor` agent.
+
+The **roles** are the distinctive surface — guide roles (Coach, Strategist, Analyst) and role-play personas (Customer, Investor, Devil's advocate, Business partner, Mentor) — defined with a shared role-play protocol (in-character rehearsal → break character with `[square brackets]` → out-of-character debrief) in [`plugin/lean-coach/reference/roles.md`](plugin/lean-coach/reference/roles.md). The methodology spine lives in [`plugin/lean-coach/reference/methodology.md`](plugin/lean-coach/reference/methodology.md).
+
+All venture state persists under a single gitignored **`.lean/`** workspace at the host project root (`canvas.md`, `risks.md`, `experiments/`, `interviews/`, `pitch/`, `metrics/`, `PROGRESS.md`); the plugin owns `.lean/` and never reads or modifies the host project's own files — see [`plugin/lean-coach/reference/workspace.md`](plugin/lean-coach/reference/workspace.md). On Codex the **skills** are the cross-agent surface; the `/lean-*` commands and the `lean-mentor` agent are Claude-Code conveniences over them. Full detail: [`plugin/lean-coach/README.md`](plugin/lean-coach/README.md) and [`plugin/lean-coach/docs/`](plugin/lean-coach/docs/README.md).
+
 ## Dev tooling
 
 The repo root carries the shared developer tooling (the plugins themselves are pure markdown / skill definitions and need no build):
@@ -102,17 +113,18 @@ The repo root carries the shared developer tooling (the plugins themselves are p
   README.md  CONTRIBUTING.md  CHANGELOG.md  LICENSE  PRIVACY.md
   package.json                       <- dev tooling (tests for ux-design's CLI scripts)
   test/                              <- node:test suite for the bundled scripts
-  .claude-plugin/marketplace.json    <- Claude Code catalog (both plugins)
-  .agents/plugins/marketplace.json   <- Codex catalog (both plugins)
+  .claude-plugin/marketplace.json    <- Claude Code catalog (all three plugins)
+  .agents/plugins/marketplace.json   <- Codex catalog (all three plugins)
   .github/                           <- CI, issue templates, PR template
   plugin/
     agentic-study-environment/       <- study-harness plugin (skills, overlays, templates, conventions, docs)
     ux-design/                       <- UX plugin (skills, commands, agent, docs, bundled scripts)
+    lean-coach/                      <- Lean business-dev plugin (skills, commands, agent, reference, docs)
 ```
 
 ## Working in this repo
 
 - **Touch both catalogs together.** Adding/renaming/re-versioning a plugin means editing both `marketplace.json` files plus that plugin's own `.claude-plugin/plugin.json` and `.codex-plugin/plugin.json`; keep `name`, `version`, and `description` consistent across all of them (see *Coding-agent parity* above).
-- **Keep changes plugin-scoped.** One plugin per PR where possible; the two plugins are independent.
+- **Keep changes plugin-scoped.** One plugin per PR where possible; the plugins are independent.
 - **Record changes** in the affected plugin's own changelog ([`plugin/agentic-study-environment/CHANGELOG.md`](plugin/agentic-study-environment/CHANGELOG.md) or [`plugin/ux-design/CHANGELOG.md`](plugin/ux-design/CHANGELOG.md)); the root [`CHANGELOG.md`](CHANGELOG.md) tracks marketplace-wide and cross-cutting changes. Plugins are versioned and tagged independently (`<plugin>-vX.Y.Z`).
 - See [`CONTRIBUTING.md`](CONTRIBUTING.md) for per-plugin contribution guidance.

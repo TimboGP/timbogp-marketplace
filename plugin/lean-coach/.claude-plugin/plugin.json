@@ -1,0 +1,22 @@
+{
+  "name": "lean-coach",
+  "version": "0.1.0",
+  "description": "A Lean business-development coach: guide a venture through Running Lean — Lean Canvas, riskiest-assumption testing, customer interviews, experiments, and product/market fit — and role-play the customers, investors, and advisors you test it with.",
+  "author": {
+    "name": "TimboGP"
+  },
+  "homepage": "https://github.com/TimboGP/timbogp-marketplace",
+  "repository": "https://github.com/TimboGP/timbogp-marketplace",
+  "license": "MIT",
+  "keywords": [
+    "lean",
+    "lean-startup",
+    "running-lean",
+    "lean-canvas",
+    "startup",
+    "business-model",
+    "customer-development",
+    "product-market-fit",
+    "entrepreneurship"
+  ]
+}
