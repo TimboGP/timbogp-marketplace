@@ -4,7 +4,7 @@
 
 ## What it does
 
-This skill ends a bracketed session. It records what happened in the sub-project's `PROGRESS.md` — raising topic statuses to the highest stage reached, updating the overall Status line if it changed, and appending a dated journal entry — then mirrors any status change into the `.studyenv/PROGRESS.md` cross-project tracker. Finally it gives you a short human-readable summary of what was covered and a suggested next session (without starting it). It pairs with `start-session`.
+This skill ends a bracketed session. It records what happened in the sub-project's `PROGRESS.md` — raising topic statuses to the highest stage reached, updating the overall Status line if it changed, and appending a dated journal entry — then mirrors any status change into the `.studyenv/PROGRESS.md` cross-project tracker. Finally it gives you a short human-readable summary of what was covered and a suggested next session (without starting it). It pairs with `start-session` and `onboard-session`.
 
 ## When it triggers
 
@@ -23,9 +23,9 @@ It is **not** invoked proactively just because a conversation got long — you b
   - "Okay, stop session."
   - "We're done for today, wrap up."
   - "Debrief and end the simulation."
-- **Where it sits in the lifecycle:** `bootstrap → set-curriculum → start-session ⇄ stop-session` — this is the closing half of the recurring study loop.
+- **Where it sits in the lifecycle:** `bootstrap → set-curriculum → start-session/onboard-session ⇄ stop-session` — this is the closing half of the recurring study loop.
 - **Typical flow:**
-  1. For a `role-play` session (`simulation`/`defense`/`review`), run the overlay's structured out-of-character **debrief** first.
+  1. For a `role-play` session (`simulation`/`defense`/`review`), run the overlay's structured out-of-character **debrief** first. `onboarding` sessions (opened via `onboard-session`) skip this — there's no role-play debrief — and go straight to the updates below.
   2. Update the sub-project's `.studyenv/<name>/PROGRESS.md` Topics table — set each touched topic to its highest stage (`introduced` → `exercised` → `reviewed`), never downgrading.
   3. Update the sub-project Status line if it changed (e.g. `ready` → `in progress`); log a reason if `blocked`.
   4. Append a dated journal entry summarizing topics touched, exercise outcomes, misconceptions, breakthroughs, blockers.
@@ -41,5 +41,5 @@ Reads and writes the sub-project's `.studyenv/<name>/PROGRESS.md` (Topics table,
 - **Role-play debriefs:** `role-play` flavors (`simulation`, `defense`, coding `review`/`interview`) run a structured overlay-defined debrief before the standard updates — e.g. which conditions/questions were handled vs. missed, and what a supervisor, committee, or reviewer would flag.
 - **The overlay shapes the close:** overlays refine `stop-session` only for the `role-play` type's debrief; otherwise the generic update flow applies.
 - **Tracking scope:** under `Tracking: local-only` the cross-project mirror is skipped entirely (and no missing-tracker warning is shown); only the sub-project's own `PROGRESS.md` is updated.
-- **Start ⇄ stop pairing:** this is where the session is actually saved. `start-session` records nothing — if you skip `stop-session`, no topic status, journal entry, or tracker update is written.
+- **Start ⇄ stop pairing:** this is where the session is actually saved. Neither `start-session` nor `onboard-session` records anything — if you skip `stop-session`, no topic status, journal entry, or tracker update is written.
 - **Status legends touched here:** topic statuses `introduced` · `exercised` · `reviewed` (highest stage ever reached, never downgraded), and sub-project statuses `created` · `ready` · `in progress` · `blocked` (reason logged) · `stopped` · `finished`.

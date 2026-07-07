@@ -58,7 +58,7 @@ After the debrief, this skill's normal `PROGRESS.md` updates still apply.
 
 ## Onboarding sessions
 
-`onboarding` is **not** in-character, so there is no role-play debrief — it closes through the standard flow above, for any overlay that flavors it (`coding` ships the canonical codebase flavor). When recording it, the Journal entry notes which parts of the corpus were walked and at what comprehension, which recent change was reproduced and how the user's version compared to the real one, and the next part to onboard onto. Topics in the Topics table map to subsystems / areas of the corpus. Artifacts live under `work/onboarding/` (see the active overlay, e.g. `../../domains/coding.md`).
+`onboarding` sessions are opened via the dedicated `onboard-session` skill, not `start-session`. They are **not** in-character, so there is no role-play debrief — they close through the standard flow above, for any overlay that flavors it (`coding` ships the canonical codebase flavor). When recording it, the Journal entry notes which parts of the corpus were walked and at what comprehension, which recent change was reproduced and how the user's version compared to the real one, and the next part to onboard onto. Topics in the Topics table map to subsystems / areas of the corpus. Artifacts live under `work/onboarding/` (see the active overlay, e.g. `../../domains/coding.md`).
 
 ## Why these rules
 
@@ -68,5 +68,5 @@ After the debrief, this skill's normal `PROGRESS.md` updates still apply.
 
 ## Related skills
 
-- `start-session` — opened this session.
+- `start-session`, `onboard-session` — opened this session.
 - `bootstrap`, `set-curriculum` — the other lifecycle skills.

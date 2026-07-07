@@ -4,9 +4,9 @@
 
 ## What an overlay is
 
-The five lifecycle skills are domain-agnostic: they scaffold, plan, study, and record the same way regardless of subject. What changes between studying a physics paper and a clinical case load is the *teaching shape* — and that lives in a **domain overlay**, a single markdown file under [`../domains/`](../domains/).
+The six lifecycle skills are domain-agnostic: they scaffold, plan, study, and record the same way regardless of subject. What changes between studying a physics paper and a clinical case load is the *teaching shape* — and that lives in a **domain overlay**, a single markdown file under [`../domains/`](../domains/).
 
-When `start-session` runs, it reads the sub-project's `Domain:` and loads the matching overlay, which tells it:
+When `start-session` (or, for `onboarding`, `onboard-session`) runs, it reads the sub-project's `Domain:` and loads the matching overlay, which tells it:
 
 - **Practice shape** — e.g. coding practice writes stub files with TODOs; speech-therapy practice runs a role-played simulation.
 - **Review focus** — what "good" looks like in this domain (idiomacy, legal precision, research rigor, …).
@@ -31,8 +31,8 @@ There are **four core session types**, and they are the only values a curriculum
 |---|---|---|
 | `theory` | all | Explanation, walkthrough, and review of concepts. |
 | `practice` | all | Hands-on work — shape depends on the overlay (legal `analysis`/`drafting`, research's six flavors, … are all `practice`). |
-| `role-play` | any overlay that flavors it | In-character session: setup → in character → out-of-character debrief. Shipped flavors below. |
-| `onboarding` | any overlay that flavors it (coding ships one) | Guided walkthrough of an existing artifact: survey → part-by-part walkthrough with comprehension checks → reproduce a recent change. |
+| `role-play` | any overlay that flavors it | In-character session: setup → in character → out-of-character debrief. Shipped flavors below. Run via `start-session`. |
+| `onboarding` | any overlay that flavors it (coding ships one) | Guided walkthrough of an existing artifact: survey → part-by-part walkthrough with comprehension checks → reproduce a recent change. Run via its own dedicated skill, `onboard-session`, not `start-session`. |
 
 Shipped `role-play` flavors:
 
@@ -46,7 +46,7 @@ Shipped `role-play` flavors:
 
 | Overlay | `Domain:` (synonyms) | Shape |
 |---|---|---|
-| [coding](../domains/coding.md) | `coding` | Stub-file scaffolding, idiomacy review, language-appropriate `/work/` layouts, the codebase flavor of `onboarding`, and `review` / `interview` flavors of `role-play`. |
+| [coding](../domains/coding.md) | `coding` | Stub-file scaffolding, idiomacy review, language-appropriate `/work/` layouts, the codebase flavor of `onboarding` (via `onboard-session`), and `review` / `interview` flavors of `role-play`. |
 | [speech-therapy](../domains/speech-therapy.md) | `speech-therapy` (`logopedics`) | Therapist–patient `simulation` (a `role-play` flavor) on top of theory and practice, with structured debriefs. |
 | [legal-documents](../domains/legal-documents.md) | `legal-documents` (`official-documents`, `public-documents`) | Prescribed-form drafting scaffolds, analysis frames (case briefs, redlines), legal-precision / citation review. No `role-play` flavor. |
 | [academic-research](../domains/academic-research.md) | `academic-research` (`research`, `scholarship`) | Critical-reading and literature-synthesis frames, manuscript/proposal drafting, peer-review and venue-fit exercises, a `defense` (`role-play`) flavor, rigor / contribution / citation-integrity review. |

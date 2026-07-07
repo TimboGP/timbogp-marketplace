@@ -117,7 +117,7 @@ Curricula live at `.studyenv/<sub-project>/ai-agent-materials/curriculum.md`. Th
   - a stable **id** (e.g. `T1`, `T2.a`) so `PROGRESS.md` can cross-reference without restating the topic description, and so reordering doesn't break references
   - a one-line **description**
   - **prerequisites** — other topic ids; `none` if root
-  - suggested **session type** — one of the four core types `theory`, `practice`, `role-play`, `onboarding` (or `both` as shorthand for theory + practice). Overlays do not add new *types*; they supply domain-specific **flavors** of these, and a curriculum may name a flavor where one exists — `simulation` (a `role-play` flavor under `Domain: speech-therapy`), `defense` (`role-play`, `Domain: academic-research`), `review` (`role-play`, `Domain: coding`). `onboarding` is a core type any overlay may flavor. See *Session types vs. flavors* below.
+  - suggested **session type** — one of the four core types `theory`, `practice`, `role-play`, `onboarding` (or `both` as shorthand for theory + practice). Overlays do not add new *types*; they supply domain-specific **flavors** of these, and a curriculum may name a flavor where one exists — `simulation` (a `role-play` flavor under `Domain: speech-therapy`), `defense` (`role-play`, `Domain: academic-research`), `review` (`role-play`, `Domain: coding`). `onboarding` is a core type any overlay may flavor; unlike the other three, it is proposed and run through its own dedicated skill (`onboard-session`) rather than through `start-session`. See *Session types vs. flavors* below.
   - **sources** — entries are either in-source (file + anchor back to `source-materials/`) or external (prefixed `[ext]` with a concrete citation). See *External-source labeling* below for the format.
   - **exercise hooks** — short outlines of proposed practice/theory exercises. The actual exercise artifacts live in `work/` and are created at session time per the active overlay; do not duplicate exercise content into the curriculum.
 
@@ -134,6 +134,8 @@ The harness distinguishes a small fixed set of session **types** from open-ended
   - `onboarding` — a guided walkthrough of an existing artifact: survey → part-by-part walkthrough with comprehension checks → reproduce a recent change. Generic protocol below.
 - A **flavor** keeps the type's protocol but swaps the *scaffolding form*, the *review focus*, and sometimes the `/work/` sub-layout. Flavors are overlay-local and are **not** new types.
 
+`theory`, `practice`, and `role-play` are all proposed and run through `start-session`. `onboarding` differs enough in shape — a read-only pass over an artifact the user didn't author, with its own setup and artifact tree — that it gets its own entry-point skill, `onboard-session`, instead of being one more type `start-session` routes to. It still closes through `stop-session` like any other session.
+
 Worked classification:
 
 | Overlay artifact | Type | Notes |
@@ -143,7 +145,7 @@ Worked classification:
 | speech-therapy `simulation` | `role-play` flavor | agent = patient; user = therapist |
 | academic-research `defense` | `role-play` flavor | agent = examiner; user defends own work |
 | coding `review` / `interview` | `role-play` flavors | agent = reviewer / interviewer |
-| coding `onboarding` (a codebase) | `onboarding` (type) | onboarding is a *type*, not a practice flavor — its loop differs |
+| coding `onboarding` (a codebase) | `onboarding` (type) | onboarding is a *type*, not a practice flavor — its loop differs; started via the `onboard-session` skill, not `start-session` |
 
 Overlay authors: reach for a **flavor** (a new scaffolding/review shape under an existing type) before inventing anything. A genuinely new *type* would require a new protocol the four above don't cover — a high bar.
 
@@ -221,7 +223,7 @@ Across all session types:
 
 ## Onboarding session protocol (generic)
 
-`onboarding` is a core session type for **getting up to speed on an existing artifact you didn't author** — a codebase, a corpus of documents, a body of papers. The artifact *is* the source material; the goal is a working mental model and the confidence to make changes, not learning a topic from first principles. Each overlay flavors this skeleton by filling the four parameters in **bold**; the canonical worked flavor is `coding` (see `../domains/coding.md`).
+`onboarding` is a core session type for **getting up to speed on an existing artifact you didn't author** — a codebase, a corpus of documents, a body of papers. The artifact *is* the source material; the goal is a working mental model and the confidence to make changes, not learning a topic from first principles. It is proposed and run through the dedicated `onboard-session` skill rather than through `start-session`. Each overlay flavors this skeleton by filling the four parameters in **bold**; the canonical worked flavor is `coding` (see `../domains/coding.md`).
 
 The session runs in phases:
 
@@ -248,14 +250,15 @@ Overlay parameters: **the agent's role**, **whose work is scrutinized**, and **t
 
 ## Skills
 
-The four **lifecycle skills** carry the user through bootstrap → set-curriculum → session → session-end. The one **auxiliary skill** (`adjust-level`) operates off-cycle on an existing curriculum.
+The five **lifecycle skills** carry the user through bootstrap → set-curriculum → session (`start-session` or `onboard-session`) → session-end. The one **auxiliary skill** (`adjust-level`) operates off-cycle on an existing curriculum.
 
 | Skill | Purpose | Updates PROGRESS.md? |
 | --- | --- | --- |
 | `bootstrap` | Mint a new sub-project | Yes — adds Projects row + Journal entry |
 | `set-curriculum` | Build or update a sub-project's `curriculum.md` from source materials, source-faithful | No (curriculum is reference, not progress) |
-| `start-session` | Begin a bracketed learning session | No (the session itself does the work) |
+| `start-session` | Begin a bracketed `theory` / `practice` / `role-play` session | No (the session itself does the work) |
+| `onboard-session` | Begin a bracketed `onboarding` session over an artifact you didn't author | No (the session itself does the work) |
 | `stop-session` | End the session: record progress and summarize | Yes — Topics, Status, Journal in both sub-project and `.studyenv/PROGRESS.md` |
 | `adjust-level` | Shift an existing curriculum simpler or harder; allowed to pull in external material with strict labeling | No (same reasoning as `set-curriculum`) |
 
-Domain overlays at [`../domains/<domain>.md`](../domains/) refine `start-session` and (for the `role-play` and `onboarding` types — whose generic protocols are defined above) `stop-session`. They are additive — they supply domain-specific flavors of the core types and refine the generic core defined here; they do not replace it.
+Domain overlays at [`../domains/<domain>.md`](../domains/) refine `start-session` (for `theory`/`practice`/`role-play`), `onboard-session` (for `onboarding`), and (for the `role-play` and `onboarding` types — whose generic protocols are defined above) `stop-session`. They are additive — they supply domain-specific flavors of the core types and refine the generic core defined here; they do not replace it.

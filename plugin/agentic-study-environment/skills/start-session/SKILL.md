@@ -31,7 +31,8 @@ Sessions focus on **one** of four core **types**, though a theory session may in
 - **`theory`** — concept discussion, definitions, intuitions, proofs/derivations on request.
 - **`practice`** — work an exercise grounded in the current theory topic; the agent prepares scaffolding (the active overlay specifies the form), the user implements, the agent reviews and pushes deeper.
 - **`role-play`** — an in-character session: setup out of character, role-play in character, debrief out of character. Available when the active overlay flavors it — `simulation` (`speech-therapy`: agent = patient), `defense` (`academic-research`: agent = examiner), `review` / `interview` (`coding`: agent = reviewer / interviewer). Generic protocol in `../../reference/conventions.md` → *Role-play session protocol (generic)*; the overlay fixes the role, whose work is scrutinized, and the debrief rubric.
-- **`onboarding`** — a guided walkthrough of an existing artifact you didn't author (a codebase, a document corpus, a body of papers): survey → part-by-part walkthrough with comprehension checks → reproduce a recent change. Available wherever an overlay flavors it (`coding` ships the canonical codebase flavor). Generic protocol in `../../reference/conventions.md` → *Onboarding session protocol (generic)*; see the active overlay for its corpus-specific shape.
+
+A fourth core type, **`onboarding`** — a guided walkthrough of an existing artifact you didn't author (a codebase, a document corpus, a body of papers) — has its own dedicated skill, `onboard-session`, rather than being proposed here. If the user wants to get up to speed on something they didn't write, redirect to `onboard-session`.
 
 ## Propose a route
 
@@ -73,4 +74,5 @@ When the user signals they're done — "stop session", "wrap up", "end session",
 
 - `bootstrap` — mint a new sub-project.
 - `set-curriculum` — build or update the teaching plan.
+- `onboard-session` — the dedicated skill for `onboarding` sessions (getting up to speed on an artifact you didn't author).
 - `stop-session` — record progress and summarize at session end.

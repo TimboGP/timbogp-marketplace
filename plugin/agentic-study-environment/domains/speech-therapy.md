@@ -23,7 +23,7 @@ Curriculum entries (in `ai-agent-materials/curriculum.md`) may use `simulation` 
 
 Theory and practice sessions keep their generic shape (concept discussion, exercises, written tasks). Simulation sessions follow the protocol below — the speech-therapy flavor of the generic role-play protocol.
 
-This overlay adds no `onboarding` flavor of its own; it inherits the generic `onboarding` protocol unchanged (e.g. orienting onto a body of clinical guidelines or a case archive in `source-materials/`) if a curriculum calls for it.
+This overlay adds no `onboarding` flavor of its own; it inherits the generic `onboarding` protocol unchanged, run via the [`onboard-session`](../skills/onboard-session/SKILL.md) skill (e.g. orienting onto a body of clinical guidelines or a case archive in `source-materials/`) if a curriculum calls for it.
 
 ## Simulation session protocol
 

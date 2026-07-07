@@ -62,17 +62,18 @@ The marketplace is named **`timbogp`**; the repo is named `timbogp-marketplace`.
 
 A domain-agnostic tutor harness. The agent acts as a tutor over user-supplied source materials, organized as one or more **sub-projects** — each targeting one topic (a paper, a piece of math, a language, a clinical case load, a programming domain, …). Per-domain refinement happens through **overlays**.
 
-It exposes five lifecycle skills that handle the whole sub-project workflow (plus a `help` skill — backed by the `/study-help` command — that explains the harness or any one skill, domain, session type, or convention):
+It exposes six lifecycle skills that handle the whole sub-project workflow (plus a `help` skill — backed by the `/study-help` command — that explains the harness or any one skill, domain, session type, or convention):
 
 | Trigger phrasing | Skill | What it does |
 | --- | --- | --- |
 | "bootstrap a project for X" | `agentic-study-environment:bootstrap` | Mint a new sub-project (`.studyenv/<name>/`, per-project AGENTS.md, CLAUDE.md, PROGRESS.md); register in `.studyenv/PROGRESS.md` |
 | "set curriculum for X" | `agentic-study-environment:set-curriculum` | Build/update the sub-project's `.studyenv/<name>/ai-agent-materials/curriculum.md` from source materials |
 | "start session", "let's work on X" | `agentic-study-environment:start-session` | Begin a bracketed learning session (theory / practice / domain-specific types); load the active overlay |
+| "onboard me on this codebase", "walk me through this repo" | `agentic-study-environment:onboard-session` | Begin a bracketed `onboarding` session over an existing artifact you didn't author: survey, part-by-part walkthrough, reproduce a recent change |
 | "stop session", "wrap up" | `agentic-study-environment:stop-session` | Update sub-project + `.studyenv/PROGRESS.md`, summarize what was covered |
 | "simplify the curriculum", "make it harder" | `agentic-study-environment:adjust-level` | Rewrite the curriculum at a different difficulty, pulling in external material with strict source labels |
 
-**Conventions**, **status legends**, **sub-project layout**, **curriculum format**, and the **language override rules** live in [`plugin/agentic-study-environment/reference/conventions.md`](plugin/agentic-study-environment/reference/conventions.md). Domain overlays live at [`plugin/agentic-study-environment/domains/`](plugin/agentic-study-environment/domains/) — currently `coding.md` (with an `onboarding` session type), `speech-therapy.md`, `legal-documents.md`, and `academic-research.md`.
+**Conventions**, **status legends**, **sub-project layout**, **curriculum format**, and the **language override rules** live in [`plugin/agentic-study-environment/reference/conventions.md`](plugin/agentic-study-environment/reference/conventions.md). Domain overlays live at [`plugin/agentic-study-environment/domains/`](plugin/agentic-study-environment/domains/) — currently `coding.md` (with the `onboard-session` skill's codebase flavor), `speech-therapy.md`, `legal-documents.md`, and `academic-research.md`.
 
 All generated learning state lives under a single `.studyenv/` directory at the host project root (gitignored here) — the harness never reads or modifies the host project's own files.
 

@@ -17,7 +17,7 @@ Skills activate automatically based on your request. This one triggers on phrase
   - "This paper is too dense — can we build up to it from the basics?"
   - "The textbook is the floor; make a more advanced version that climbs higher."
   - "Give me an intro-level version of the tasep curriculum."
-- **Where it sits in the lifecycle:** off-cycle. The main flow is `bootstrap → set-curriculum → start-session ⇄ stop-session`; `adjust-level` is an as-needed tune-up of an existing curriculum produced by `set-curriculum`.
+- **Where it sits in the lifecycle:** off-cycle. The main flow is `bootstrap → set-curriculum → start-session/onboard-session ⇄ stop-session`; `adjust-level` is an as-needed tune-up of an existing curriculum produced by `set-curriculum`.
 - **Typical flow:**
   1. You name the **sub-project** and the **direction** (simpler / more advanced); the agent asks one short question if direction is ambiguous. Optionally give a **target level** or **specific gaps/extensions**.
   2. It reads the baseline `curriculum.md` (redirecting you to `set-curriculum` if none exists), the source extractions, the `source-materials/`, and the conventions' labeling rules.

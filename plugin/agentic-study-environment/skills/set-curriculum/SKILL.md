@@ -41,7 +41,7 @@ Render or update `.studyenv/<name>/ai-agent-materials/curriculum.md` with the st
   - a stable **id** (`T1`, `T2.a`, …) so `PROGRESS.md` can cross-reference
   - a one-line **description**
   - **prerequisites** (other topic ids; `none` if root)
-  - suggested **session type** — one of the four core types `theory`, `practice`, `role-play`, `onboarding` (or `both` for theory + practice). Where the active overlay flavors `role-play`, the curriculum may name the flavor — `simulation` (`Domain: speech-therapy`), `defense` (`Domain: academic-research`), `review` / `interview` (`Domain: coding`). See `../../reference/conventions.md` → *Session types vs. flavors*.
+  - suggested **session type** — one of the four core types `theory`, `practice`, `role-play`, `onboarding` (or `both` for theory + practice). `theory`/`practice`/`role-play` are run via `start-session`; `onboarding` via the dedicated `onboard-session` skill. Where the active overlay flavors `role-play`, the curriculum may name the flavor — `simulation` (`Domain: speech-therapy`), `defense` (`Domain: academic-research`), `review` / `interview` (`Domain: coding`). See `../../reference/conventions.md` → *Session types vs. flavors*.
   - **source references** — page numbers, section anchors, URLs
   - **exercise hooks** — short outlines of proposed practice/theory exercises; the actual exercise artifacts live in `work/`, created at session time per the active domain overlay.
 
@@ -51,7 +51,7 @@ If `curriculum.md` already exists, **update** rather than overwrite:
 - Fold in user-provided corrections or additions.
 - Re-check dependencies and ordering.
 
-The curriculum is **reference-only**. It does not constrain `start-session` — the agent may consult it when proposing a route, but is free to deviate.
+The curriculum is **reference-only**. It does not constrain `start-session` or `onboard-session` — the agent may consult it when proposing a route, but is free to deviate.
 
 ## Stay source-faithful; label any departures
 
@@ -75,4 +75,4 @@ Do **not** duplicate exercise content here; the curriculum's exercise hooks poin
 ## Related skills
 
 - `bootstrap` mints the sub-project.
-- `start-session` consults the curriculum (among other inputs) when proposing what to study next.
+- `start-session`, `onboard-session` consult the curriculum (among other inputs) when proposing what to study next.

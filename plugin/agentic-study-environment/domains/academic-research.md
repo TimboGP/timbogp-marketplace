@@ -35,7 +35,7 @@ Beyond the generic `theory` and `practice` types, this overlay supplies a flavor
 
 Curriculum entries (in `ai-agent-materials/curriculum.md`) may use `defense` as a session-type value alongside `theory` and `practice`. At session start, the agent considers all three when proposing a route.
 
-This overlay adds no `onboarding` flavor of its own; it inherits the generic `onboarding` protocol unchanged — useful for orienting onto an inherited body of papers or a research codebase in `source-materials/`, where "a recent change" is a recent revision or finding to reconstruct.
+This overlay adds no `onboarding` flavor of its own; it inherits the generic `onboarding` protocol unchanged, run via the [`onboard-session`](../skills/onboard-session/SKILL.md) skill — useful for orienting onto an inherited body of papers or a research codebase in `source-materials/`, where "a recent change" is a recent revision or finding to reconstruct.
 
 `practice` in this domain comes in several flavors, all of them ordinary `practice` sessions; the agent picks one and states which:
 

@@ -8,10 +8,10 @@ Paths in this overlay (`work/`, …) are relative to the sub-project root, which
 
 Beyond the generic `theory` and `practice` types, this overlay flavors two of the core types defined in [`../reference/conventions.md`](../reference/conventions.md) (*Session types vs. flavors*):
 
-- `onboarding` (the core onboarding type, flavored for a **codebase**) — the agent walks the user through an existing codebase part by part to build familiarity: it explains one subsystem at a time, sends the user to read the actual code, checks comprehension with questions, and then has the user **reimplement a small recent change** picked from the project's history. Use it when joining a codebase someone else wrote, rather than learning a topic from scratch.
+- `onboarding` (the core onboarding type, flavored for a **codebase**) — the agent walks the user through an existing codebase part by part to build familiarity: it explains one subsystem at a time, sends the user to read the actual code, checks comprehension with questions, and then has the user **reimplement a small recent change** picked from the project's history. Use it when joining a codebase someone else wrote, rather than learning a topic from scratch. Started via the dedicated [`onboard-session`](../skills/onboard-session/SKILL.md) skill, not `start-session`.
 - `review` / `interview` (flavors of the core `role-play` type) — an in-character session: in `review` the agent plays a **senior code reviewer** and the user defends their own change or design; in `interview` the agent plays a **technical interviewer** probing the user on a problem. See *Review / interview session protocol* below.
 
-Curriculum entries (in `ai-agent-materials/curriculum.md`) may use `onboarding`, `review`, or `interview` as session-type values alongside `theory` and `practice`. At session start, the agent considers them all when proposing a route.
+Curriculum entries (in `ai-agent-materials/curriculum.md`) may use `onboarding`, `review`, or `interview` as session-type values alongside `theory` and `practice`. At session start, `start-session` considers `theory`/`practice`/`review`/`interview` when proposing a route; `onboard-session` considers `onboarding` entries.
 
 Theory and practice sessions keep their generic coding shape (below). Onboarding follows the coding flavor of the generic onboarding protocol; `review` / `interview` follow the coding flavor of the generic role-play protocol.
 
@@ -28,7 +28,7 @@ Theory sessions for coding domains lean on the matching vocabulary: complexity, 
 
 ## Onboarding session protocol
 
-This is **coding's flavor of the generic onboarding protocol** ([`../reference/conventions.md`](../reference/conventions.md) → *Onboarding session protocol (generic)*). The generic skeleton — survey → part-by-part walkthrough with comprehension checks → reproduce a recent change → standard close — holds; this section fills the coding-specific parameters: the **corpus** is a codebase, "send the user to read" points at source files and symbols, and "a recent change" is a commit/PR from the project's history.
+This is **coding's flavor of the generic onboarding protocol** ([`../reference/conventions.md`](../reference/conventions.md) → *Onboarding session protocol (generic)*), run via the [`onboard-session`](../skills/onboard-session/SKILL.md) skill. The generic skeleton — survey → part-by-part walkthrough with comprehension checks → reproduce a recent change → standard close — holds; this section fills the coding-specific parameters: the **corpus** is a codebase, "send the user to read" points at source files and symbols, and "a recent change" is a commit/PR from the project's history.
 
 Onboarding familiarizes the user with a codebase they did **not** write — a new job's repository, an open-source project, a teammate's service. Here the codebase *is* the source material; the goal is a working mental model and the confidence to make changes, not learning a topic from first principles.
 

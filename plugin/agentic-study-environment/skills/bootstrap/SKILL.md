@@ -77,5 +77,5 @@ After scaffolding is in place:
 
 ## Related skills
 
-- After bootstrap, the user typically runs `set-curriculum` once source materials are in place, then `start-session` to actually study.
+- After bootstrap, the user typically runs `set-curriculum` once source materials are in place, then `start-session` (or `onboard-session`, for getting up to speed on an existing artifact) to actually study.
 - `stop-session` updates the per-project `PROGRESS.md` and `.studyenv/PROGRESS.md`.

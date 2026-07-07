@@ -82,20 +82,21 @@ The session ends with `stop session`; the agent steps out of character (for simu
 
 ## What you get
 
-Five lifecycle skills, plus a built-in `help` guide:
+Six lifecycle skills, plus a built-in `help` guide:
 
 | Skill | Trigger | What it does |
 | --- | --- | --- |
 | `agentic-study-environment:bootstrap` | "bootstrap a project for X" | Mint a new sub-project (`.studyenv/<name>/AGENTS.md`, `CLAUDE.md`, `PROGRESS.md`, `source-materials/`); register it in `.studyenv/PROGRESS.md` |
 | `agentic-study-environment:set-curriculum` | "set curriculum for X" | Build or update `.studyenv/<name>/ai-agent-materials/curriculum.md` from source materials |
-| `agentic-study-environment:start-session` | "start session", "let's work on X" | Begin a bracketed learning session (one of four core types: theory / practice / role-play / onboarding, with domain-specific flavors); load the active domain overlay |
+| `agentic-study-environment:start-session` | "start session", "let's work on X" | Begin a bracketed learning session (theory / practice / role-play, with domain-specific flavors); load the active domain overlay |
+| `agentic-study-environment:onboard-session` | "onboard me on this codebase", "walk me through this repo" | Begin a bracketed `onboarding` session over an existing artifact you didn't author: survey, part-by-part walkthrough, reproduce a recent change |
 | `agentic-study-environment:stop-session` | "stop session", "wrap up" | Update the sub-project + `.studyenv/PROGRESS.md`, summarize what was covered |
 | `agentic-study-environment:adjust-level` | "simplify the curriculum", "make it harder", "build up to this paper" | Rewrite the curriculum at a different level — simpler or harder — pulling in external material with strict labels |
 | `agentic-study-environment:help` | "help with the harness", "what can this do", "explain set-curriculum" | Explain the harness — the full overview, or a specific skill, domain, session type, or convention. Backs the `/study-help` command. Explains only; never edits `.studyenv/` |
 
 Plus the swappable **domain overlays** that shape how a session runs:
 
-- [`domains/coding.md`](domains/coding.md) — stub-file scaffolding, idiomacy review, language-appropriate `/work/` layouts, the codebase flavor of `onboarding`, and `review` / `interview` flavors of `role-play`.
+- [`domains/coding.md`](domains/coding.md) — stub-file scaffolding, idiomacy review, language-appropriate `/work/` layouts, the codebase flavor of `onboarding` (via `onboard-session`), and `review` / `interview` flavors of `role-play`.
 - [`domains/speech-therapy.md`](domains/speech-therapy.md) — therapist–patient `simulation` (a `role-play` flavor) on top of theory and practice.
 - [`domains/legal-documents.md`](domains/legal-documents.md) — official public and legal documents: prescribed-form drafting scaffolds, analysis frames (case briefs, redlines), legal-precision / citation review.
 - [`domains/academic-research.md`](domains/academic-research.md) — the research lifecycle: critical-reading and literature-synthesis frames, manuscript/proposal drafting scaffolds, peer-review and venue-fit exercises, a `defense` (`role-play`) flavor for mock vivas and reviewer Q&A.
@@ -146,7 +147,7 @@ For a dedicated learning workspace, just run the plugin in a fresh directory (e.
 1. **Bootstrap a sub-project** — *"bootstrap a project called `tasep` to learn the totally asymmetric simple exclusion process"*. You can include `Domain:` (e.g. `coding`, `speech-therapy`), `Language:` (BCP 47 tag), and Tools & Materials. The skill refuses to overwrite an existing sub-project.
 2. **Drop source materials** (PDFs, papers, notes, links, prepared code) into `.studyenv/<name>/source-materials/`.
 3. **Set the curriculum** — *"set curriculum for `tasep`"* writes the plan to `.studyenv/<name>/ai-agent-materials/curriculum.md`.
-4. **Start a session** — *"start session"* proposes a topic and session type (theory / practice / role-play / onboarding, with the active overlay's flavor). Override as you like.
+4. **Start a session** — *"start session"* proposes a topic and session type (theory / practice / role-play, with the active overlay's flavor). Override as you like. To get walked through an existing codebase/corpus instead, say *"onboard me on X"* (`onboard-session`).
 5. **Stop the session** — *"stop session"* records progress and summarizes.
 
 Progress lives in two places: each sub-project's `PROGRESS.md` and the harness `.studyenv/PROGRESS.md` (Projects table + Journal).
@@ -155,7 +156,7 @@ Progress lives in two places: each sub-project's `PROGRESS.md` and the harness `
 
 Per-skill usage guides live in [`docs/`](docs/README.md):
 
-- [bootstrap](docs/bootstrap.md) · [set-curriculum](docs/set-curriculum.md) · [start-session](docs/start-session.md) · [stop-session](docs/stop-session.md) · [adjust-level](docs/adjust-level.md) · [help](docs/help.md)
+- [bootstrap](docs/bootstrap.md) · [set-curriculum](docs/set-curriculum.md) · [start-session](docs/start-session.md) · [onboard-session](docs/onboard-session.md) · [stop-session](docs/stop-session.md) · [adjust-level](docs/adjust-level.md) · [help](docs/help.md)
 - [Domain overlays](docs/domains.md) — what overlays are and how to pick one.
 
 ## Conventions (quick reference)
@@ -175,7 +176,7 @@ plugin/agentic-study-environment/
   .codex-plugin/plugin.json    ← Codex plugin manifest
   README.md                    ← this file
   docs/                        ← per-skill usage guides + domain overview
-  skills/                      ← bootstrap, set-curriculum, start-session, stop-session, adjust-level, help
+  skills/                      ← bootstrap, set-curriculum, start-session, onboard-session, stop-session, adjust-level, help
   commands/                    ← /study-help (Claude Code convenience over the help skill)
   domains/                     ← coding, speech-therapy, legal-documents, academic-research (+ ADDING_AN_OVERLAY.md)
   templates/                   ← per-sub-project AGENTS.md, CLAUDE.md, PROGRESS.md templates

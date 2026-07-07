@@ -8,7 +8,7 @@ If you only need to know *what* an overlay specifies, look at [`coding.md`](codi
 
 A domain overlay refines the generic agentic-study-environment harness for a specific kind of learning. The generic core (defined by the lifecycle skills under [`../skills/`](../skills/) plus [`../reference/conventions.md`](../reference/conventions.md)) covers sub-project structure, session bracketing, progress tracking, and language handling — none of that changes per domain. What *does* change per domain is the **shape of practice**: what scaffolding looks like, what review focuses on, and how the `/work/` folder is organized. An overlay specifies exactly those domain-specific bits; everything else falls through to the core.
 
-Overlays are loaded at runtime by `start-session` (and, for some types, `stop-session`) based on the sub-project's `Domain:` declaration. If a sub-project's `AGENTS.md` says `Domain: math`, the agent loads `domains/math.md`. Older projects that still declare `Domain:` in `CLAUDE.md` continue to work as a fallback.
+Overlays are loaded at runtime by `start-session` (for `theory`/`practice`/`role-play`), `onboard-session` (for `onboarding`), and (for some types) `stop-session`, based on the sub-project's `Domain:` declaration. If a sub-project's `AGENTS.md` says `Domain: math`, the agent loads `domains/math.md`. Older projects that still declare `Domain:` in `CLAUDE.md` continue to work as a fallback.
 
 ## Step 1: pick a domain that needs an overlay
 
@@ -40,10 +40,10 @@ under `../skills/`) — it does not replace it.
 
 ### Session types
 
-There are four **core types** (`theory`, `practice`, `role-play`, `onboarding`) defined in [`../reference/conventions.md`](../reference/conventions.md) (*Session types vs. flavors*). Overlays do **not** invent new types — they supply domain-specific **flavors** of these. The two heavyweight types, `role-play` and `onboarding`, have generic protocols in the conventions that your overlay *flavors* by filling a few parameters rather than re-describing the loop:
+There are four **core types** (`theory`, `practice`, `role-play`, `onboarding`) defined in [`../reference/conventions.md`](../reference/conventions.md) (*Session types vs. flavors*). Overlays do **not** invent new types — they supply domain-specific **flavors** of these. `theory`/`practice`/`role-play` are run via `start-session`; `onboarding` is run via its own dedicated skill, `onboard-session`. The two heavyweight types, `role-play` and `onboarding`, have generic protocols in the conventions that your overlay *flavors* by filling a few parameters rather than re-describing the loop:
 
 - **`role-play`** — fix the agent's role, whose work is scrutinized, and the debrief rubric (e.g. `simulation` = patient, `defense` = examiner, coding `review` = reviewer). Do **not** restate the break-character convention; reference the canonical one.
-- **`onboarding`** — fix what the corpus is, what "send the user to read" points at, and what "a recent change" means. If your domain has nothing special to add, you inherit it as-is.
+- **`onboarding`** — fix what the corpus is, what "send the user to read" points at, and what "a recent change" means. If your domain has nothing special to add, you inherit it as-is (still via `onboard-session`).
 
 For math, no flavor is needed:
 
@@ -148,12 +148,13 @@ For math sub-projects, declare at minimum:
 
 ## Step 3: cross-check against the lifecycle skills
 
-The four skills under [`../skills/`](../skills/) don't need editing — they consult overlays generically. But make sure your overlay's vocabulary doesn't clash with theirs:
+The lifecycle skills under [`../skills/`](../skills/) don't need editing — they consult overlays generically. But make sure your overlay's vocabulary doesn't clash with theirs:
 
 - The overlay should not redefine **status legends** (those live in `../reference/conventions.md` and are domain-agnostic).
-- The overlay should not redefine **session bracketing** — `start-session`/`stop-session` handle that.
+- The overlay should not redefine **session bracketing** — `start-session`/`onboard-session`/`stop-session` handle that.
 - The overlay should not invent a new session **type** or restate a generic protocol (the `role-play` three-phase shape, the break-character convention, the `onboarding` skeleton). Flavor an existing type and reference the canonical protocol instead.
 - If your overlay flavors `role-play` (like `simulation`/`defense`/`review`), state that `start-session` should consider the flavor when proposing a route, and that `stop-session` runs the generic debrief against your flavor's rubric before its standard updates.
+- If your overlay flavors `onboarding`, state that `onboard-session` (not `start-session`) is where the flavor applies.
 
 ## Step 4: declare the overlay's domain value in the bootstrap docs
 
