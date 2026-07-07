@@ -1,6 +1,6 @@
 {
   "name": "agentic-study-environment",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A learning harness for structured tutor sessions over your own source materials, in any domain.",
   "author": {
     "name": "TimboGP",
@@ -34,7 +34,8 @@
     "defaultPrompt": [
       "Bootstrap a learning project",
       "Set curriculum from source materials",
-      "Start a study session"
+      "Start a study session",
+      "Onboard me on an existing codebase"
     ],
     "brandColor": "#2563EB"
   }

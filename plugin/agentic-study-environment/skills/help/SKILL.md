@@ -7,7 +7,7 @@ description: Explain the agentic-study-environment plugin — what it does, the 
 
 Explain the **agentic-study-environment** harness to the user. This skill is the plugin's built-in guide — it answers "what is this and what can it do?" and "how do I use X?" so the user doesn't have to read the docs tree first.
 
-This skill never creates or modifies any `.studyenv/` files — it only explains. If the user actually wants to study, hand off to the lifecycle skill they need (`bootstrap`, `set-curriculum`, `start-session`, `stop-session`, `adjust-level`).
+This skill never creates or modifies any `.studyenv/` files — it only explains. If the user actually wants to study, hand off to the lifecycle skill they need (`bootstrap`, `set-curriculum`, `start-session`, `onboard-session`, `stop-session`, `adjust-level`).
 
 ## How to respond
 
@@ -30,7 +30,8 @@ Everything it generates lives under a single `.studyenv/` directory at the proje
 |---|---|---|
 | `bootstrap` | "bootstrap a project for X" | Mint a new sub-project (`.studyenv/<name>/` with `AGENTS.md`, `CLAUDE.md`, `PROGRESS.md`, `source-materials/`); register it in `.studyenv/PROGRESS.md`. |
 | `set-curriculum` | "set curriculum for X" | Build or update `.studyenv/<name>/ai-agent-materials/curriculum.md` from the source materials, source-faithfully. |
-| `start-session` | "start session", "let's work on X" | Begin a bracketed session (theory / practice / role-play / onboarding, with the active overlay's flavor); load the domain overlay. |
+| `start-session` | "start session", "let's work on X" | Begin a bracketed session (theory / practice / role-play, with the active overlay's flavor); load the domain overlay. |
+| `onboard-session` | "onboard me on this codebase", "walk me through this repo" | Begin a bracketed `onboarding` session: survey an existing artifact, walk it part by part, reproduce a recent change. |
 | `stop-session` | "stop session", "wrap up" | Record progress to the sub-project + `.studyenv/PROGRESS.md`, and summarize what was covered. |
 | `adjust-level` | "simplify this", "make it harder", "build up to this paper" | Rewrite the curriculum at a different level, pulling in external material with strict source labels. |
 | `help` | "help with the harness" | This guide. |
@@ -40,20 +41,22 @@ Skills trigger from natural language — you rarely name them. On Codex they're 
 ### The lifecycle loop
 
 ```
-bootstrap → set-curriculum → start-session ⇄ stop-session
+                       ┌─ start-session ─┐
+bootstrap → set-curriculum ─┤                 ├─ stop-session
+                       └─ onboard-session ┘
                                   ▲
                              adjust-level   (re-level whenever the difficulty doesn't fit)
 ```
 
 ### Session types
 
-Four **core types** (a type changes the session loop): `theory`, `practice`, `role-play`, `onboarding`. Each domain overlay adds **flavors** (same loop, different scaffolding + review focus) — e.g. speech-therapy `simulation` and academic-research `defense` are role-play flavors; coding adds `review` / `interview` flavors. The full type-vs-flavor rule lives in `reference/conventions.md`.
+Four **core types** (a type changes the session loop): `theory`, `practice`, `role-play`, `onboarding`. `theory`/`practice`/`role-play` are proposed and run via `start-session`; `onboarding` — getting up to speed on an existing artifact you didn't author — has its own dedicated skill, `onboard-session`, since its shape (read-only access, a fixed survey/walkthrough/reproduce protocol) differs enough to warrant a direct entry point. Both close through `stop-session`. Each domain overlay adds **flavors** (same loop, different scaffolding + review focus) — e.g. speech-therapy `simulation` and academic-research `defense` are role-play flavors; coding adds `review` / `interview` flavors. The full type-vs-flavor rule lives in `reference/conventions.md`.
 
 ### Domain overlays
 
 The teaching *shape* (scaffolding form, review focus, `/work/` layout, special flavors) comes from the sub-project's `Domain:`:
 
-- `coding` — stub-file scaffolding, idiomacy review, language-appropriate `/work/` layouts, the codebase flavor of `onboarding`, and `review` / `interview` role-play flavors.
+- `coding` — stub-file scaffolding, idiomacy review, language-appropriate `/work/` layouts, the codebase flavor of `onboarding` (via `onboard-session`), and `review` / `interview` role-play flavors.
 - `speech-therapy` — therapist–patient `simulation` (a role-play flavor) over theory and practice.
 - `legal-documents` — prescribed-form drafting scaffolds, analysis frames (case briefs, redlines), legal-precision/citation review.
 - `academic-research` — the research lifecycle: critical-reading and literature-synthesis frames, manuscript/proposal scaffolds, peer-review and venue-fit exercises, and a `defense` role-play flavor.
@@ -74,7 +77,7 @@ Full conventions: `reference/conventions.md`.
 1. **Bootstrap** — "bootstrap a project called `tasep` to learn the totally asymmetric simple exclusion process" (optionally with `Domain:`, `Language:`, `Tracking:`, Tools & Materials).
 2. **Drop source materials** into `.studyenv/<name>/source-materials/`.
 3. **Set the curriculum** — "set curriculum for `tasep`".
-4. **Start a session** — "start session" proposes a topic + type; override as you like.
+4. **Start a session** — "start session" proposes a topic + type (`theory`/`practice`/`role-play`); override as you like. To get up to speed on an existing artifact instead, say "onboard me on X" (`onboard-session`).
 5. **Stop the session** — "stop session" records progress and summarizes.
 
 ### Where to go next
@@ -90,6 +93,7 @@ Map the user's word before explaining:
 - **"bootstrap", "new project", "set up a topic"** → `bootstrap` (`docs/bootstrap.md`).
 - **"curriculum", "plan", "syllabus"** → `set-curriculum` (`docs/set-curriculum.md`).
 - **"start", "session", "study", "let's work on"** → `start-session` (`docs/start-session.md`).
+- **"onboard", "onboarding", "walk me through", "get up to speed", "codebase I didn't write"** → `onboard-session` (`docs/onboard-session.md`).
 - **"stop", "wrap up", "record progress"** → `stop-session` (`docs/stop-session.md`).
 - **"level", "too hard", "too easy", "simplify", "harder"** → `adjust-level` (`docs/adjust-level.md`).
 - **"domain", "overlay", "coding / speech-therapy / legal / research"** → `docs/domains.md` and the matching `domains/<name>.md`.

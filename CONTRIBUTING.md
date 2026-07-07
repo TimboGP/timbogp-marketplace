@@ -26,7 +26,7 @@ New overlays under [`plugin/agentic-study-environment/domains/<domain>.md`](plug
 
 Follow the shape of the existing overlays:
 
-- [`coding.md`](plugin/agentic-study-environment/domains/coding.md) — practice via stub-file scaffolding; review covers correctness and idiomacy; `/work/` is structured per language tooling (CMake, `pyproject.toml`, …); adds an `onboarding` session type for getting up to speed on an existing codebase.
+- [`coding.md`](plugin/agentic-study-environment/domains/coding.md) — practice via stub-file scaffolding; review covers correctness and idiomacy; `/work/` is structured per language tooling (CMake, `pyproject.toml`, …); supplies the codebase flavor for the `onboard-session` skill's `onboarding` type, for getting up to speed on an existing codebase.
 - [`speech-therapy.md`](plugin/agentic-study-environment/domains/speech-therapy.md) — adds a `simulation` session type for therapist–patient role-play; `/work/` is case-folder shaped; patient profiles live in `source-materials/patients/`.
 
 An overlay should specify, at minimum:

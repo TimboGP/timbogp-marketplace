@@ -108,5 +108,5 @@ Tell the user concisely:
 ## Related skills
 
 - `set-curriculum` — build the original curriculum from source materials, source-faithful by default.
-- `start-session` — when conducting a session over an adjusted curriculum, the agent reads the labels and surfaces external-source citations during teaching so the user always knows where the current explanation comes from.
+- `start-session`, `onboard-session` — when conducting a session over an adjusted curriculum, the agent reads the labels and surfaces external-source citations during teaching so the user always knows where the current explanation comes from.
 - `bootstrap`, `stop-session` — the rest of the lifecycle; this skill doesn't touch them.

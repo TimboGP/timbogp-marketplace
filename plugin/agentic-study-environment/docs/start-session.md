@@ -4,7 +4,7 @@
 
 ## What it does
 
-This skill begins the harness's unit of work: a session with a start, a single focus (one topic, one session type), and an end. It loads the sub-project's context up front, proposes a route (which topic, which session type, why now), and — once you accept — conducts the session theory-first with explicit examples and pushes deeper after your first pass. Progress is not recorded here; that happens at session end via `stop-session`.
+This skill begins the harness's unit of work: a session with a start, a single focus (one topic, one session type), and an end. It loads the sub-project's context up front, proposes a route (which topic, which session type, why now), and — once you accept — conducts the session theory-first with explicit examples and pushes deeper after your first pass. Progress is not recorded here; that happens at session end via `stop-session`. It covers three of the four core session types — `theory`, `practice`, `role-play`; for `onboarding` (getting up to speed on an existing artifact you didn't author), use the dedicated [`onboard-session`](onboard-session.md) skill instead.
 
 ## When it triggers
 
@@ -13,9 +13,9 @@ Skills activate automatically based on your request. This one triggers on phrase
 - "let's work on TASEP"
 - "begin a practice session on derivatives"
 - "ok let's study Y" / "I want to do an exercise on Z"
-- a `role-play` session — role-play a clinical case (`simulation`), rehearse a research defense (`defense`), defend a code change (coding `review`) — or get walked through an existing codebase/corpus (`onboarding`)
+- a `role-play` session — role-play a clinical case (`simulation`), rehearse a research defense (`defense`), defend a code change (coding `review`)
 
-If you haven't bootstrapped a sub-project yet, you'll be redirected to the `bootstrap` skill first.
+If you haven't bootstrapped a sub-project yet, you'll be redirected to the `bootstrap` skill first. If you want to get walked through an existing codebase/corpus you didn't author, you'll be redirected to `onboard-session` instead.
 
 ## How to use it
 
@@ -23,10 +23,10 @@ If you haven't bootstrapped a sub-project yet, you'll be redirected to the `boot
   - "Let's start a theory session on stationary distributions."
   - "I want to practice the proof from chapter 4."
   - "Run a simulation case for the speech-therapy project."
-- **Where it sits in the lifecycle:** `bootstrap → set-curriculum → start-session ⇄ stop-session` — this is the open half of the recurring study loop.
+- **Where it sits in the lifecycle:** `bootstrap → set-curriculum → start-session/onboard-session ⇄ stop-session` — this is the open half of the recurring study loop, alongside its sibling `onboard-session`.
 - **Typical flow:**
   1. Load context — global config + `.studyenv/PROGRESS.md`, the sub-project's `AGENTS.md`/`PROGRESS.md`, its `ai-agent-materials/` (especially `curriculum.md`), and the active domain overlay if `Domain:` is set.
-  2. Decide a session type: one of the four core types `theory`, `practice`, `role-play` (overlay flavors: `simulation` / `defense` / `review`), or `onboarding`.
+  2. Decide a session type: `theory`, `practice`, or `role-play` (overlay flavors: `simulation` / `defense` / `review`) — the fourth core type, `onboarding`, runs via `onboard-session`.
   3. Propose a route — topic (citing a curriculum topic id), session type, and a one-sentence "why now". You can override.
   4. Conduct the session per type, preparing scaffolding the way the overlay specifies and surfacing any `[ext]` external-source material inline.
   5. End with `stop-session`.
@@ -37,7 +37,7 @@ Reads `.studyenv/AGENTS.md` (or `.studyenv/CLAUDE.md`) and `.studyenv/PROGRESS.m
 
 ## Notes & tips
 
-- **Session types:** four core types — `theory` (concepts, definitions, intuitions, proofs on request), `practice` (work a scaffolded exercise grounded in the current topic), `role-play` (in-character: setup → in character → debrief; overlay flavors `simulation` for `speech-therapy`, `defense` for `academic-research`, `review`/`interview` for `coding`), and `onboarding` (a part-by-part walkthrough of an existing artifact ending in a reproduce-a-recent-change exercise; `coding` ships the canonical codebase flavor). Overlays flavor these types; they don't add new ones. A theory session may include grounding practice and vice versa, but each session has one primary type.
+- **Session types run here:** three of the four core types — `theory` (concepts, definitions, intuitions, proofs on request), `practice` (work a scaffolded exercise grounded in the current topic), and `role-play` (in-character: setup → in character → debrief; overlay flavors `simulation` for `speech-therapy`, `defense` for `academic-research`, `review`/`interview` for `coding`). Overlays flavor these types; they don't add new ones. A theory session may include grounding practice and vice versa, but each session has one primary type. The fourth core type, `onboarding` (a part-by-part walkthrough of an existing artifact ending in a reproduce-a-recent-change exercise; `coding` ships the canonical codebase flavor), runs via the separate `onboard-session` skill — see [`onboard-session.md`](onboard-session.md).
 - **The overlay shapes the session:** it refines (never replaces) the generic core, setting the scaffolding form, review focus, and `work/` layout. With no `Domain:` (or `Domain: study`), neutral defaults apply.
 - **Start ⇄ stop pairing:** this skill opens the bracket but saves nothing. If you skip `stop-session`, no topic status, journal entry, or summary is recorded — the session vanishes.
 - **Topic status legend touched here:** topics advance through `introduced` → `exercised` → `reviewed` (recorded at stop-time, never downgraded).

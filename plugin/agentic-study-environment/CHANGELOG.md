@@ -6,6 +6,18 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), a
 
 ## [Unreleased]
 
+## [0.6.0] — 2026-07-07
+
+### Added
+
+- **`onboard-session` lifecycle skill.** `onboarding` is no longer a session type proposed inside `start-session` — it's now a standalone lifecycle skill ([`skills/onboard-session/`](skills/onboard-session/SKILL.md)) with its own trigger phrases ("onboard me on this codebase", "walk me through this repo", "help me get up to speed on X"), mirroring `bootstrap`/`start-session`/`stop-session`/`set-curriculum`/`adjust-level`. It runs the same generic onboarding protocol (survey → part-by-part walkthrough → reproduce a recent change, per `reference/conventions.md`) and closes through the same `stop-session` flow as before. Documented in [`docs/onboard-session.md`](docs/onboard-session.md).
+
+### Changed
+
+- **`start-session` no longer offers `onboarding`.** It now covers `theory`/`practice`/`role-play` and redirects to `onboard-session` for onboarding. `stop-session`, `reference/conventions.md`, the domain overlays, and the per-skill docs were updated to point at the new skill as onboarding's entry point; the underlying protocol, its per-domain flavors (`coding`'s canonical codebase flavor; `academic-research`/`legal-documents`/`speech-therapy`'s unchanged inheritance), and `stop-session`'s recording logic are unchanged.
+
+All changes are backward compatible: `onboarding` remains a valid curriculum and `PROGRESS.md` session-type value, and existing `work/onboarding/` artifacts are unaffected — only how a live onboarding session gets *started* changed.
+
 ## [0.5.0] — 2026-06-24
 
 ### Added
@@ -81,7 +93,8 @@ Initial public release. The harness is packaged as a Claude Code plugin under [`
 
 - Smoke testing (`claude --plugin-dir ...`) is recommended before relying on the plugin in production.
 
-[Unreleased]: https://github.com/TimboGP/timbogp-marketplace/compare/agentic-study-environment-v0.5.0...HEAD
+[Unreleased]: https://github.com/TimboGP/timbogp-marketplace/compare/agentic-study-environment-v0.6.0...HEAD
+[0.6.0]: https://github.com/TimboGP/timbogp-marketplace/compare/agentic-study-environment-v0.5.0...agentic-study-environment-v0.6.0
 [0.5.0]: https://github.com/TimboGP/timbogp-marketplace/compare/agentic-study-environment-v0.4.0...agentic-study-environment-v0.5.0
 [0.4.0]: https://github.com/TimboGP/timbogp-marketplace/compare/agentic-study-environment-v0.3.0...agentic-study-environment-v0.4.0
 [0.3.0]: https://github.com/TimboGP/timbogp-marketplace/compare/v0.2.0...agentic-study-environment-v0.3.0

@@ -9,14 +9,16 @@ How to use each skill in the **agentic-study-environment** plugin. Skills activa
 The skills form a loop around a learning **sub-project**:
 
 ```
-bootstrap → set-curriculum → start-session ⇄ stop-session
+                       ┌─ start-session ─┐
+bootstrap → set-curriculum ─┤                 ├─ stop-session
+                       └─ onboard-session ┘
                                   ▲
                              adjust-level   (re-level the curriculum whenever it doesn't fit)
 ```
 
 1. **bootstrap** mints the sub-project.
 2. **set-curriculum** turns your source materials into an ordered teaching plan.
-3. **start-session** / **stop-session** are the repeating unit of work — bracketed study with recorded progress.
+3. **start-session** (`theory`/`practice`/`role-play`) or **onboard-session** (`onboarding`), then **stop-session** — the repeating unit of work: bracketed study with recorded progress.
 4. **adjust-level** re-levels the curriculum (simpler or harder) whenever the difficulty doesn't match where you are.
 
 ## Skills
@@ -25,7 +27,8 @@ bootstrap → set-curriculum → start-session ⇄ stop-session
 |---|---|
 | [bootstrap](bootstrap.md) | Scaffold a new learning sub-project and register it in the tracker |
 | [set-curriculum](set-curriculum.md) | Build or refresh the teaching plan from source materials |
-| [start-session](start-session.md) | Begin a bracketed study session (theory / practice / role-play / onboarding) |
+| [start-session](start-session.md) | Begin a bracketed study session (theory / practice / role-play) |
+| [onboard-session](onboard-session.md) | Begin a bracketed onboarding session over an existing artifact you didn't author |
 | [stop-session](stop-session.md) | Record progress, update the journals, and summarize |
 | [adjust-level](adjust-level.md) | Re-level the curriculum up or down, labeling any external material |
 | [help](help.md) | Explain the harness, or a specific skill / domain / session type / convention |

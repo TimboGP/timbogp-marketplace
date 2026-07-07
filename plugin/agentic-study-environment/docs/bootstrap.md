@@ -17,7 +17,7 @@ Skills activate automatically based on your request. This one triggers on phrase
   - "Bootstrap a project to learn TASEP."
   - "Create a sub-project for Spanish vocabulary, goal: reach B2 conversational."
   - "Set up a learning project for the seam carving paper."
-- **Where it sits in the lifecycle:** this is the first step — `bootstrap → set-curriculum → start-session ⇄ stop-session`. After scaffolding, you typically run `set-curriculum` once source materials are in place.
+- **Where it sits in the lifecycle:** this is the first step — `bootstrap → set-curriculum → start-session/onboard-session ⇄ stop-session`. After scaffolding, you typically run `set-curriculum` once source materials are in place.
 - **Typical flow:**
   1. You supply a **sub-project name** (becomes the directory name) and a **one-line learning goal**. The agent asks if either is missing — it won't invent them.
   2. Optionally supply **Domain**, **Language**, **Tracking** (`global` default vs. `local-only`), or **Tools & Materials** (used if given, never prompted for; can be filled later via `AGENTS.md`).
