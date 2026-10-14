@@ -1,0 +1,22 @@
+{
+  "name": "self-org",
+  "version": "0.1.0",
+  "description": "A self-organization coach: turn a project description into SMART goals, triage tasks with the Eisenhower matrix, and plan and review each day with the ALPEN method — saved as Obsidian-friendly, TaskNotes-compatible Markdown notes.",
+  "author": {
+    "name": "TimboGP"
+  },
+  "homepage": "https://github.com/TimboGP/timbogp-marketplace",
+  "repository": "https://github.com/TimboGP/timbogp-marketplace",
+  "license": "MIT",
+  "keywords": [
+    "productivity",
+    "self-organization",
+    "planning",
+    "smart-goals",
+    "eisenhower-matrix",
+    "alpen",
+    "time-management",
+    "obsidian",
+    "tasknotes"
+  ]
+}

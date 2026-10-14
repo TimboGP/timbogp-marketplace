@@ -2,13 +2,14 @@
 
 The **`timbogp`** marketplace — a small, curated catalog of Claude Code plugins.
 
-A marketplace in Claude Code is a *catalog* you add once; you then install individual plugins from it. This repo is that catalog. It currently hosts three plugins, which don't have to relate to each other — the marketplace is just the distribution channel.
+A marketplace in Claude Code is a *catalog* you add once; you then install individual plugins from it. This repo is that catalog. It currently hosts four plugins, which don't have to relate to each other — the marketplace is just the distribution channel.
 
 | Plugin | What it does | Install |
 | --- | --- | --- |
 | [**agentic-study-environment**](plugin/agentic-study-environment/README.md) | Turns a coding agent into a **structured tutor** over your own source materials — bracketed sessions, per-project curriculum + progress, swappable domain overlays. | `/plugin install agentic-study-environment@timbogp` |
 | [**ux-design**](plugin/ux-design/README.md) | **Guide, measure, and implement UX best practices** — scored usability + accessibility audits, UX metrics, and stack-adaptive scaffolding (tokens, accessible components, interaction feedback, copy). | `/plugin install ux-design@timbogp` |
 | [**lean-coach**](plugin/lean-coach/README.md) | A **Lean business-development coach** built on Ash Maurya's _Running Lean_ — guide a venture (Lean Canvas, riskiest-assumption testing, customer interviews, experiments, product/market fit) and role-play the customer, investor, devil's-advocate, business-partner, and mentor you test it with. | `/plugin install lean-coach@timbogp` |
+| [**self-org**](plugin/self-org/README.md) | A **self-organization coach** — turn a project description into SMART goals, triage tasks with the Eisenhower matrix, and plan and review each day with the ALPEN method, saved as Obsidian-friendly, TaskNotes-compatible Markdown notes. | `/plugin install self-org@timbogp` |
 
 ## Install
 
@@ -19,6 +20,7 @@ Add the marketplace once (the repo *is* the catalog), then install whichever plu
 /plugin install agentic-study-environment@timbogp
 /plugin install ux-design@timbogp
 /plugin install lean-coach@timbogp
+/plugin install self-org@timbogp
 ```
 
 The marketplace is named **`timbogp`** and the repo is `timbogp-marketplace`. Already added the marketplace before? Refresh it to pick up newly added plugins:
@@ -51,11 +53,19 @@ Ships nine skills, five commands (`/lean-coach`, `/lean-canvas`, `/lean-intervie
 
 → Full details: [plugin README](plugin/lean-coach/README.md) · per-skill guides: [docs/](plugin/lean-coach/docs/README.md)
 
+### self-org
+
+A self-organization coach that chains three classic methods into one interactive loop — **project description → SMART goals → Eisenhower triage → ALPEN day plan → evening review**. It sharpens a project into 2–4 goals checked letter by letter, triages open tasks into do / schedule / delegate / drop in one batch, and plans each day at about 60 % of capacity (Lothar Seiwert's 60:40 rule), cutting by quadrant until it fits; the evening review carries unfinished work forward and calibrates your estimates.
+
+Ships four skills (`smart-goals`, `eisenhower`, `alpen`, `help`), each invoked as `/self-org:<skill>` on both agents — no separate commands or agents. Notes live in one **visible planning folder** — designed for an Obsidian vault — with one TaskNotes-compatible note per task and a `Planning.base` dashboard (Obsidian core Bases); the plugin never deletes anything. Also ships for **Codex** (catalog at [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json)) — the same skills, no Claude-Code-only surface.
+
+→ Full details: [plugin README](plugin/self-org/README.md) · setup: [docs/setup.md](plugin/self-org/docs/setup.md) · per-skill guides: [docs/](plugin/self-org/docs/README.md)
+
 ## Repo layout
 
 ```
 /
-  .claude-plugin/marketplace.json   ← the "timbogp" marketplace catalog (lists all three plugins)
+  .claude-plugin/marketplace.json   ← the "timbogp" marketplace catalog (lists all four plugins)
   .agents/plugins/marketplace.json  ← Codex marketplace catalog
   AGENTS.md / CLAUDE.md             ← repo-level agent instructions
   CONTRIBUTING.md · CHANGELOG.md · LICENSE
@@ -66,6 +76,7 @@ Ships nine skills, five commands (`/lean-coach`, `/lean-canvas`, `/lean-intervie
     agentic-study-environment/      ← study-harness plugin  (see its README)
     ux-design/                      ← UX plugin             (see its README)
     lean-coach/                     ← Lean business-dev plugin (see its README)
+    self-org/                       ← self-organization plugin (see its README)
 ```
 
 ## Contributing
@@ -74,4 +85,4 @@ Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). For the st
 
 ## License
 
-[MIT](LICENSE) for all three plugins. Source materials you drop into your own study sub-projects are yours; the license applies to the plugins themselves.
+[MIT](LICENSE) for all four plugins. Source materials you drop into your own study sub-projects are yours; the license applies to the plugins themselves.

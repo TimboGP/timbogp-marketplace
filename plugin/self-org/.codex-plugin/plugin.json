@@ -1,0 +1,43 @@
+{
+  "name": "self-org",
+  "version": "0.1.0",
+  "description": "A self-organization coach: turn a project description into SMART goals, triage tasks with the Eisenhower matrix, and plan and review each day with the ALPEN method — saved as Obsidian-friendly, TaskNotes-compatible Markdown notes.",
+  "author": {
+    "name": "TimboGP",
+    "url": "https://github.com/TimboGP"
+  },
+  "homepage": "https://github.com/TimboGP/timbogp-marketplace",
+  "repository": "https://github.com/TimboGP/timbogp-marketplace",
+  "license": "MIT",
+  "keywords": [
+    "productivity",
+    "self-organization",
+    "planning",
+    "smart-goals",
+    "eisenhower-matrix",
+    "alpen",
+    "time-management",
+    "obsidian",
+    "tasknotes"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Self-Organization Coach",
+    "shortDescription": "Turn projects into SMART goals, triage tasks, and plan each day with ALPEN.",
+    "longDescription": "Self-Organization Coach brings three classic methods to Codex as interactive skills: sharpen an overarching project description into SMART goals, sort open tasks into the Eisenhower matrix (do, schedule, delegate, drop), and plan a realistic day with Lothar Seiwert's ALPEN method — estimate durations, keep a 40% buffer, cut by priority, then review in the evening and carry unfinished work forward. Everything is saved as plain Markdown notes with TaskNotes-compatible frontmatter and an Obsidian Bases dashboard.",
+    "developerName": "TimboGP",
+    "category": "Productivity",
+    "capabilities": [
+      "Skills",
+      "Goal setting & prioritization",
+      "Daily planning & review"
+    ],
+    "websiteURL": "https://github.com/TimboGP/timbogp-marketplace",
+    "defaultPrompt": [
+      "Turn this project description into SMART goals",
+      "Prioritize my open tasks with the Eisenhower matrix",
+      "Plan my day with ALPEN"
+    ],
+    "brandColor": "#D97706"
+  }
+}

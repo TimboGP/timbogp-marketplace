@@ -9,6 +9,9 @@ HANDOFF.md
 # lean-coach generated venture workspace
 .lean/
 
+# self-org local fallback planning folder
+/planning/
+
 # Editors / IDEs
 .vscode/
 .idea/

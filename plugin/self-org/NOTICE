@@ -1,0 +1,26 @@
+self-org
+Copyright (c) TimboGP. Licensed under the MIT License.
+
+This plugin is an independent, unofficial tool. It applies publicly described
+self-organization methods, with attribution:
+
+  - SMART goals: George T. Doran, "There's a S.M.A.R.T. way to write
+    management's goals and objectives", Management Review 70(11), 1981.
+  - The urgent/important distinction is attributed to Dwight D. Eisenhower
+    (1954 address); the time-management matrix was popularised by Stephen R.
+    Covey in "The 7 Habits of Highly Effective People" (1989) and "First Things
+    First" (1994, with A. Roger Merrill and Rebecca R. Merrill).
+  - The ALPEN method and the 60:40 planning rule: Lothar J. Seiwert.
+
+All credit for the methods belongs to their authors. This plugin does not
+reproduce their texts; it provides original guidance over the publicly
+described methods.
+
+Trademarks (used nominatively, only to refer to the works and tools):
+  - "The 7 Habits of Highly Effective People" is a trademark of FranklinCovey Co.
+  - Obsidian is a trademark of its respective owner.
+  - TaskNotes is an independent open-source Obsidian plugin.
+
+This plugin is NOT affiliated with, authorized, sponsored, or endorsed by
+FranklinCovey Co., the authors named above, Obsidian, or the TaskNotes project.
+All trademarks are the property of their respective owners.

@@ -1,12 +1,13 @@
 # AGENTS.md — timbogp marketplace
 
-This repository is the **`timbogp`** marketplace: a curated catalog of Claude Code plugins (also published for Codex). It currently hosts **three plugins**, which are independent of each other — the marketplace is just the shared distribution channel and the place their dev tooling lives.
+This repository is the **`timbogp`** marketplace: a curated catalog of Claude Code plugins (also published for Codex). It currently hosts **four plugins**, which are independent of each other — the marketplace is just the shared distribution channel and the place their dev tooling lives.
 
 | Plugin | Directory | What it is |
 | --- | --- | --- |
 | `agentic-study-environment` | [`plugin/agentic-study-environment/`](plugin/agentic-study-environment/) | A coding-agent learning harness — structured tutor sessions over user-supplied source materials, with swappable domain overlays. |
 | `ux-design` | [`plugin/ux-design/`](plugin/ux-design/) | A UX/UI toolkit — scored usability + accessibility audits, UX metrics, and stack-adaptive scaffolding (skills, commands, an agent, and zero-dependency CLI tools). |
 | `lean-coach` | [`plugin/lean-coach/`](plugin/lean-coach/) | A Lean business-development coach — guide a venture through Ash Maurya's _Running Lean_ (Lean Canvas, riskiest-assumption testing, customer interviews, experiments, product/market fit) and role-play the customer, investor, devil's-advocate, business-partner, and mentor you test it with. |
+| `self-org` | [`plugin/self-org/`](plugin/self-org/) | A self-organization coach — turn a project description into SMART goals, triage tasks with the Eisenhower matrix, and plan and review each day with the ALPEN method, saved as Obsidian-friendly, TaskNotes-compatible Markdown notes. |
 
 Each plugin is independently versioned and self-documenting; work on one rarely touches the other. When working **inside a plugin**, read that plugin's `README.md` (and its `docs/`) first — they carry the operational detail this file intentionally does not duplicate.
 
@@ -14,8 +15,8 @@ Each plugin is independently versioned and self-documenting; work on one rarely 
 
 The marketplace is published in two manifest formats that must stay in sync — when you add, rename, or re-version a plugin, update **both**:
 
-- [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) — the Claude Code catalog (lists all three plugins).
-- [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json) — the Codex catalog (lists all three plugins).
+- [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) — the Claude Code catalog (lists all four plugins).
+- [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json) — the Codex catalog (lists all four plugins).
 
 Each plugin additionally carries its own manifests: `<plugin>/.claude-plugin/plugin.json` (Claude) and `<plugin>/.codex-plugin/plugin.json` (Codex, with an `interface` block). A plugin's `version` and `description` must match across its own two manifests **and** the catalog entries.
 
@@ -40,6 +41,8 @@ For Claude Code — add the marketplace once, then install whichever plugins you
 /plugin marketplace add TimboGP/timbogp-marketplace
 /plugin install agentic-study-environment@timbogp
 /plugin install ux-design@timbogp
+/plugin install lean-coach@timbogp
+/plugin install self-org@timbogp
 ```
 
 For Codex — from a clone of this repo:
@@ -97,6 +100,12 @@ The **roles** are the distinctive surface — guide roles (Coach, Strategist, An
 
 All venture state persists under a single gitignored **`.lean/`** workspace at the host project root (`canvas.md`, `risks.md`, `experiments/`, `interviews/`, `pitch/`, `metrics/`, `PROGRESS.md`); the plugin owns `.lean/` and never reads or modifies the host project's own files — see [`plugin/lean-coach/reference/workspace.md`](plugin/lean-coach/reference/workspace.md). On Codex the **skills** are the cross-agent surface; the `/lean-*` commands and the `lean-mentor` agent are Claude-Code conveniences over them. Full detail: [`plugin/lean-coach/README.md`](plugin/lean-coach/README.md) and [`plugin/lean-coach/docs/`](plugin/lean-coach/docs/README.md).
 
+## The self-org plugin
+
+A self-organization coach that chains three classic methods into one interactive loop: **project description → SMART goals → Eisenhower triage → ALPEN day plan → evening review**. It ships **four skills** (`smart-goals`, `eisenhower`, `alpen`, `help`) and **no commands or agents** — every skill is invoked as `/self-org:<skill>` on both agents, so the plugin has no Claude-Code-only surface (Claude Code namespaces plugin commands, so a help command would only duplicate `/self-org:help`). Method summaries and the only place for credits (Doran for SMART, Eisenhower/Covey for the matrix, Seiwert for ALPEN) live in [`plugin/self-org/reference/methods.md`](plugin/self-org/reference/methods.md).
+
+Unlike the dot-folder workspaces of the other plugins, its state lives in one **visible planning folder** (by convention `Planning/` inside an Obsidian vault, which hides dot-folders), found via a named path, the `SELF_ORG_HOME` environment variable, or the current folder: `Projects/`, `Goals/`, `Tasks/` (one note per task with **TaskNotes-compatible** frontmatter), `Days/`, and a `Planning.base` dashboard (Obsidian core Bases). The plugin reads and writes only inside that folder, edits notes in place, and never deletes — see [`plugin/self-org/reference/workspace.md`](plugin/self-org/reference/workspace.md) and [`plugin/self-org/reference/schema.md`](plugin/self-org/reference/schema.md). Interviews use the agent's structured-question tool when it has one and a numbered-list fallback otherwise, so the skills work the same on Codex. Full detail: [`plugin/self-org/README.md`](plugin/self-org/README.md) and [`plugin/self-org/docs/`](plugin/self-org/docs/README.md).
+
 ## Dev tooling
 
 The repo root carries the shared developer tooling (the plugins themselves are pure markdown / skill definitions and need no build):
@@ -114,18 +123,19 @@ The repo root carries the shared developer tooling (the plugins themselves are p
   README.md  CONTRIBUTING.md  CHANGELOG.md  LICENSE  PRIVACY.md
   package.json                       <- dev tooling (tests for ux-design's CLI scripts)
   test/                              <- node:test suite for the bundled scripts
-  .claude-plugin/marketplace.json    <- Claude Code catalog (all three plugins)
-  .agents/plugins/marketplace.json   <- Codex catalog (all three plugins)
+  .claude-plugin/marketplace.json    <- Claude Code catalog (all four plugins)
+  .agents/plugins/marketplace.json   <- Codex catalog (all four plugins)
   .github/                           <- CI, issue templates, PR template
   plugin/
     agentic-study-environment/       <- study-harness plugin (skills, overlays, templates, conventions, docs)
     ux-design/                       <- UX plugin (skills, commands, agent, docs, bundled scripts)
     lean-coach/                      <- Lean business-dev plugin (skills, commands, agent, reference, docs)
+    self-org/                        <- self-organization plugin (skills, reference, templates, docs)
 ```
 
 ## Working in this repo
 
 - **Touch both catalogs together.** Adding/renaming/re-versioning a plugin means editing both `marketplace.json` files plus that plugin's own `.claude-plugin/plugin.json` and `.codex-plugin/plugin.json`; keep `name`, `version`, and `description` consistent across all of them (see *Coding-agent parity* above).
 - **Keep changes plugin-scoped.** One plugin per PR where possible; the plugins are independent.
-- **Record changes** in the affected plugin's own changelog ([`plugin/agentic-study-environment/CHANGELOG.md`](plugin/agentic-study-environment/CHANGELOG.md) or [`plugin/ux-design/CHANGELOG.md`](plugin/ux-design/CHANGELOG.md)); the root [`CHANGELOG.md`](CHANGELOG.md) tracks marketplace-wide and cross-cutting changes. Plugins are versioned and tagged independently (`<plugin>-vX.Y.Z`).
+- **Record changes** in the affected plugin's own changelog ([`plugin/agentic-study-environment/CHANGELOG.md`](plugin/agentic-study-environment/CHANGELOG.md), [`plugin/ux-design/CHANGELOG.md`](plugin/ux-design/CHANGELOG.md), [`plugin/lean-coach/CHANGELOG.md`](plugin/lean-coach/CHANGELOG.md), or [`plugin/self-org/CHANGELOG.md`](plugin/self-org/CHANGELOG.md)); the root [`CHANGELOG.md`](CHANGELOG.md) tracks marketplace-wide and cross-cutting changes. Plugins are versioned and tagged independently (`<plugin>-vX.Y.Z`).
 - See [`CONTRIBUTING.md`](CONTRIBUTING.md) for per-plugin contribution guidance.
