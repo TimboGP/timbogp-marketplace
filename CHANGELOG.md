@@ -5,12 +5,17 @@ Marketplace-wide and cross-cutting changes only: the catalog itself, repo-level 
 - `agentic-study-environment` → [`plugin/agentic-study-environment/CHANGELOG.md`](plugin/agentic-study-environment/CHANGELOG.md)
 - `ux-design` → [`plugin/ux-design/CHANGELOG.md`](plugin/ux-design/CHANGELOG.md)
 - `lean-coach` → [`plugin/lean-coach/CHANGELOG.md`](plugin/lean-coach/CHANGELOG.md)
+- `self-org` → [`plugin/self-org/CHANGELOG.md`](plugin/self-org/CHANGELOG.md)
 
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## Versioning
 
 Each plugin is versioned and released **independently**, tagged `<plugin>-vX.Y.Z` (e.g. `agentic-study-environment-v0.3.0`, `ux-design-v0.2.0`). The historical repo-wide tags [`v0.1.0`](https://github.com/TimboGP/timbogp-marketplace/releases/tag/v0.1.0) and [`v0.2.0`](https://github.com/TimboGP/timbogp-marketplace/releases/tag/v0.2.0) predate the split and correspond to `agentic-study-environment` releases (the repo's only plugin at the time). The marketplace catalog itself is not separately versioned.
+
+## 2026-10-14
+
+- **Added the `self-org` plugin to the catalog** as the marketplace's fourth plugin — a self-organization coach that chains SMART goals, the Eisenhower matrix, and the ALPEN day-planning method into one interactive loop, saving Obsidian-friendly, TaskNotes-compatible Markdown notes to a visible planning folder. Registered in both catalogs ([`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) and [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json)), with its own Claude and Codex manifests. Updated the repo [`README.md`](README.md), [`AGENTS.md`](AGENTS.md) (which also gains the missing `lean-coach` install line and changelog link), and [`CONTRIBUTING.md`](CONTRIBUTING.md) to cover four plugins, and gitignored a local `planning/` fallback folder. See the plugin's [changelog](plugin/self-org/CHANGELOG.md) for details.
 
 ## 2026-06-24
 

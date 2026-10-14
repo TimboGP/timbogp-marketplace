@@ -1,0 +1,85 @@
+# Planning dashboard — created by the self-org plugin (see reference/schema.md).
+# Replace {{ROOT}} with the planning root's vault-relative path when creating it.
+# Edit freely: the plugin never rewrites this file once it exists.
+filters:
+  and:
+    - file.inFolder("{{ROOT}}")
+formulas:
+  quadrant: 'if(!file.hasProperty("urgent") || !file.hasProperty("important"), "0 Unclassified", if(urgent && important, "1 Do", if(important, "2 Schedule", if(urgent, "3 Delegate", "4 Drop"))))'
+properties:
+  formula.quadrant:
+    displayName: Quadrant
+  timeEstimate:
+    displayName: Estimate (min)
+  delegatedTo:
+    displayName: Delegated to
+views:
+  - type: table
+    name: Today
+    filters:
+      and:
+        - file.hasTag("task")
+        - 'status != "done"'
+        - 'status != "dropped"'
+        - or:
+            - 'file.hasProperty("scheduled") && date(scheduled) <= today()'
+            - 'file.hasProperty("due") && date(due) <= today()'
+    order:
+      - file.name
+      - formula.quadrant
+      - priority
+      - timeEstimate
+      - scheduled
+      - due
+      - projects
+  - type: table
+    name: Eisenhower
+    filters:
+      and:
+        - file.hasTag("task")
+        - 'status != "done"'
+        - 'status != "dropped"'
+    groupBy:
+      property: formula.quadrant
+      direction: ASC
+    order:
+      - file.name
+      - urgent
+      - important
+      - priority
+      - scheduled
+      - due
+      - delegatedTo
+      - projects
+  - type: table
+    name: Goals
+    filters:
+      and:
+        - 'type == "goal"'
+    groupBy:
+      property: project
+      direction: ASC
+    order:
+      - file.name
+      - status
+      - current
+      - target
+      - unit
+      - due
+  - type: table
+    name: Reviews
+    filters:
+      and:
+        - 'type == "day"'
+    sort:
+      - property: date
+        direction: DESC
+    order:
+      - file.name
+      - capacityMinutes
+      - plannedMinutes
+      - actualMinutes
+      - bufferUsedMinutes
+      - plannedCount
+      - doneCount
+      - estimateRatio
